@@ -1,0 +1,36 @@
+<% @page_name = "show post" -%>
+
+<table>
+  <tr>
+    <th colspan="2" align="center">
+    <%= link_to 'edit', :action => :edit, :id => @post %> | 
+    <%= link_to 'delete', {:action => :delete, :id => @post}, :confirm => 'Are you sure you want to delete this post?' %>
+    </th>
+  </tr>
+  <tr>
+    <td><strong>id:</strong></td>
+    <td><%= @post.id %></td>
+  </tr>  
+  <tr>
+    <td><strong>title:</strong></td>
+    <td><%= @post.title %></td>
+  </tr>
+  <tr>
+    <td><strong>post type:</strong></td>
+    <td><%= @post.post_type %></td>
+  </tr>      
+  <tr>
+    <td><strong>tags:</strong></td>
+    <td><%= @tags %></td>
+  </tr>
+  <tr>
+    <td><strong>created at:</strong></td>
+    <td><%= @post.created_at %></td>
+  </tr>
+</table>
+
+<div class="show-post">
+  <% partial = "#{RAILS_ROOT}/components/your_tumblelog/tumble/types/_#{@post.post_type}.rhtml" -%>
+  <% partial = "#{RAILS_ROOT}/components/your_tumblelog/tumble/types/_post.rhtml" unless File.exists?(partial) %>
+  <%= render_file partial, false, { :content => @post.content } %>
+</div>

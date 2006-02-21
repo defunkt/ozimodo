@@ -1,0 +1,44 @@
+<% @page_name = "#{controller.action_name} post" -%>
+
+<%= form_tag %>
+<table>
+  <tr>
+    <th>Title:</th>
+    <td><%= text_field 'post', 'title', :size => 40 %></td>
+  </tr>
+  <tr>
+    <th>Post Type:</th>
+    <td>
+      <% if controller.action_name = :new %>
+        <select id="post_post_type" name="post[post_type]">
+          <%= options_for_select( TYPES, @post.post_type ? @post.post_type : ( TYPES.include?('post') ? 'post' : '') ) %>
+        </select>
+      <% else %>
+        <%= select 'post', 'post_type', TYPES, :size => 40 %>
+      <% end %>
+    </td>
+  </tr>
+    
+  <tr>
+    <th>Tags:</th>
+    <td><%= text_field_tag 'tags', @tags, :size => 40 %></td>
+  </tr>
+    
+  <tr>
+    <th>Content:</th>
+<!--   <small>[you can use <a href="http://hobix.com/textile/quick.html" target="_blank">textile markup</a> in the post]</small><br/> -->
+    <td><%= text_area 'post', 'content', :cols => 38, :rows => 15 %></td>
+  </tr>
+    
+  <tr>
+    <th>Created at:</th>
+    <td><%= datetime_select 'post', 'created_at' %></td>
+  </tr>
+  
+  <tr><th colspan="2" align="center"><%= submit_tag 'Save Your Tumble' %></th></tr>
+</table>
+
+  <%# no real support for multiple users yet%>
+  <%= hidden_field 'post', 'user_id' %>  
+      
+<%= end_form_tag %>

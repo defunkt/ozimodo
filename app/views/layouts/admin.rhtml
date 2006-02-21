@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>ozimodo::<%= @page_name %></title>
+  <%= stylesheet_link_tag 'admin' %>
+  <%= stylesheet_link_tag 'types' %>
+  <%= javascript_include_tag 'prototype' %>
+</head>
+<body>
+  
+<div id="main" align="center">
+  <div id="header">
+    <table><tr>
+    <td class="bracket">{</td>
+    <td class="logo">tumblelog maintenance</td>
+    <td class="bracket">}</td>
+    </tr></table>
+  </div>
+  
+  <div id="nav">  
+    [ 
+    <%= link_to 'posts', :action => :list %> | 
+    <%= link_to 'tags', :action => :list_tags %> |
+    <%= link_to 'tumble', :action => :new %> | 
+    <%= link_to 'password', :action => :password %> |
+    <%= link_to 'kill cache', :action => :kill_cache %> | 
+    <%= link_to 'tumblelog', "/" %> |
+    <% if session[:user_id] %>
+      <%= link_to 'logout', :action => :logout %>
+    <% else %>
+      <%= link_to 'login', :action => :login %>
+    <% end %>
+    ]
+  </div>
+
+  <% if flash[:notice] %>
+    <div id="notice">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  
+  <div id="content">
+    <%= @content_for_layout %>
+  </div>
+  
+  <div id="footer">
+    you're on the admin side, where we keep it casual ~ 
+    <a href="http://ozimodo.rubyforge.org/">ozimodo</a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+/* Gem Test! Get rid of this. */
+div.gem_test {
+  text-align: center;
+  background: #eee;
+  padding: 6px;
+}
+
+/* -- TYPES -- */
+/* LINK TYPE */
+div.type-link {
+  margin:-20px 0 -20px 0;
+  font-size:180%;
+}
+
+/* QUOTE TYPE */
+div.type-quote {
+  font-size:150%;
+  line-height:150%;
+  letter-spacing:-1px;
+}
+
+span.type-quote-quotation {
+  font-size:250%;
+  color:red;
+  margin:0 5px 0 0;
+  font-family:georgia;
+}
+
+/* IMG TYPE */
+.type-img {
+  border:1px solid #444;
+  padding:2px;
+}
+
+/* CODE TYPE */
+div.ruby-code {
+  border:1px solid #bbb;
+  background:#eee;
+  padding-left:10px;
+  white-space:pre;
+  font-family: courier;
+  font-size:110%;
+}
+
+/* RUBY SYNTAX HIGHLIGHTING */
+span.keyword {
+  color:blue;
+}
+
+span.constant {
+  color:black;
+}
+
+span.method {
+  color:black;
+}
+
+span.ident {
+  color:black;
+}
+
+span.string {
+  color:red;
+}
+
+span.number {
+  color:black;
+}
+
+span.regex {
+  color:#006600;
+}
+
+span.punct {
+  color:black;
+}
+/* /-- TYPES -- */

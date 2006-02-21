@@ -1,0 +1,80 @@
+/* ozimodo::css */
+body {
+  font-family:georgia;
+  letter-spacing:-1px;
+  background: #ddd;
+  margin: 0;
+}
+
+a:link, a:visited {
+  color:black;
+}
+
+a:hover {
+  background:black;
+  color:white;
+  text-decoration:underline;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  margin-left: 20%;
+  margin-right: 20%;
+  background: #fff;
+  border: 2px solid blue;
+  border-top: none;
+}
+
+#header .logo {
+  font-size:240%;
+}
+
+#header .bracket {
+  color:red;
+  font-size:600%;
+}
+
+#nav {
+  margin-bottom: 20px;
+  background: #eee;
+}
+
+#notice {
+  background: blue;
+  color: #fff;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+#content th {
+  border: 1px solid #ccc;
+  background: #eee;
+}
+
+#content td {
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+#content .show-post {
+  margin-top: 20px;
+  width: 90%;
+  text-align: left;
+}
+
+#footer {
+  margin: 10px;
+  margin-top: 50px;
+  margin-bottom: 0;
+  padding: 10px;
+  border-top: 1px solid black;
+}
+
+#error {
+  color: red;
+  margin-bottom: 10px;
+}

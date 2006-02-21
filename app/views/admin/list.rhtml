@@ -1,0 +1,28 @@
+<% @page_name = 'listing posts' -%>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Type</th>
+    <th>Date</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @posts.each do |p| -%>
+  <tr>
+    <td><%=r p.title.length > 0 ? p.title : '&nbsp;' %></td>
+    <td><%= p.post_type %></td>
+    <% date = p.created_at -%>
+    <td><%= date.year %>-<%= sprintf('%02d', date.month.to_s) %>-<%= sprintf('%02d', date.day.to_s) %></td>
+    <td><small><%= link_to 'show', :action => :show, :id => p %> | 
+        <%= link_to 'edit', :action => :edit, :id => p %> | 
+        <%= link_to 'delete', {:action => :delete, :id => p}, 
+                    :confirm => 'Are you sure you want to delete this post?' %></small>
+    </td>
+  </tr>
+<% end -%>
+
+</table>
+
+<%= link_to "prev page", { :page => @post_pages.current.previous } if @post_pages.current.previous %>
+<%= link_to "next page", { :page => @post_pages.current.next } if @post_pages.current.next %> 

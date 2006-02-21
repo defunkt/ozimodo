@@ -1,0 +1,33 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+xml.feed "version" => "0.3", "xml:lang"=>"en-US", "xmlns"=>"http://purl.org/atom/ns#", "xmlns:dc" => "http://purl.org/dc/elements/1.1/" do
+
+  xml.title TUMBLE['name']
+  xml.tagline "mode"=>"escaped", "type"=>"text/html"
+  xml.id "tag:#{controller.request.host},2005:ozimodo"
+  xml.generator "ozimodo", "url" => "http://ozimodo.rubyforge.org/"
+  xml.link "rel" => "alternate", "type" => "text/html", "href" => TUMBLE['url']
+
+  xml.modified @posts.first.created_at.xmlschema unless @posts.empty?
+
+  for entry in @posts
+
+    xml.entry do
+  
+#      xml.author { xml.name entry.user.name }
+      xml.id "tag:#{controller.request.host},2005:ozimodo-#{entry.id}"
+
+      xml.issued entry.created_at.xmlschema
+      xml.modified entry.created_at.xmlschema
+      xml.title strip_textile(entry.title)
+  
+      xml.link "rel" => "alternate", "type" => "text/html", "href" => TUMBLE['url'] + oz_clean_date(post.created_at) + '#' + entry.id.to_s
+      for tag in entry.tags
+        xml.dc :subject, tag.name
+      end
+
+      content = feed_content(entry.content,entry.post_type)
+      xml.content content, "type"=>"text/html", "mode"=>"escaped"
+
+    end
+  end   
+end

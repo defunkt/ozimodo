@@ -1,0 +1,87 @@
+<%# code to display the date of the current post group %>
+<% postdate = post.created_at.strftime("%Y-%m-%d")%>
+<% if @date != postdate %>
+  <% @date = postdate %>
+  <div class="post-date">
+    <%= link_to oz_relative_date(@date.to_s), '/' + oz_clean_date(post.created_at) + '/',
+        :class => 'post-date' %>
+  </div>
+<% end %>
+
+<div class="post">
+  
+    <% if session[:user_id] %>
+    <div class="edit-title" id="edit-title<%= post.id %>" style="display:none;">
+      <%= form_remote_tag :update => "post-title#{post.id}", :url => { :controller => 'admin', 
+                          :action => 'ajax_edit_title' },
+                          :complete => "Element.toggle('edit-title#{post.id}');
+                                        header = document.getElementById('post-header#{post.id}');
+                                        div = document.getElementById('post-title#{post.id}');
+                                        if (div.innerHTML == 'empty-title') { header.style.display = 'none'; } else { header.style.display = 'visible'; }
+                                        " %>
+        <%= hidden_field_tag 'post_id', post.id %>
+        <%= text_field_tag 'post_title', post.title %>
+        <%= submit_tag 'save' %>
+      <%= end_form_tag %>
+    </div>
+  <% end %>
+  <a name="<%= post.id %>"></a>
+  <div class="post-title" id="post-header<%= post.id %>" <% if post.title.empty? %>style="display:none;"<% end %>>
+    <span id="post-title<%= post.id %>">title: <%=t post.title %></span>
+    <span class="post-date">
+      <%= link_to '#', 
+          '/' + oz_clean_date(post.created_at) + '/' %>
+    </span>
+  </div>
+  
+  <% if session[:user_id] %>
+    <div class="admin-actions"><span class="admin-bracket">admin: </span> 
+      <%= link_to_function 'title', "Element.toggle('edit-title#{post.id}');if (document.getElementById('post-title#{post.id}').innerHTML != 'empty-title') { Element.toggle('post-header#{post.id}') }" %> | 
+      <%= link_to_function 'body', "Element.toggle('edit-body#{post.id}');Element.toggle('post-body#{post.id}')" %> | 
+      <%= link_to_function 'tags', "Element.toggle('edit-tags#{post.id}');if (document.getElementById('post-tags#{post.id}').innerHTML != 'empty-tags') { Element.toggle('post-tags#{post.id}') }" %>
+    </div>
+  <% end %>
+  
+  
+  <div class="post-body" id="post-body<%= post.id %>">
+    <%= oz_render_post_type(post) %>
+  </div>
+  
+  <% if session[:user_id] %>
+    <div class="edit-body" id="edit-body<%= post.id %>" style="display:none;">
+      <%= form_remote_tag :update => "post-body#{post.id}", :url => { :controller => 'admin', 
+                          :action => 'ajax_edit_content' },
+                          :complete => "Element.toggle('edit-body#{post.id}');Element.toggle('post-body#{post.id}')" %>
+        <%= hidden_field_tag 'post_id', post.id %>
+        <%= text_area_tag 'post_content', post.content, :cols => 50, :rows => 4 %><br/>
+        <%= submit_tag 'save' %>
+      <%= end_form_tag %>
+    </div>
+  <% end %>
+  
+  
+  <div class="post-tags">
+    tags:
+    <span id="post-tags<%= post.id %>" <% if post.tags.empty? %>style="display:none;"<% end %>>
+      <% for tag in post.tags %>
+        <%= link_to tag.name, :controller => 'tumble', :action => 'tag', :tag => tag.name %>
+      <% end %>
+    </span>
+  </div>
+  
+  <% if session[:user_id] %>
+    <div id="edit-tags<%= post.id %>" style="display:none;">
+      <%= form_remote_tag :update => "post-tags#{post.id}", :url => { :controller => 'admin', 
+                          :action => 'ajax_edit_tag_names' },
+                          :complete => "Element.toggle('edit-tags#{post.id}');
+                          div = document.getElementById('post-tags#{post.id}');
+                          if (div.innerHTML == 'empty-tags') { div.style.display = 'none'; } else { div.style.display = 'visible'; }
+                          " %>
+        <%= hidden_field_tag 'post_id', post.id %>
+        <%= text_field_tag 'post_tag_names', post.tag_names %>
+        <%= submit_tag 'save' %>
+      <%= end_form_tag %>
+    </div>
+  <% end %>
+</div>               
+           

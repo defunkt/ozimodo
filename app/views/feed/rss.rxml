@@ -1,0 +1,26 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+
+xml.rss "version"=>"2.0", "xmlns:dc"=>"http://purl.org/dc/elements/1.1/" do
+  xml.channel do
+    xml.title TUMBLE['name']
+    xml.link TUMBLE['url']
+    xml.language "en-us"
+    xml.ttl "40"
+    xml.description TUMBLE['name']
+
+    for entry in @posts
+      xml.item do
+        xml.title strip_textile(entry.title)
+        content = feed_content(entry.content,entry.post_type)
+        xml.description content[0,500]
+        xml.pubDate entry.created_at.strftime "%a, %e %b %Y %H:%M:%S %Z"
+        link = TUMBLE['url'] + oz_clean_date(entry.created_at) + '#' + entry.id.to_s
+        xml.guid link
+        xml.link link
+        for tag in entry.tags
+          xml.category tag.name
+        end
+      end
+    end
+  end
+end

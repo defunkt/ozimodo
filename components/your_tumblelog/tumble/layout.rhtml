@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>your tumblelog<%= " &raquo; #{params[:tag]}" if params[:tag] %></title>
+  <%= stylesheet_link_tag 'tumble' %>
+  <%= stylesheet_link_tag 'types' %>
+  <%= javascript_include_tag 'prototype' if session[:user_id] %>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="alternate" type="application/atom+xml" title="Atom feed" href="<%= url_for(:controller => 'feed', :action => 'atom.xml') %>"/>
+  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="<%= url_for(:controller => 'feed', :action => 'rss.xml') %>"/>
+</head>
+<body>
+<div id="main">
+  <div id="header">
+    <span class="admin">
+      <a href="/admin">admin</a>
+    </span>
+    <span class="logo"><a href="/" class="logo">your tumblelog</a></span>
+    <span class="ready-set"><span style="color:red;">&raquo;</span> ready, set, <%= oz_current_tag('tumble') %></span>
+  </div>
+  
+  <div id="tags">
+    tags: <%= oz_all_tags %>
+  </div>
+  
+  <div id="content">
+    <%= @content_for_layout %> 
+  </div>
+  
+  <div class="gem_test">
+    <!-- get rid of this -->
+    RubyGems: <%= require_test('rubygems') %> | 
+    RedCloth: <%= require_test('RedCloth', true) %> | 
+    Syntax: <%= require_test('syntax', true) %>
+  </div>
+  
+  <div id="footer">
+    <div class="powered-by">
+      <span class="bracket">{</span>
+      <a href="http://ozimodo.rubyforge.org">powered by ozimodo</a>
+      <span class="bracket">}</span>
+    </div>
+    <span class="feeds">
+      feeds: 
+      <a href="/feed/rss.xml">rss</a>, 
+      <a href="/feed/atom.xml">atom</a>
+    </span>
+  </div>
+</div>
+</body>
+</html>
