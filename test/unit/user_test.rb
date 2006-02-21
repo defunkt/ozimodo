@@ -16,11 +16,11 @@ class UserTest < Test::Unit::TestCase
     @admin.password = 'raptor'
   end
   
-  def test_email_saves
-    user = User.new(@admin)
-    user.save
-    assert_equal @admin.email, user.email
-  end
+#   def test_email_saves
+#     user = User.new(@admin)
+#     user.save
+#     assert_equal @admin.email, user.email
+#   end
 
   def test_good_login
     user = User.new( :name => @admin.name, :password => @admin.password )

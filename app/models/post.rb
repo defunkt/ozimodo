@@ -29,7 +29,7 @@ class Post < ActiveRecord::Base
   
   # get posts with more than one tag.
   # accepts an array or space separated string of tag names
-  def self.find_by_tags(tags)
+  def self.find_by_tags(tags)    
     # if it's a space separated string, break it up
     tags = tags.is_a?(String) ? tags.split : tags
     

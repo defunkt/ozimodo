@@ -115,8 +115,7 @@ class AdminController < ApplicationController
     :title => 'render_text post.title.blank? ? "empty-title" : post.title', 
     :tag_names => %q[render_text(if post.tag_names.size>0;post.tag_names.split.map { |t| 
                     "<a href=\"#{t}\">#{t}</a>"}.join(' '); else;'empty-tags';end)],
-    :content => %q[render :partial => "tumble/types/"+post.post_type, 
-                          :locals => {:content=>post.content.blank? ? '&nbsp;' : post.content}]
+    :content => %q[render :partial => "post", :locals => {:post=>post}]
   }
   
   # define our methods three

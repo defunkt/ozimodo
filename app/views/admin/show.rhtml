@@ -30,7 +30,5 @@
 </table>
 
 <div class="show-post">
-  <% partial = "#{RAILS_ROOT}/components/your_tumblelog/tumble/types/_#{@post.post_type}.rhtml" -%>
-  <% partial = "#{RAILS_ROOT}/components/your_tumblelog/tumble/types/_post.rhtml" unless File.exists?(partial) %>
-  <%= render_file partial, false, { :content => @post.content } %>
+  <%= render :partial => 'post', :locals => { :post => @post } %>
 </div>

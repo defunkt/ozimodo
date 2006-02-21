@@ -1,7 +1,6 @@
 class GetYourTumbleOn < ActiveRecord::Migration
   def self.up
     create_table :posts do |t|
-      t.column :id,         :int,      :null => false
       t.column :user_id,    :int
       t.column :title,      :string, :limit => 100
       t.column :post_type,  :string, :limit => 15
@@ -10,21 +9,19 @@ class GetYourTumbleOn < ActiveRecord::Migration
     end
     add_index :posts, :id, :unique
     
-    create_table :posts_tags do |t|
+    create_table(:posts_tags, :id => false) do |t|
       t.column :post_id, :int
       t.column :tag_id,  :int
     end
     add_index :posts_tags, [:post_id, :tag_id]
     
     create_table :tags do |t|
-      t.column :id,         :int,     :null => false
       t.column :name,       :string,  :limit => 25
       t.column :updated_at, :datetime
     end
     add_index :tags, :id, :unique
     
     create_table :users do |t|
-      t.column :id,              :int,    :null => false
       t.column :name,            :string, :limit => 20
       t.column :hashed_password, :string, :limit => 40
     end
