@@ -14,6 +14,9 @@ a:hover {
   text-decoration: none;
 }
 
+p {
+  margin: 0;
+}
 
 /* Main */
 #main {
@@ -83,6 +86,13 @@ div.post {
   margin-bottom: 30px;
 }
 
+div.post-title {
+  margin-bottom: 5px;
+}
+
+div.post-body {
+  margin-bottom: 5px;
+}
 
 /* Footer */
 #footer {
