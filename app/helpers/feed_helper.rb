@@ -2,7 +2,7 @@ module FeedHelper
   # if there is no title, serve the content if we can
   def serve_title(title, content)
     return strip_textile(title) unless title.empty?
-    content
+    strip_textile(content)
   end
 
   # customized for special types.  needs some work.
