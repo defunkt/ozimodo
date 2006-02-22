@@ -23,6 +23,16 @@ module TypesHelper
     end
   end
   
+  # RedCloth lite
+  def rl(x)
+    begin
+      require_gem 'RedCloth'
+      RedCloth.new(x, [:lite_mode]).to_html
+    rescue
+      x
+    end
+  end
+  
   # syntax highlight ruby code -- same as redcloth, clean it up
   def rc(x)
     begin

@@ -8,16 +8,16 @@ xml.rss "version"=>"2.0", "xmlns:dc"=>"http://purl.org/dc/elements/1.1/" do
     xml.ttl "40"
     xml.description TUMBLE['name']
 
-    for entry in @posts
+    for post in @posts
       xml.item do
-        xml.title strip_textile(entry.title)
-        content = feed_content(entry.content,entry.post_type)
+        xml.title serve_title(post.title, post.content)
+        content = feed_content(post.content, post.post_type)
         xml.description content[0,500]
-        xml.pubDate entry.created_at.strftime "%a, %e %b %Y %H:%M:%S %Z"
-        link = TUMBLE['url'] + oz_clean_date(entry.created_at) + '#' + entry.id.to_s
+        xml.pubDate post.created_at.strftime "%a, %e %b %Y %H:%M:%S %Z"
+        link = TUMBLE['url'] + oz_clean_date(post.created_at) + '#' + post.id.to_s
         xml.guid link
         xml.link link
-        for tag in entry.tags
+        for tag in post.tags
           xml.category tag.name
         end
       end

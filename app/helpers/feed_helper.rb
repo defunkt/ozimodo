@@ -1,4 +1,10 @@
 module FeedHelper
+  # if there is no title, serve the content if we can
+  def serve_title(title, content)
+    return strip_textile(title) unless title.empty?
+    content
+  end
+
   # customized for special types.  needs some work.
   def feed_content(content, type)
     if type == 'image'
@@ -6,7 +12,7 @@ module FeedHelper
     elsif type =~ /code/
       content
     else
-      r content
+      rl(content)
     end
   end
   
