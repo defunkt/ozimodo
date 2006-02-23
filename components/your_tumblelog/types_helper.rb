@@ -2,10 +2,6 @@
 # where all the helper functions related to your tumble types go.
 # 
 module TypesHelper
-  # for the quote type. redcloth adds p tags, we strip them.
-  def q(x, div_class = 'type-quote-quotation')
-    r("<sub><span class=\"#{div_class}\">&ldquo;</span></sub>" + x).gsub(/<(\/)?p>/,'')
-  end
   
   # for titles -- protect irc channel names, specifically
   def t(x)
