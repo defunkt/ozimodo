@@ -20,7 +20,7 @@ xml.feed "version" => "0.3", "xml:lang"=>"en-US", "xmlns"=>"http://purl.org/atom
       xml.modified post.created_at.xmlschema
       xml.title serve_title(post.title, post.content)
   
-      xml.link "rel" => "alternate", "type" => "text/html", "href" => TUMBLE['url'] + oz_clean_date(post.created_at) + '#' + post.id.to_s
+      xml.link "rel" => "alternate", "type" => "text/html", "href" => TUMBLE['url'] + oz_clean_date(post.created_at) + '/#' + post.id.to_s
       for tag in post.tags
         xml.dc :subject, tag.name
       end
