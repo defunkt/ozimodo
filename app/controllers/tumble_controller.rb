@@ -18,6 +18,8 @@ class TumbleController < ApplicationController
   # do nothing if this info is already cached
   # behavior is configured in config/tumble.yml
   def list
+    # get the status of the cache so we know whether we should do db queries
+    cache_status = check_cache('list_posts')
     # how many posts/days to show?
     limit = TUMBLE['limit']
     if TUMBLE['show'] == 'by date'
@@ -27,9 +29,9 @@ class TumbleController < ApplicationController
     else
       # show by post -- find last limit posts
       params = { :limit => limit }
-    end
+    end unless cache_status == true # don't hit the db or do any figurin' if it's cached
     # don't grab anything if cached
-    posts = Post.find(:all, params.merge(:order => 'created_at DESC')) unless check_cache('list_posts') == true
+    posts = Post.find(:all, params.merge(:order => 'created_at DESC')) unless cache_status == true # same here.
     render_component_list(posts)
   end
   
