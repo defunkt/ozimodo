@@ -7,7 +7,7 @@ class TumbleController < ApplicationController
     begin
       # try and find posts for this day in history - tag on a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                         :order => 'created_at DESC') unless check_cache("show_for_date_#{datestring}") == true
+                         :order => 'created_at DESC') unless check_cache("#{datestring}") == true
       render_component_list( {:posts => posts}.merge(@params) )
     rescue ActiveRecord::RecordNotFound
       error "No posts found for that date."
@@ -21,8 +21,8 @@ class TumbleController < ApplicationController
     # how many posts/days to show?
     limit = TUMBLE['limit']
     if TUMBLE['show'] == 'by date'
-      # show by day -- find posts within limit days ago
-      start = Date.today - (limit-1)
+      # show by day -- find posts within limit days ago from most recent post
+      start = Post.find(:first, :order => 'created_at DESC').created_at - (limit-1)
       params = { :conditions => ["created_at >= ?", start.strftime("%Y-%m-%d 00:00:00")] }
     else
       # show by post -- find last limit posts
