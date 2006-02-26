@@ -1,4 +1,33 @@
-<% @page_name = "#{controller.action_name} post" -%>
+<% @page_name = 'tumble' -%>
+
+<script type="text/javascript">
+  // swap content textboxes on change of the dropdown
+  function changeType() {
+    // all the special tbodys
+    var tbodies = Array(<%= YAML_TYPES.keys.map {|k| "'#{k}'" }.join(',') -%>);
+    
+    // find out the value of the new selected post type
+    var select = document.getElementById('post_post_type');
+    var current = select.options[select.selectedIndex].text;
+
+    // get the content row
+    content_row = document.getElementById('post_content_row');
+    
+    // hide all the special fields and the content tr
+    for (i=0; i < tbodies.length; i++) {
+      document.getElementById(tbodies[i]).style.display = 'none';
+    }    
+    content_row.style.display = 'none';
+
+    // show the content tr or the special fields, if they exist
+    if (tbody = document.getElementById(current)) {
+      tbody.style.display = '';
+    } else {
+      content_row.style.display = '';
+    }
+
+  }
+</script>
 
 <%= form_tag %>
 <table>
@@ -10,7 +39,7 @@
     <th>Post Type:</th>
     <td>
       <% if controller.action_name = :new %>
-        <select id="post_post_type" name="post[post_type]">
+        <select id="post_post_type" name="post[post_type]" onChange="javascript:changeType();">
           <%= options_for_select( TYPES, @post.post_type ? @post.post_type : ( TYPES.include?('post') ? 'post' : '') ) %>
         </select>
       <% else %>
@@ -23,13 +52,28 @@
     <th>Tags:</th>
     <td><%= text_field_tag 'tags', @tags, :size => 40 %></td>
   </tr>
-    
-  <tr>
+  
+  <% YAML_TYPES.each do |type, fields| -%>
+    <tbody id="<%= type -%>" style="display:none;">
+    <% fields.each do |field| %>
+      <tr id="<%= "#{type}-#{field}" -%>">
+        <th><%= field.capitalize %>:</th>
+        <td><%= text_field_tag "yaml[#{type}][#{field}]", 
+                ( @post.new_record? ? '' : 
+                  ( @post.post_type == type ? @post.content.send(field) : '' )
+                ), 
+                :size => 40 %></td>
+      </tr>  
+    <% end %>
+    </tbody>
+  <% end -%>  
+  
+  <tr id="post_content_row">
     <th>Content:</th>
-<!--   <small>[you can use <a href="http://hobix.com/textile/quick.html" target="_blank">textile markup</a> in the post]</small><br/> -->
-    <td><%= text_area 'post', 'content', :cols => 38, :rows => 15 %></td>
+    <td><%= text_area 'post', 'content', :cols => 38, :rows => 10 %></td>
   </tr>
-    
+
+  
   <tr>
     <th>Created at:</th>
     <td><%= datetime_select 'post', 'created_at' %></td>

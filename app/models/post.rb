@@ -4,7 +4,45 @@ class Post < ActiveRecord::Base
   has_and_belongs_to_many :tags
   belongs_to :user
   
-  # Returns a space separated string of all this post's tags
+  # call yamlize_content after we load each record, to translate its content
+  # from yaml to a hash (if necessary)
+  def after_find() yaml_content_to_hash! end
+  
+  # yamlize in place
+  def yaml_content_to_hash!
+    self.content = yaml_content_to_hash
+  end
+  
+  # if the post_type of this post says our content is going to be YAML,
+  # turn it into a hash.  otherwise just return the content.
+  def yaml_content_to_hash
+    return self.content unless YAML_TYPES.is_a?(Hash) and YAML_TYPES[self.post_type]
+    # turn the content (yaml) into a hash
+    new_content = YAML.load(self.content) unless self.content.blank?
+    new_content = {} if self.content.blank?
+    # meta mumbo jumbo to turn content.key into content['key']
+    class <<new_content 
+      def method_missing(key, *args)
+        return nil if !self[key] and !self[key.to_s]
+        self[key] or self[key.to_s]
+      end
+    end
+    # commit
+    new_content
+  end
+  
+  # yamlize content in place
+  def content_to_yaml!
+    self.content = content_to_yaml
+  end
+  
+  # return yaml if the content needs to be yaml, otherwise return the content
+  def content_to_yaml
+    return self.content.to_yaml if YAML_TYPES[self.post_type]
+    self.content
+  end
+  
+  # returns a space separated string of all this post's tags
   def tag_names
     self.tags.map { |t| t.name }.join ' '
   end

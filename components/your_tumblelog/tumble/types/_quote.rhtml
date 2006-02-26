@@ -1,6 +1,8 @@
+<%# fields: quote author %>
+
 <div class="type-quote">
   <table><tr>
   <td valign="top"><sub><span class="type-quote-quotation">&ldquo;</span></sub></td>
-  <td><%=rl content %></td
+  <td><%=rl content.quote %> -- <em><%= content.author %></em></td>
   </tr></table>
 </div>

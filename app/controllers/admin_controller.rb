@@ -58,6 +58,11 @@ class AdminController < ApplicationController
       # reset all the tag names attached to those submitted
       post.tag_names = params[:tags]
       
+      # if this is a yaml post type, grab the params we need, yamlize them, 
+      # then set them as the content
+      type = params[:post][:post_type]
+      post.content = params[:yaml][type].to_yaml if YAML_TYPES[type]
+      
       # save the post - if it fails, send the user back from whence she came
       if post.save
         flash[:notice] = 'Post was successfully saved.'
@@ -115,7 +120,7 @@ class AdminController < ApplicationController
     :title => 'render_text post.title.blank? ? "empty-title" : post.title', 
     :tag_names => %q[render_text(if post.tag_names.size>0;post.tag_names.split.map { |t| 
                     "<a href=\"#{t}\">#{t}</a>"}.join(' '); else;'empty-tags';end)],
-    :content => %q[render :partial => "post", :locals => {:post=>post}]
+    :content => %q[post.yaml_content_to_hash!; render :partial => "post", :locals => {:post=>post}]
   }
   
   # define our methods three

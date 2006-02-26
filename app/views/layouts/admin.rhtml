@@ -6,8 +6,8 @@
   <%= stylesheet_link_tag 'types' %>
   <%= javascript_include_tag 'prototype' %>
 </head>
-<body>
-  
+<body<% if params[:action] == 'edit' -%> onload="javascript:changeType();"<% end -%>>
+
 <div id="main" align="center">
   <div id="header">
     <table><tr>
@@ -25,11 +25,11 @@
     <%= link_to 'password', :action => :password %> |
     <%= link_to 'kill cache', :action => :kill_cache %> | 
     <%= link_to 'tumblelog', "/" %> |
-    <% if session[:user_id] %>
+    <% if session[:user_id] -%>
       <%= link_to 'logout', :action => :logout %>
-    <% else %>
+    <% else -%>
       <%= link_to 'login', :action => :login %>
-    <% end %>
+    <% end -%>
     ]
   </div>
 

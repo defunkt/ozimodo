@@ -53,7 +53,20 @@ end
 # load yaml config file, mostly for rss and api
 TUMBLE = YAML.load( File.open( File.dirname(__FILE__) + '/tumble.yml' ) )
 
-# figure out all of our types based on partials in components/your_tumblelog/tumble/types
-TYPES = Dir[File.dirname(__FILE__) + '/../components/your_tumblelog/tumble/types/*'].map do |f| 
-  File.basename(f).sub(/^_/,'').sub('.rhtml','') 
+# initialize constants
+TYPES = []
+YAML_TYPES = HashWithIndifferentAccess.new
+
+# figure out what type of post types we have by looking in the types directory for partials
+# for each partial, check the first line for fields: 
+# if it exists, arrayize the arguments and add the array to YAML_TYPES[:type]
+Dir[File.dirname(__FILE__) + '/../components/your_tumblelog/tumble/types/*'].each do |f|
+  # get the name of this type
+  type = File.basename(f).sub(/^_/,'').sub('.rhtml','')
+  # add the post type to our TYPES constant
+  TYPES << type
+  # grab the first line to see if the post type needs a YAMLized content variable 
+  first_line = File.readlines(f)[0]  
+  # if the first line contains 'fields:', arrayize the arguments  
+  YAML_TYPES[type] = first_line.gsub(/(<%#|%>|fields:)/, '').split if first_line['fields:']
 end
