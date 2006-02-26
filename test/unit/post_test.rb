@@ -45,4 +45,15 @@ class PostTest < Test::Unit::TestCase
     posts = Post.find_by_tags( tags_string )
     assert_equal @tag_ruby.posts & @tag_rock.posts, posts
   end
+  
+  def test_tag_times_are_updated
+    @post_kids.content = "This is something that is updated!"
+    @post_kids.save
+    time = (Time.now-1..Time.now) # cut ourselves some slack
+    assert_equal @tag_quote.name, @post_kids.tags[0].name
+    assert_equal @tag_dinosaur.name, @post_kids.tags[1].name    
+    assert time === @post_kids.tags[0].updated_at
+    assert time === @post_kids.tags[1].updated_at
+  end
+  
 end

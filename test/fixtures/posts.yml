@@ -19,7 +19,7 @@ post_rubyforge:
   user_id: 1
   title: 
   post_type: link
-  content: 'http://www.rubyforge.org/:"Like Iron Forge, but cooler."'
+  content: '"Like Iron Forge, but cooler.":http://www.rubyforge.org/'
   created_at: 2006-02-16 12:02:00 
   
 post_senses:
