@@ -20,15 +20,15 @@ module TumbleHelper
   
   # the 5 most recent tags
   def oz_recent_tags(separator = ' . ')
-    return_cache(:recent_tags) do
+#     return_cache(:recent_tags) do
       tags = Tag.find(:all, :order => "updated_at DESC", :limit => 5)
       recent = ''
-      tags.each do |t|
+      tags.reverse_each do |t|
         recent << link_to(t.name, :controller => 'tumble', :action => 'tag', 
                                   :tag => t.name) + separator
       end
       recent.chomp(separator)
-    end
+#     end
   end
   
   # display all the tags

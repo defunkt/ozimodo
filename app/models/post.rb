@@ -80,8 +80,14 @@ class Post < ActiveRecord::Base
     end
   end
   
+  # update the updated_at for all the tags we're touching
+  def touch_tags
+    self.tags.each { |t| t.updated_at = Time.now; t.save }
+  end
+  
   # get rid of any tags which are not associated with any posts
   def after_save
+    touch_tags
     Tag.prune_tags
   end
 end
