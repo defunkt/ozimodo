@@ -1,7 +1,184 @@
-Coming soon.  I promise.
+Real README coming soon.  I promise.
 
-For now, you can get an explanation of what the hell's going on
-over at http://ozimodo.rubyforge.org/configure.html
+HOWTO: http://ozimodo.rubyforge.org/configure.html
 
+##
 http://ozimodo.rubyforge.org
 http://rubyforge.org/projects/ozimodo/
+##
+
+This is version 1.1.
+
+For your convenience, I've included a copy of the source text file I use to 
+build http://ozimodo.rubyforge.org/configure.html.  It's RedCloth so it should
+be pretty readable.
+
+
+*Travel Guide:*
+* "How does it work?":#how-it-works
+* "How to change the look and feel":#look-and-feel
+* "Adding custom post types":#custom-post-types
+* "Using the content variable as a hash":#content-as-hash
+* "Helper functions":#helper-functions
+* "Caching":#caching
+
+<a name="how-it-works"></a>
+h1. How does it work?
+
+The basic concept of the ozimodo tumblelog is very similar to a blog.  You 
+"log in":http://localhost:3000/, compose a @post@ (via the 
+"tumble":http://localhost:3000/admin/new link), then save your post.  Your fresh
+post will show up on your tumblelog once saved.
+
+The @title@ and @tags@ fields are both optional 
+(%(aside)what, "tags":http://en.wikipedia.org/wiki/Tags?%).  The @post type@ is
+the way in which your content will be displayed.  Your @content@ will be 
+anything from an image url to a quotation to a rant.  If you have the
+"RedCloth":http://whytheluckystiff.net/ruby/redcloth/ gem installed you can use
+"textile":http://hobix.com/textile/ in your post titles and content.
+
+We are making a bit of an assumption, here: you are familiar with Rails.  If 
+not, there is a wealth of amazing "Rails":http://rubyonrails.org/community
+"documentation":http://api.rubyonrails.org out there.  Not to mention some very
+"poignant":http://poignantguide.net/ruby/ 
+"ruby documentation":http://ruby-doc.org/, as well.  Help yourself.
+
+<a name="look-and-feel"></a>
+h1. That Tumbly Look and Feel
+
+ozimodo separates your tumblelog's rhtml templates and related code from its
+own code through the use of Rails' components. All your blog specific code
+can be found in @components/your_tumblelog/tumble/@.
+
+When you're ready to throw your own HTML at ozimodo, these are the files you 
+will need to edit.  Their purposes are pretty self explanatory.
+
+* components/your_tumblelog/tumble/layout.rhtml
+* components/your_tumblelog/tumble/list.rhtml
+* components/your_tumblelog/tumble/show.rhtml
+* components/your_tumblelog/tumble/error.rhtm
+* public/stylesheets/tumble.css
+
+*components/your_tumblelog/tumble/_post.rhtml*
+
+This is the important one.  Both @show.rhtml@ and @list.rhtml@ call this file
+for each post.  It sets up the basic divs and layout for a post, including
+anchor links, and then calls a @post type@ (%(aside)see below%) partial.
+
+*components/your_tumblelog/tumble/tumble_controller.rb*
+
+If you want to add controller-like code to your tumblelog, this is the place to 
+do it.  It contains three methods: @list@, @show@, and @error@.  They are called
+after the data is assembled (%(aside)like Post.find_all for list%) but before
+the view is invoked.
+
+<a name="custom-post-types"></a>
+h1. Post Types
+
+At the heart of the tumblelog is the dynamic way in which different types of
+information are displayed.  A quote you post may look much different from a 
+link you post.  How do you change the display of existing types and add new 
+ones?
+
+Within your tumblelog's directory structure are three locations which control 
+how posts are displayed:
+
+*components/your_tumblelog/tumble/types/*
+
+In this directory are various 
+"partials":http://wiki.rubyonrails.org/rails/pages/Partials with names like 
+@_quote.rhtml@ or @_ruby_code.rhtml@.  When your tumblelog needs to display the
+content of a post, it checks this directory for @_post_type.rhtml@ and, if it 
+exists, inserts the post's content into the local variable @content@.  It then 
+renders this mini-template.
+
+If a post has a post type for which no corresponding partial exists, your 
+tumblelog will use the @_post.rhtml@ partial as a default.  Don't confuse this 
+file with @components/your_tumblelog/tumble/_post.rhtml@ -- there is a big 
+difference between the two. 
+
+To add new post types, simply add new files to the 
+@components/your_tumblelog/tumble/types/@ directory.  Follow the naming scheme 
+and once the file is created a new post type will become available to you in the 
+@Post Type@ dropdown box when creating a new post.
+
+<a name="content-as-hash"></a>
+*Post Types with @content@ Hashes*
+
+Sometimes just a @content@ variable isn't enough.  A quote, for instance, may
+typically have two separate value: the quote itself and the originator.  What 
+then?
+
+ozimodo, like an olympic gymnast, is flexible enough to handle these situations
+with grace.  Going with the quote example, you would add a line to the top of 
+@components/your_tumblelog/tumble/types/_quote.rhtml@ telling ozi you want the 
+content variable to be a hash instead of a string.  The line might look like
+this:
+
+@<%# fields: quote author %>@
+
+This is an "ERB":http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/ comment; it
+will not be displayed in your rendered HTML and will be ignored by normal Rails
+processing.  It's special to ozimodo, though.  The line means that instead of 
+just @content@ in your @_quote.rhtml@ file you will have available both 
+@content.quote@ and @content.author@. 
+
+Your complete @_quote.rhtml@ file might then look like this:
+
+@<%# fields: quote author %>@
+
+@<blockquote><%= content.quote %></blockquote>@<br/>
+@<% if content.author %>-- <%= content.author %><% end %>@
+
+Note that any changes to a @fields:@ directive requires a restart of your web
+server, _even in development mode_.  
+
+*public/stylesheets/types.css*
+
+Simple enough.  Keep all your type-specific CSS in this file.  The styles 
+contained within will always be available to your post type partials.
+
+*components/your_tumblelog/tumble/types_helper.rb*
+
+If you need to do any complex (%(aside)or not so complex%) logic, or if you plan
+to share a function between more than one partial, place that code in this 
+helper file.  The functions within will always be available to your post type
+partials.  Code for how to display your crazy post types in your Atom and RSS
+feeds also goes here.
+
+<a name="helper-functions"></a>
+h1. oz_help_me_out()
+
+*app/helpers/tumble_helper.rb*
+
+Instead of mucking up your rhtml templates with important decisions and
+cache-related code, we've placed a lot of code into functions contained within 
+this file.  
+
+ozimodo helper functions typically follow a format of @oz_function_name@.  Take 
+a peak in this file to see what they do, if you are so inclined, and feel free 
+to use them over and over again in your templates.  They are important if you 
+wish to use ozimodo's caching facilities.
+
+<a name="caching"></a>
+h1. Cache It Up
+
+ozimodo uses Rails' built in 
+"fragment caching":http://api.rubyonrails.org/classes/ActionController/Caching.html
+to cache any database-dependent HTML rendered. 
+
+You can check out the Rails docs for 
+"fragments":http://api.rubyonrails.org/classes/ActionController/Caching/Fragments.html
+(%(aside)specifically under 'fragment stores'%) to see your options.  A really
+easy one to pull off is disk based caching.  That is, Rails stores the rendered
+HTML in a file and displays the file instead of calling the DB and rendering the
+data each request.
+
+It's simple, really.  Just open up @config/environment.rb@ and uncomment this 
+line:
+
+@config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/cache"@
+
+Now create a @cache@ directory within your app's directory structure and ensure
+it is readable/writable to the application.  Something like @chmod 777 cache@.
+All set.
