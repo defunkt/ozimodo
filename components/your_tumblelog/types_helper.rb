@@ -59,7 +59,7 @@ module TypesHelper
   
   # for the quote type
   def feed_content_quote(content)
-    ret = %[&quo;#{content.quote}&quo;]
+    ret = %[&quot;#{content.quote}&quot;]
     ret += " -- #{content.author}" if content.author
     ret
   end
