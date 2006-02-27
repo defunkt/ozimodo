@@ -68,5 +68,5 @@ Dir[File.dirname(__FILE__) + '/../components/your_tumblelog/tumble/types/*'].eac
   # grab the first line to see if the post type needs a YAMLized content variable 
   first_line = File.readlines(f)[0]  
   # if the first line contains 'fields:', arrayize the arguments  
-  YAML_TYPES[type] = first_line.gsub(/(<%#|%>|fields:)/, '').split if first_line['fields:']
+  YAML_TYPES[type] = first_line.gsub(/(<%#|%>|-%>|fields:)/, '').split if first_line['fields:']
 end

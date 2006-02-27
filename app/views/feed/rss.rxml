@@ -10,9 +10,8 @@ xml.rss "version"=>"2.0", "xmlns:dc"=>"http://purl.org/dc/elements/1.1/" do
 
     for post in @posts
       xml.item do
-        xml.title serve_title(post.title, post.content)
-        content = feed_content(post.content, post.post_type)
-        xml.description content[0,500]
+        xml.title serve_title(post)
+        xml.description serve_content(post)
         xml.pubDate post.created_at.strftime "%a, %e %b %Y %H:%M:%S %Z"
         link = TUMBLE['url'] + oz_clean_date(post.created_at) + '/#' + post.id.to_s
         xml.guid link

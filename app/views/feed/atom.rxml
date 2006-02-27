@@ -18,15 +18,14 @@ xml.feed "version" => "0.3", "xml:lang"=>"en-US", "xmlns"=>"http://purl.org/atom
 
       xml.issued post.created_at.xmlschema
       xml.modified post.created_at.xmlschema
-      xml.title serve_title(post.title, post.content)
+      xml.title serve_title(post)
   
       xml.link "rel" => "alternate", "type" => "text/html", "href" => TUMBLE['url'] + oz_clean_date(post.created_at) + '/#' + post.id.to_s
       for tag in post.tags
         xml.dc :subject, tag.name
       end
 
-      content = feed_content(post.content,post.post_type)
-      xml.content content, "type"=>"text/html", "mode"=>"escaped"
+      xml.content serve_content(post), "type"=>"text/html", "mode"=>"escaped"
 
     end
   end   

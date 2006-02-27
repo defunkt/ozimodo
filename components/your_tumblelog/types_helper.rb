@@ -50,4 +50,33 @@ module TypesHelper
       %[<span style="color: red;">not found</span>]
     end    
   end
+  
+  #
+  # type specific helper functions for atom and rss feeds!
+  #
+  # check app/helpers/feed_helper.rb for more info on these
+  #
+  
+  # for the quote type
+  def feed_content_quote(content)
+    ret = %[&quo;#{content.quote}&quo;]
+    ret += " -- #{content.author}" if content.author
+    ret
+  end
+  
+  # slip an image into a feed
+  def feed_content_image(content)
+    %[<img src="#{content.src}" alt="#{content.alt}">]
+  end
+
+  # just show the code
+  def feed_content_code(content)
+    content
+  end
+  
+  # quote title - same as the content
+  def feed_title_quote(post)
+    feed_content_quote(post.content)
+  end
+  
 end

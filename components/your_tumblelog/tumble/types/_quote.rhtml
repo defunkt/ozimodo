@@ -3,6 +3,7 @@
 <div class="type-quote">
   <table><tr>
   <td valign="top"><sub><span class="type-quote-quotation">&ldquo;</span></sub></td>
-  <td><%=rl content.quote %> -- <em><%= content.author %></em></td>
+  <td><%=rl content.quote %>
+  <% if content.author -%> -- <em><%= content.author -%></em><% end -%></td>
   </tr></table>
 </div>
