@@ -25,7 +25,7 @@ module FeedHelper
   
   # default title handler
   def feed_title(post)
-    return strip_textile(post.title) unless post.title.nil?
+    return strip_textile(post.title) unless post.title.nil? or post.title.blank?
     strip_textile(post.content)    
   end
 
