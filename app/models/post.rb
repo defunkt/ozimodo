@@ -13,13 +13,13 @@ class Post < ActiveRecord::Base
     self.content = yaml_content_to_hash
   end
   
-  # if the post_type of this post says our content is going to be YAML,
-  # turn it into a hash.  otherwise just return the content.
+  # if the post_type of this post says our content is stored as YAML turn it 
+  # into a hash.  otherwise just return the content.
   def yaml_content_to_hash
     return self.content unless YAML_TYPES.is_a?(Hash) and YAML_TYPES[self.post_type]
     # turn the content (yaml) into a hash
-    new_content = YAML.load(self.content) unless self.content.blank?
-    new_content = {} if self.content.blank?
+    new_content   = YAML.load(self.content) unless self.content.blank?
+    new_content ||= {}
     # meta mumbo jumbo to turn content.key into content['key']
     class <<new_content 
       def method_missing(key, *args)
@@ -36,7 +36,8 @@ class Post < ActiveRecord::Base
     self.content = content_to_yaml
   end
   
-  # return yaml if the content needs to be yaml, otherwise return the content
+  # return yaml from hash if the content needs to be yaml, otherwise return the 
+  # content as it stands
   def content_to_yaml
     return self.content.to_yaml if YAML_TYPES[self.post_type]
     self.content

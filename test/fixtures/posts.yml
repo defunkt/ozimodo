@@ -11,7 +11,9 @@ post_spacetime:
   user_id: 1
   title: 
   post_type: quote
-  content: "Space and time are your first and second mistakes."
+  content: 
+    quote: "Space and time are your first and second mistakes."
+    author: Harry Lance
   created_at: 2006-02-15 21:13:00 
   
 post_rubyforge:

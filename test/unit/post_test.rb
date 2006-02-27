@@ -56,4 +56,16 @@ class PostTest < Test::Unit::TestCase
     assert time === @post_kids.tags[1].updated_at
   end
   
+  def test_yaml_content_to_hash_on_find
+    post = Post.find(@post_spacetime.id)
+    assert_equal @post_spacetime.content, post.content
+  end
+  
+  def test_content_hash_to_yaml
+    post = Post.find(@post_spacetime.id)
+    post.content_to_yaml!
+    assert_equal @post_spacetime.content.to_yaml, post.content
+  end
+  
+  
 end
