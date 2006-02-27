@@ -3,12 +3,15 @@ class TumbleController < ApplicationController
   # show all the posts for a specific date
   def show_for_date
     # build a date string
-    datestring = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
+    datestring   = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
+    cache_status = check_cache("show_date_#{datestring}")
     begin
-      # try and find posts for this day in history - tag on a wildcard
+      # try and find posts for this day in history - add a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                         :order => 'created_at DESC') unless check_cache("#{datestring}") == true
-      render_component_list( {:posts => posts}.merge(@params) )
+                        :order => 'created_at DESC') unless cache_status == true
+      params = @params
+      params.merge!(:posts => posts) unless cache_status == true
+      render_tumblelog_component(:list, params)
     rescue ActiveRecord::RecordNotFound
       error "No posts found for that date."
     end
@@ -93,7 +96,7 @@ class TumbleController < ApplicationController
     params ||= Hash.new
     params.merge( :id => @params[:id] )
     render_component  :controller => 'your_tumblelog/tumble',
-                      :action => action, :params => params
+                      :action => action.to_s, :params => params
   end
   
 end

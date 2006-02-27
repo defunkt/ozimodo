@@ -14,7 +14,7 @@ class CacheSweeper < ActionController::Caching::Sweeper
       
       # clear out the cache for that post's day
       date = record.created_at
-      date_id = sprintf("%d-%02d-%02d", date.year, date.month, date.day )
+      date_id = sprintf("show_date_%d-%02d-%02d", date.year, date.month, date.day )
       expire_fragment :controller => '/tumble', :action => 'cache', :id => date_id
       
       # expire the cache for this posts page
@@ -31,6 +31,7 @@ class CacheSweeper < ActionController::Caching::Sweeper
         expire_page :controller => "/feed", :action => "atom.xml"
         expire_fragment :controller => '/tumble', :action => 'cache', :id => :recent_tags
         expire_fragment :controller => '/tumble', :action => 'cache', :id => :list_posts
+        expire_fragment /show_date/
       end
     end
   end

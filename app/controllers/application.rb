@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     id = id.to_sym unless id.to_i > 0
     
     # now that we have a good id, see if we already did this check recently
-    # by looking for the existance of @cache[id]
+    # by looking for the existence of @cache[id]
     return @cache[id] if @cache[id]
     
     # figure out the unique cache identifier for this tasty nugget
@@ -49,6 +49,9 @@ class ApplicationController < ActionController::Base
     # execute and return the block if caching is off or the user is logged in.
     # we don't show cached info to the administrator.  she can always log out.
     return(yield block) if perform_caching == false or session[:user_id]
+    
+    # id's must be symbols or ints
+    id = id.to_sym unless id.to_i > 0
     
     # check to see if the cached item already exists.  if it doesn't, set it.
     if check_cache(id, tags) == false

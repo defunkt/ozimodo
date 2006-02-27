@@ -20,7 +20,7 @@ module TumbleHelper
   
   # the 5 most recent tags
   def oz_recent_tags(separator = ' . ')
-#     return_cache(:recent_tags) do
+    return_cache(:recent_tags) do
       tags = Tag.find(:all, :order => "updated_at DESC", :limit => 5)
       recent = ''
       tags.reverse_each do |t|
@@ -28,7 +28,7 @@ module TumbleHelper
                                   :tag => t.name) + separator
       end
       recent.chomp(separator)
-#     end
+    end
   end
   
   # display all the tags
@@ -69,8 +69,8 @@ module TumbleHelper
       tags = @params[:tag].split(' ')
       return_cache(:list_tags, tags) { list_block.call }
     elsif @params[:year] and @params[:month] and @params[:day]
-      datestring = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
-      return_cache(datestring) { list_block.call }
+      datestring = "#{@params[:year]}-#{@params[:month]}-#{@params[:day]}"
+      return_cache("show_date_#{datestring}") { list_block.call }
     else
       return_cache(:list_posts) { list_block.call } 
     end
@@ -109,7 +109,7 @@ module TumbleHelper
       link = '/' if link.size == 1
       %[<a href="#{link}" class="remove-tag">-</a>]
     elsif @params[:tag]
-      "<a href=\"#{@params[:tag].gsub(' ','+')}+#{tag}\" class=\"add-tag\">+</a>"
+      %[<a href="#{@params[:tag].gsub(' ','+')}+#{tag}" class="add-tag">+</a>]
     else
       ""
     end
