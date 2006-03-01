@@ -95,7 +95,7 @@ class TumbleController < ApplicationController
   def render_tumblelog_component(action, params)
     params ||= Hash.new
     params.merge( :id => @params[:id] )
-    render_component  :controller => 'your_tumblelog/tumble',
+    render_component  :controller => "#{TUMBLE['component']}/tumble",
                       :action => action.to_s, :params => params
   end
   

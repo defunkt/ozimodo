@@ -10,6 +10,9 @@ show: by date
 
 # now, how many to show?
 # if you picked 'by date' this is how many days to show -- note that today
-#  counts as a day.
+# counts as a day.
 # if 'by post', then how many posts
 limit: 7
+
+# under components/, what is your tumblelog's directory?
+component: your_tumblelog

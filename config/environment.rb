@@ -60,7 +60,7 @@ YAML_TYPES = HashWithIndifferentAccess.new
 # figure out what type of post types we have by looking in the types directory for partials
 # for each partial, check the first line for fields: 
 # if it exists, arrayize the arguments and add the array to YAML_TYPES[:type]
-Dir[File.dirname(__FILE__) + '/../components/your_tumblelog/tumble/types/*'].each do |f|
+Dir[File.dirname(__FILE__) + '/../components/' + TUMBLE['component'] + '/tumble/types/*'].each do |f|
   # get the name of this type
   type = File.basename(f).sub(/^_/,'').sub('.rhtml','')
   # add the post type to our TYPES constant

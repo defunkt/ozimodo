@@ -3,10 +3,10 @@ module TumbleHelper
   # default partial.  re-raise any actionview errors we're not interested in.
   def oz_render_post_type(post)
     begin
-      render :partial => "your_tumblelog/tumble/types/" + post.post_type, :locals => { :content => post.content }
+      render :partial => "#{TUMBLE['component']}/tumble/types/" + post.post_type, :locals => { :content => post.content }
     rescue ActionView::ActionViewError => e
       if e.to_s =~ /No rhtml/
-        render :partial => "your_tumblelog/tumble/types/post", :locals => { :content => post.content }
+        render :partial => "#{TUMBLE['component']}/tumble/types/post", :locals => { :content => post.content }
       else
         raise e
       end
