@@ -4,6 +4,6 @@
   <table><tr>
   <td valign="top"><sub><span class="type-quote-quotation">&ldquo;</span></sub></td>
   <td><%=rl content.quote %>
-  <% unless content.author.empty? -%> -- <em><%=rl content.author -%></em><% end -%></td>
+  <% unless content.author.blank? -%> -- <em><%=rl content.author -%></em><% end -%></td>
   </tr></table>
 </div>
