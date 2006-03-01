@@ -2,8 +2,8 @@ class GetYourTumbleOn < ActiveRecord::Migration
   def self.up
     create_table :posts do |t|
       t.column :user_id,    :int
-      t.column :title,      :string, :limit => 100
-      t.column :post_type,  :string, :limit => 15
+      t.column :title,      :string
+      t.column :post_type,  :string
       t.column :content,    :text
       t.column :created_at, :datetime
     end
