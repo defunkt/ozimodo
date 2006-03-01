@@ -1,0 +1,4 @@
+1.1.1:
+  - Adding a 'component' field to tumble.yml to let you specify which 
+    component directory houses your tumblelog.
+  - Fixed bug in default quote type rendering.
