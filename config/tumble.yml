@@ -6,7 +6,7 @@ name: your tumblelog
 
 # how do you want your posts displayed on the main page?
 # options are 'by date' or 'by post'
-show: by date
+sort: date
 
 # now, how many to show?
 # if you picked 'by date' this is how many days to show -- note that today

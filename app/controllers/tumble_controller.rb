@@ -25,7 +25,7 @@ class TumbleController < ApplicationController
     cache_status = check_cache('list_posts')
     # how many posts/days to show?
     limit = TUMBLE['limit']
-    if TUMBLE['show'] == 'by date'
+    if TUMBLE['sort'] == 'date'
       # show by day -- find posts within limit days ago from most recent post
       start = Post.find(:first, :order => 'created_at DESC').created_at - (limit-1)
       params = { :conditions => ["created_at >= ?", start.strftime("%Y-%m-%d 00:00:00")] }
