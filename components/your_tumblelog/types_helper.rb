@@ -61,12 +61,17 @@ module TypesHelper
   def feed_content_quote(content)
     ret = %[&quot;#{content.quote}&quot;]
     ret += " -- #{content.author}" if content.author
-    ret
+    strip_textile ret
   end
   
   # slip an image into a feed
   def feed_content_image(content)
     %[<img src="#{content.src}" alt="#{content.alt}">]
+  end
+  
+  # use the alt if we provided no title
+  def feed_title_image(post)
+    post.title.blank? ? post.content.alt : post.title
   end
 
   # just show the code

@@ -16,17 +16,20 @@ module FeedHelper
   # otherwise use feed_title
   def serve_title(post)
     method = "feed_title_#{post.post_type}".to_sym
-    if self.respond_to? method
-      self.send(method, post)
-    else
-      feed_title(post)
-    end    
+    title = strip_textile(
+      if self.respond_to? method
+        self.send(method, post)
+      else
+        feed_title(post)
+      end
+    )
+    title.size > 100 ? "#{title[0..100]}..." : title
   end
   
   # default title handler
   def feed_title(post)
-    return strip_textile(post.title) unless post.title.nil? or post.title.blank?
-    strip_textile(post.content)    
+    return post.title unless post.title.nil? or post.title.blank?
+    post.content
   end
 
   # our default - run this content through redcloth lite
@@ -36,6 +39,8 @@ module FeedHelper
   
   # for feed titles, mostly.  strip out the textile markup.
   def strip_textile(x)
-    x.gsub(/<.*?>/,'').gsub(/\"(.*?)\":http:\/\/([^ ]*)( )?/,'\1 ')
+    x = x.gsub(/<.+?>/,'')
+    x = x.gsub(/\"(.*?)\":http:\/\/([^ ]*)( )?/,'\1 ') unless x.blank?
+    x
   end
 end
