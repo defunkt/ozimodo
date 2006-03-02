@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <title>your tumblelog<%= " &raquo; #{params[:tag]}" if params[:tag] %></title>
-  <%= stylesheet_link_tag 'tumble' %>
-  <%= stylesheet_link_tag 'types' %>
+  <link href="<%= url_for(:controller => 'styles', :action => 'tumble.css') %>" media="screen" rel="Stylesheet" type="text/css" />  
+  <link href="<%= url_for(:controller => 'styles', :action => 'types.css') %>" media="screen" rel="Stylesheet" type="text/css" />    
   <%= javascript_include_tag 'prototype' if session[:user_id] %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="alternate" type="application/atom+xml" title="Atom feed" href="<%= url_for(:controller => 'feed', :action => 'atom.xml') %>"/>

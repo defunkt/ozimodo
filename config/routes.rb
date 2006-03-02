@@ -6,7 +6,9 @@ ActionController::Routing::Routes.draw do |map|
   # pretty-fy the feed urls
   map.connect 'feed/atom.xml', :controller => 'feed', :action => 'atom'
   map.connect 'feed/rss.xml', :controller => 'feed', :action => 'rss'
-  
+
+  # component styles
+  map.connect 'styles/:style', :controller => 'tumble', :action => 'styles'  
   # our admin stuffs
   map.connect 'admin', :controller => 'admin', :action => 'list'
   map.connect 'admin/:action', :controller => 'admin', :action => :action
