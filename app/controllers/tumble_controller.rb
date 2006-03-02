@@ -3,7 +3,7 @@ class TumbleController < ApplicationController
   # show all the posts for a specific date
   def show_for_date
     # build a date string
-    datestring   = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
+    datestring = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
     cached = is_cached? "show_date_#{datestring}"
     begin
       # try and find posts for this day in history - add a wildcard
@@ -23,16 +23,20 @@ class TumbleController < ApplicationController
   def list
     # get the status of the cache so we know whether we should do db queries
     cached = is_cached? 'list_posts'
+    
     # how many posts/days to show?
     limit = TUMBLE['limit']
+    
     if TUMBLE['sort'] == 'date'
       # show by day -- find posts within limit days ago from most recent post
-      start = Post.find(:first, :order => 'created_at DESC').created_at - (limit-1)
+      start = Post.find(:first, :order => 'created_at DESC').created_at - (60*60*24 * limit-1)
       params = { :conditions => ["created_at >= ?", start.strftime("%Y-%m-%d 00:00:00")] }
+      
     else
       # show by post -- find last limit posts
       params = { :limit => limit }
     end unless cached # don't hit the db or do any figurin' if it's cached
+    
     posts = Post.find(:all, params.merge(:order => 'created_at DESC')) unless cached # same here.
     render_component_list(posts)
   end
@@ -40,6 +44,7 @@ class TumbleController < ApplicationController
   # display all the posts associated with a tag
   def tag
     tags = params[:tag].split(' ')
+    
     # if more than one tag is specified, get the posts containing all the
     # passed tags.  otherwise get all the posts with just the one tag.
     # don't do any processing if this information is already cached.
@@ -49,7 +54,9 @@ class TumbleController < ApplicationController
       else
         posts = Tag.find_by_name(tags).posts
       end unless is_cached? :list_tags, tags # gates of madness.
+      
       render_component_list( :posts => posts, :tag => params[:tag] )
+      
     rescue NoMethodError
       error "Tag not found."
     end
