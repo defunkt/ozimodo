@@ -3,7 +3,7 @@
 <head>
   <title>ozimodo::<%= @page_name %></title>
   <%= stylesheet_link_tag 'admin' %>
-  <%= stylesheet_link_tag 'types' %>
+  <%= stylesheet_link_tag '/styles/types' %>
   <%= javascript_include_tag 'prototype' %>
 </head>
 <body<% if params[:action] == 'edit' -%> onload="javascript:changeType();"<% end -%>>
