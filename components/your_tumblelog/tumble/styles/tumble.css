@@ -1,0 +1,110 @@
+/* Globals */
+body {
+  font-size: 12px;
+  font-family: verdana, sans-serif;
+}
+
+a:link, a:visited {
+  color: black;
+}
+
+a:hover {
+  color: white;
+  background: black;
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
+}
+
+/* Main */
+#main {
+  margin-left: 20%;
+  margin-right: 20%;
+  background: #fff;
+}
+
+
+/* Header */
+#header {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+}
+
+#header span.logo {
+  font-size: 2.3em;
+  display: block;
+}
+
+#header a.logo {
+  color: red;
+  text-decoration: none;
+  background: #fff;
+}
+
+#header span.admin {
+  float: right;
+}
+
+#header span.tags {
+  float: right;
+}
+
+
+/* Content */
+#content {
+  padding: 0 10px 0 10px;
+}
+
+#tags {
+  text-align: right;
+  padding-top: 5px;
+  margin-bottom: 5px;
+}
+
+div.post-date { 
+  margin-bottom: 15px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #bbb;
+}
+
+a.post-date {
+  font-size: 1.5em;
+  font-family: helvetica;
+  color: #333;
+  letter-spacing: -1px;
+  text-decoration: none;
+}
+
+a:hover.post-date {
+  background: #eee;
+}
+
+div.post {
+  margin-bottom: 30px;
+}
+
+div.post-title {
+  margin-bottom: 5px;
+}
+
+div.post-body {
+  margin-bottom: 5px;
+}
+
+/* Footer */
+#footer {
+  margin-top: 30px;
+  border-top: 1px solid #ccc;
+  padding-top: 2px;
+}
+
+#footer div.powered-by {
+  float: right;
+}
+
+#footer span.bracket {
+  color: red;
+}
