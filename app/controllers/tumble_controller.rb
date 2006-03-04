@@ -31,7 +31,6 @@ class TumbleController < ApplicationController
       # show by day -- find posts within limit days ago from most recent post
       start = Post.find(:first, :order => 'created_at DESC').created_at - (60*60*24 * limit-1)
       params = { :conditions => ["created_at >= ?", start.strftime("%Y-%m-%d 00:00:00")] }
-      
     else
       # show by post -- find last limit posts
       params = { :limit => limit }
@@ -49,14 +48,8 @@ class TumbleController < ApplicationController
     # passed tags.  otherwise get all the posts with just the one tag.
     # don't do any processing if this information is already cached.
     begin
-      if tags.is_a? Array
-        posts = Post.find_by_tags(tags)
-      else
-        posts = Tag.find_by_name(tags).posts
-      end unless is_cached? :list_tags, tags # gates of madness.
-      
+      posts = tags.is_a?(Array) ? Post.find_by_tags(tags) : Tag.find_by_name(tags).posts unless is_cached? :list_tags, tags      
       render_component_list( :posts => posts, :tag => params[:tag] )
-      
     rescue NoMethodError
       error "Tag not found."
     end
