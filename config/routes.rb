@@ -9,6 +9,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # component styles
   map.connect 'styles/:style', :controller => 'tumble', :action => 'styles'  
+  
+  # pagination
+  map.connect 'page/:page', :controller => 'tumble', :action => 'list'
+  
   # our admin stuffs
   map.connect 'admin', :controller => 'admin', :action => 'list'
   map.connect 'admin/:action', :controller => 'admin', :action => :action
