@@ -1,15 +1,15 @@
-class YourTumblelog::TumbleController < ApplicationController
+class Ozmm::TumbleController < ApplicationController
   uses_component_template_root  # know where our templates are
   helper :tumble, :types
   layout TUMBLE['component'] + "/tumble/layout"
   
   # show a list of posts -- by date, tag, or the main page
   def list
-    @posts = params[:posts]
+    @posts, @post_pages = params[:posts], params[:post_pages]
   end
   
   # show a single post
-  def show
+  def show    
     @post = params[:post]
   end  
 

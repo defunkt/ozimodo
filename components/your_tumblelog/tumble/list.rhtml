@@ -1,1 +1,19 @@
 <%= oz_show_list %>
+
+<% if @post_pages -%>
+  <div id="pagination">
+    <% if @post_pages.current.next -%>
+      <span class="back">
+        <%= link_to "&laquo; Back in time", { :page => @post_pages.current.next } -%>
+      </span>
+    <% end -%>
+    <% if @post_pages.current.next and @post_pages.current.previous -%>
+      <span class="marker"> &there4; </span>
+    <% end -%>
+    <% if @post_pages.current.next -%>        
+      <span class="next">
+        <%= link_to "To the future! &raquo;", { :page => @post_pages.current.previous } -%>
+      </span>
+    <% end -%>
+  </div>
+<% end -%>

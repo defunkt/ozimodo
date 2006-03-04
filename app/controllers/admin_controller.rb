@@ -104,6 +104,7 @@ class AdminController < ApplicationController
   # most of our cache.  
   def kill_cache
     Post.find(:first, :order => "created_at DESC").save
+    expire_fragment /show_date/    
     flash[:notice] = "Cache killed."
     redirect_to request.env['HTTP_REFERER']
   end

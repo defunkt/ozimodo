@@ -1,4 +1,4 @@
-class TumbleController < ApplicationController
+class TumbleController < ApplicationController      
     
   # show all the posts for a specific date
   def show_for_date
@@ -23,22 +23,12 @@ class TumbleController < ApplicationController
   def list
     # get the status of the cache so we know whether we should do db queries
     cached = is_cached? 'list_posts'
-    
-    # how many posts/days to show?
-    limit = TUMBLE['limit']
-    
-    if TUMBLE['sort'] == 'date'
-      # show by day -- find posts within limit days ago from most recent post
-      start = Post.find(:first, :order => 'created_at DESC').created_at - (60*60*24 * limit-1)
-      params = { :conditions => ["created_at >= ?", start.strftime("%Y-%m-%d 00:00:00")] }
-    else
-      # show by post -- find last limit posts
-      params = { :limit => limit }
-    end unless cached # don't hit the db or do any figurin' if it's cached
-    
-    posts = Post.find(:all, params.merge(:order => 'created_at DESC')) unless cached # same here.
-    render_component_list(posts)
+  
+    post_pages, posts = paginate :posts, :order => 'created_at DESC', 
+                                 :per_page => TUMBLE['limit'] unless cached 
+    render_component_list(:posts => posts, :post_pages => post_pages)
   end
+  
   
   # display all the posts associated with a tag
   def tag
@@ -72,7 +62,8 @@ class TumbleController < ApplicationController
   
   # display a stylesheet
   def styles
-    unless File.exists? "#{RAILS_ROOT}/components/#{TUMBLE['component']}/tumble/styles/#{params[:style]}" 
+    style_file = "#{RAILS_ROOT}/components/#{TUMBLE['component']}/tumble/styles/#{params[:style]}" 
+    unless File.exists? style_file
       error 404
     else
       # display

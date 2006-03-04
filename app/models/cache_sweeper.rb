@@ -29,9 +29,8 @@ class CacheSweeper < ActionController::Caching::Sweeper
       if rposts.include?(id)
         expire_page :controller => "/feed", :action => "rss.xml"
         expire_page :controller => "/feed", :action => "atom.xml"
-        expire_fragment :controller => '/tumble', :action => 'cache', :id => :recent_tags
-        expire_fragment :controller => '/tumble', :action => 'cache', :id => :list_posts
-        expire_fragment /show_date/
+        expire_fragment /list_posts/
+        expire_fragment :controller => '/tumble', :action => 'cache', :id => :recent_tags        
       end
     end
   end

@@ -58,11 +58,11 @@ module TumbleHelper
   def oz_show_list
     list_block = lambda do
       output = String.new
-      for post in @posts
+      @posts.each do |post|
         output << render(:partial => 'post', :locals => { :post => post })
       end if @posts
       return output unless output.empty?
-      %[<div id="error-box">I tried to find what you're looking for really hard.
+      %q[<div id="error-box">I tried to find what you're looking for really hard.
       No matches, though.  Sorry.</div>]
     end
     if @params[:tag]
@@ -71,6 +71,9 @@ module TumbleHelper
     elsif @params[:year] and @params[:month] and @params[:day]
       datestring = "#{@params[:year]}-#{@params[:month]}-#{@params[:day]}"
       return_cache("show_date_#{datestring}") { list_block.call }
+    elsif @params[:page]
+      key = %[list_posts_page_#{@params[:page]}].to_sym
+      return_cache(key) { list_block.call } 
     else
       return_cache(:list_posts) { list_block.call } 
     end
