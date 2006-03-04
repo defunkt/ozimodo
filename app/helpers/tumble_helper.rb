@@ -71,7 +71,7 @@ module TumbleHelper
     elsif @params[:year] and @params[:month] and @params[:day]
       datestring = "#{@params[:year]}-#{@params[:month]}-#{@params[:day]}"
       return_cache("show_date_#{datestring}") { list_block.call }
-    elsif @params[:page]
+    elsif @params[:page] and @params[:page] > 1
       key = %[list_posts_page_#{@params[:page]}].to_sym
       return_cache(key) { list_block.call } 
     else
