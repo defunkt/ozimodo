@@ -72,37 +72,12 @@ class TumbleController < ApplicationController
   
   # display a stylesheet
   def styles
-    # get a cache key for this style
-    cache_key = "style/#{params[:style]}"
-    
-    # check to see if the style is already cached
-    # if so, grab it
-    css = get_cache(cache_key) if is_cached? cache_key
-    
-    # now grab the time we cached the file
-    time_cached = get_cache(cache_key + '/stamp')
-    
-    # what is the name of this file?
-    style_file = "#{RAILS_ROOT}/components/#{TUMBLE['component']}/tumble/styles/#{params[:style]}"
-    
-    # if the cache is older than the modified time of the css file, expire it
-    css = nil if time_cached and perform_caching == true and File.new(style_file).mtime > time_cached
-    
-    # if it's not cached and the file exists, grab it and cache it
-    # also timestamp the cache
-    if css.nil? and File.exists? style_file 
-      css = render_to_string :file => style_file 
-      set_cache cache_key, css
-      set_cache cache_key + '/stamp', Time.now
-    end
-    
-    # still no css?  404.
-    unless css
+    unless File.exists? "#{RAILS_ROOT}/components/#{TUMBLE['component']}/tumble/styles/#{params[:style]}" 
       error 404
     else
       # display
       headers['Content-Type'] = 'text/css'
-      render :text => css, :layout => false          
+      render :file => style_file
     end
   end
   
