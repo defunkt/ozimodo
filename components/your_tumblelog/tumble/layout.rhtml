@@ -5,8 +5,8 @@
   <%= stylesheet_link_tag '/styles/tumble', '/styles/types' %>
   <%= javascript_include_tag 'prototype' if session[:user_id] %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="alternate" type="application/atom+xml" title="Atom feed" href="<%= url_for(:controller => 'feed', :action => 'atom.xml') %>"/>
-  <link rel="alternate" type="application/rss+xml" title="RSS feed" href="<%= url_for(:controller => 'feed', :action => 'rss.xml') %>"/>
+  <%= auto_discovery_link_tag :atom, {:controller => 'feed',:action => 'atom.xml'}, :title => 'Atom Feed' %>  
+  <%# auto_discovery_link_tag :rss, {:controller => 'feed',:action => 'rss.xml'}, :title => 'RSS Feed' %>
 </head>
 <body>
 <div id="main">
