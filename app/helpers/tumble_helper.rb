@@ -62,20 +62,29 @@ module TumbleHelper
       %q[<div id="error-box">I tried to find what you're looking for really hard.
       No matches, though.  Sorry.</div>]
     end
-    if @params[:tag]
-      tags = @params[:tag].split(' ')
-      return_cache(:list_tags, tags) { list_block.call }
-    elsif @params[:year] and @params[:month] and @params[:day]
+    if @params[:year] and @params[:month] and @params[:day]
       datestring = "#{@params[:year]}-#{@params[:month]}-#{@params[:day]}"
       return_cache("show_date_#{datestring}") { list_block.call }
     elsif @params[:year] and @params[:month]
       datestring = "#{@params[:year]}-#{@params[:month]}"
       return_cache("show_month_#{datestring}") { list_block.call }      
-    elsif @params[:page] and @params[:page] > 1
-      key = %[list_posts_page_#{@params[:page]}].to_sym
+    elsif @page and @page.to_i > 1
+      key = %[list_posts_page_#{@page}].to_sym
       return_cache(key) { list_block.call } 
+    elsif @params[:tag]
+      tags = @params[:tag].split(' ')
+      return_cache(:list_tags, tags) { list_block.call }      
     else
       return_cache(:list_posts) { list_block.call } 
+    end
+  end
+  
+  # return the pagination links
+  def oz_back_in_time
+    @page = @page.nil? ? 1 : @page
+    key = %[pagination_links_#{@page}].to_sym
+    return_cache(key) do
+      render :partial => 'back_in_time', :locals => { :pagination => @post_pages }
     end
   end
   

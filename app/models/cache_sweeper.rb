@@ -13,6 +13,9 @@ class CacheSweeper < ActionController::Caching::Sweeper
       expire_fragment /list_tags/
       expire_fragment /popular_tags/      
       
+      # pagination
+      expire_fragment /pagination_links/
+      
       # clear out the cache for that post's day
       date = record.created_at
       date_id = sprintf("show_date_%d-%02d-%02d", date.year, date.month, date.day )

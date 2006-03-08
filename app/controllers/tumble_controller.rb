@@ -39,11 +39,16 @@ class TumbleController < ApplicationController
   # behavior is configured in config/tumble.yml
   def list
     # get the status of the cache so we know whether we should do db queries
-    cached = is_cached? 'list_posts'
+    key = if @params[:page] and @params[:page].to_i > 1
+      %[list_posts_page_#{@params[:page]}]
+    else
+      'list_posts'
+    end.to_sym
+    cached = is_cached? key
   
     post_pages, posts = paginate :posts, :order => 'created_at DESC', 
                                  :per_page => TUMBLE['limit'] unless cached 
-    render_component_list(:posts => posts, :post_pages => post_pages)
+    render_component_list(:posts => posts, :post_pages => post_pages, :page => @params[:page])
   end
   
   
