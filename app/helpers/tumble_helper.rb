@@ -110,7 +110,7 @@ module TumbleHelper
   
   # if we're looking at a tag, give the option to add (or remove) another tag
   def tag_link(t)
-    %[<a href="#{t}" class="tag-link">#{t}</a>]
+    %[<a href="/#{t}" class="tag-link">#{t}</a>]
   end
   
   # add a + or - in front of tags if we're looking at a tag's listing
