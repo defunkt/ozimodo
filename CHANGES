@@ -12,3 +12,4 @@
   - Added oz_popular_tags()
   - Cut down length of feed title.
   - Added show by month. (http://site.com/yyyy/mm/)
+  - Pagination on main listing.
