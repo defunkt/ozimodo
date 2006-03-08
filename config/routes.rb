@@ -21,6 +21,10 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':year/:month/:day', :controller => 'tumble', 
     :action => 'show_for_date', :year => /\d{4}/, :month => /\d{1,2}/, 
     :day => /\d{1,2}/
+
+  # show posts by month
+  map.connect ':year/:month', :controller => 'tumble', 
+    :action => 'show_for_month', :year => /\d{4}/, :month => /\d{1,2}/
         
   # default
   map.connect '', :controller => 'tumble', :action => 'list'
