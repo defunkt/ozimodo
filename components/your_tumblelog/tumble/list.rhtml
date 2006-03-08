@@ -10,7 +10,7 @@
     <% if @post_pages.current.next and @post_pages.current.previous -%>
       <span class="marker"> &there4; </span>
     <% end -%>
-    <% if @post_pages.current.next -%>        
+    <% if @post_pages.current.previous -%>        
       <span class="next">
         <%= link_to "To the future! &raquo;", { :page => @post_pages.current.previous } -%>
       </span>
