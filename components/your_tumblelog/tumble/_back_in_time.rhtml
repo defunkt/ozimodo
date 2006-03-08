@@ -1,0 +1,20 @@
+<div id="time-travel">
+  <% if pagination -%>
+    <div id="pagination">
+      <% if pagination.current.next -%>
+        <span class="back">
+          <%= link_to %[<span class="quo">&laquo;</span> Back in time], { :page => pagination.current.next } -%>
+        </span>
+      <% end -%>
+      <% if pagination.current.next and pagination.current.previous -%>
+        <span class="marker"> &there4; </span>
+      <% end -%>
+      <% if pagination.current.previous -%>        
+        <span class="next">
+          <%= link_to %[To the future! <span class="quo">&raquo;</span>], 
+              pagination.current.previous.to_i == 1 ? '/' : { :page => pagination.current.previous } -%>
+        </span>
+      <% end -%>
+    </div>
+  <% end -%>
+</div>
