@@ -5,6 +5,7 @@ class YourTumblelog::TumbleController < ApplicationController
   
   # show a list of posts -- by date, tag, or the main page
   def list
+    @page = params[:page]
     @posts, @post_pages = params[:posts], params[:post_pages]
   end
   
