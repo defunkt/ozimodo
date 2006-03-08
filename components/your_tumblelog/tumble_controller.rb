@@ -1,4 +1,4 @@
-class Ozmm::TumbleController < ApplicationController
+class YourTumblelog::TumbleController < ApplicationController
   uses_component_template_root  # know where our templates are
   helper :tumble, :types
   layout TUMBLE['component'] + "/tumble/layout"
