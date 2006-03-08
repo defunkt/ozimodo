@@ -21,6 +21,7 @@ be pretty readable.
 * "Using the content variable as a hash":#content-as-hash
 * "Helper functions":#helper-functions
 * "Caching":#caching
+* "1.0.x => 1.1 upgrade":#upgrade-1.1
 
 <a name="how-it-works"></a>
 h1. How does it work?
@@ -165,7 +166,9 @@ h1. Cache It Up
 
 ozimodo uses Rails' built in 
 "fragment caching":http://api.rubyonrails.org/classes/ActionController/Caching.html
-to cache any database-dependent HTML rendered. 
+to cache any database-dependent HTML rendered and 
+"page caching":http://api.rubyonrails.com/classes/ActionController/Caching/Pages.html
+to cache your feeds.
 
 You can check out the Rails docs for 
 "fragments":http://api.rubyonrails.org/classes/ActionController/Caching/Fragments.html
@@ -181,4 +184,23 @@ line:
 
 Now create a @cache@ directory within your app's directory structure and ensure
 it is readable/writable to the application.  Something like @chmod 777 cache@.
+
+Your feeds' caches are stored in your webserver document root, ala 
+@public/feeds@.  Your webserver must also have read/write access to this 
+directory for caching to work.
+
 All set.
+
+<a name="upgrade-1.1"></a>
+h1. 1.0.x => 1.1
+
+If you already have a 1.0.x install running, you'll probably want to update
+any @image@ or @quote@ post types in your database to work with the new format.
+Don't worry, it's easy.  Let's say your Rails base directory is @ozimodo@:
+
+@$ cd ozimodo@<br/>
+@$ rake update_quotes_and_images@
+
+This will run through your database (whichever is the default environment, @dev@ 
+or @production@) and convert the @content@ fields of images and quotes posted to
+the new format.
