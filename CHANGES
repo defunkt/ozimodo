@@ -1,9 +1,14 @@
 1.1.1:
-  - Adding a 'component' field to tumble.yml to let you specify which 
+  - Adding a 'component' field to tumble.yml to let you specify which
     component directory houses your tumblelog.
   - Fixed bug in default quote type rendering.
-  - Moved stylesheets into your_tumblelog component (and made them erbish)
-  - Fixed a lot of caching logic, renamed some related methods
-  - Added method_missing to main TumbleController -- send unknown requests
-    down the pipe to allow for easier adding of custom component actions
-  - Added cache directory to help youngin's along
+  - Moved stylesheets into your_tumblelog component (and made them erbish).
+  - Fixed a lot of caching logic, renamed some related methods.
+  - Added method_missing to main TumbleController -- send unknown requests.
+    down the pipe to allow for easier adding of custom component actions.
+  - Added cache directory to help youngin's along.
+  - Got rid of the "date" listing option.  Don't see it as useful.
+  - Refactored some helpers.
+  - Added oz_popular_tags()
+  - Cut down length of feed title.
+  - Added show by month. (http://site.com/yyyy/mm/)
