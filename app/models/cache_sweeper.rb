@@ -11,6 +11,7 @@ class CacheSweeper < ActionController::Caching::Sweeper
       # clear out tag list caches
       expire_fragment /all_tags/
       expire_fragment /list_tags/
+      expire_fragment /popular_tags/      
       
       # clear out the cache for that post's day
       date = record.created_at

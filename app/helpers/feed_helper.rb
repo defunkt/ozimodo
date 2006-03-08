@@ -23,7 +23,7 @@ module FeedHelper
         feed_title(post)
       end
     )
-    title.size > 100 ? "#{title[0..100]}..." : title
+    title.size > 30 ? "#{title[0..30].strip}..." : title
   end
   
   # default title handler

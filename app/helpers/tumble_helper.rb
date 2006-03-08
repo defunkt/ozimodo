@@ -19,15 +19,16 @@ module TumbleHelper
   end
   
   # the 5 most recent tags
-  def oz_recent_tags(separator = ' . ')
+  def oz_recent_tags(sep = ' . ')
     return_cache(:recent_tags) do
-      tags = Tag.find(:all, :order => "updated_at DESC", :limit => 5)
-      recent = ''
-      tags.reverse_each do |t|
-        recent << link_to(t.name, :controller => 'tumble', :action => 'tag', 
-                                  :tag => t.name) + separator
-      end
-      recent.chomp(separator)
+      Tag.find(:all, :order => "updated_at DESC", :limit => 5).map { |t| tag_link(t) }.join(sep)
+    end
+  end
+  
+  # popular tags (by frequency)
+  def oz_popular_tags(sep = ' . ', limit = 5)
+    return_cache(:popular_tags) do
+      Tag.find(:all).sort { |x, y| y.posts.size <=> x.posts.size }[0..5].map { |t| tag_link(t.name) }.join(sep)
     end
   end
   
@@ -35,12 +36,8 @@ module TumbleHelper
   def oz_all_tags
     tags = @params[:tag].split(' ') if @params[:tag]
     return_cache(:all_tags, tags) do
-      tags = Tag.find(:all, :order => 'name ASC')
-      all  = String.new
-      tags.each { |t| all << add_tag_link(t.name) + link_to(t.name, 
-                  :controller => 'tumble', :action => 'tag', :tag => t.name) + ' ' }
-      all
-    end 
+      Tag.find(:all, :order => 'name ASC').map { |t| add_tag_link(t.name) << tag_link(t.name) }.join(' ')
+    end
   end
   
   # the current tag
