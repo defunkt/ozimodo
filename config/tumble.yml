@@ -4,15 +4,8 @@ url: http://ozimodo.rubyforge.org/
 # The name of your tumblelog
 name: your tumblelog
 
-# how do you want your posts displayed on the main page?
-# options are 'by date' or 'by post'
-sort: date
-
-# now, how many to show?
-# if you picked 'by date' this is how many days to show -- note that today
-# counts as a day.
-# if 'by post', then how many posts
-limit: 7
+# how many tumbles to show per page?
+limit: 30 
 
 # under components/, what is your tumblelog's directory?
-component: your_tumblelog
+component: your_tumblelog 
