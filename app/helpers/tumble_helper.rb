@@ -19,16 +19,16 @@ module TumbleHelper
   end
   
   # the 5 most recent tags
-  def oz_recent_tags(sep = ' . ')
+  def oz_recent_tags(sep = ' . ', limit = 5)
     return_cache(:recent_tags) do
-      Tag.find(:all, :order => "updated_at DESC", :limit => 5).map { |t| tag_link(t) }.join(sep)
+      Tag.find(:all, :order => "updated_at DESC", :limit => limit).map { |t| tag_link(t.name) }.join(sep)
     end
   end
   
   # popular tags (by frequency)
   def oz_popular_tags(sep = ' . ', limit = 5)
     return_cache(:popular_tags) do
-      Tag.find(:all).sort { |x, y| y.posts.size <=> x.posts.size }[0..5].map { |t| tag_link(t.name) }.join(sep)
+      Tag.find(:all).sort { |x, y| y.posts.size <=> x.posts.size }[0..limit-1].map { |t| tag_link(t.name) }.join(sep)
     end
   end
   
