@@ -18,6 +18,10 @@ class CacheSweeper < ActionController::Caching::Sweeper
       date_id = sprintf("show_date_%d-%02d-%02d", date.year, date.month, date.day )
       expire_fragment :controller => '/tumble', :action => 'cache', :id => date_id
       
+      # clear out the cache for that post's month
+      date_id = sprintf("show_month_%d-%02d", date.year, date.month )
+      expire_fragment :controller => '/tumble', :action => 'cache', :id => date_id
+      
       # expire the cache for this posts page
       expire_fragment :controller => '/tumble', :action => 'cache', :id => id    
       

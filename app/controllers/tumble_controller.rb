@@ -16,6 +16,23 @@ class TumbleController < ApplicationController
       error "No posts found for that date."
     end
   end
+  
+  # show all the posts for a specific month
+  def show_for_month
+    # build a date string
+    datestring = "#{params[:year]}-#{params[:month]}"
+    cached = is_cached? "show_month_#{datestring}"
+    begin
+      # try and find posts for this day in history - add a wildcard
+      posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
+                        :order => 'created_at DESC') unless cached
+      params = @params
+      params.merge!(:posts => posts) unless cached
+      render_tumblelog_component(:list, params)
+    rescue ActiveRecord::RecordNotFound
+      error "No posts found for that month."
+    end
+  end
 
   # list all the posts for the index page
   # do nothing if this info is already cached
@@ -99,7 +116,7 @@ class TumbleController < ApplicationController
   
   # in case something changes, or we need to spiff up the params
   def render_tumblelog_component(action, params)
-    params ||= Hash.new
+    params ||= {}
     params.merge( :id => @params[:id] )
     render_component  :controller => "#{TUMBLE['component']}/tumble",
                       :action => action.to_s, :params => params
