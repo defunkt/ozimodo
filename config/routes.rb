@@ -1,7 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
-  # Here's a sample route:
+  # The priority is based upon order of creation: first created -> highest priority.
+
+  # Sample of regular route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
+
+  # Sample of named route:
+  # map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
+  # This route can be invoked with purchase_url(:id => product.id)
   
   # pretty-fy the feed urls
   map.connect 'feed/atom.xml', :controller => 'feed', :action => 'atom'
