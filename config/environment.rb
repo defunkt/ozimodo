@@ -11,7 +11,7 @@ Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   
   # Skip frameworks you're not going to use
-  # config.frameworks -= [ :action_web_service, :action_mailer ]
+  config.frameworks -= [ :action_web_service, :action_mailer ]
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
@@ -65,6 +65,6 @@ Dir[File.dirname(__FILE__) + '/../components/' + TUMBLE['component'] + '/tumble/
   TYPES << type
   # grab the first line to see if the post type needs a YAMLized content variable 
   first_line = File.readlines(f)[0]  
-  # if the first line contains 'fields:', arrayize the arguments  
+  # if the first line contains 'fields:', run it through the fields parser  
   YAML_TYPES[type] = first_line.gsub(/(<%#|%>|-%>|fields:)/, '').split if first_line['fields:']
 end
