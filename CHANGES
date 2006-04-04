@@ -1,3 +1,14 @@
+1.1.2:
+  - Made some minor changes to get in line with Rails 1.1
+  - Changed all instances of 'back_in_time' to 'pagination' or 
+    'pagination_links'
+  - Improved "list" admin view by always showing a short desc of the tumble
+  - Relative dates are now handled unobtrusively in javascript to avoid caching 
+    issues
+  - Improved link building in add_tag_link and tag_link
+  - Fixed 'title' field on admin show page to parse textile
+  - Added your_tumble_helper.rb for custom, non-type related helpers
+  
 1.1.1:
   - Adding a 'component' field to tumble.yml to let you specify which
     component directory houses your tumblelog.
