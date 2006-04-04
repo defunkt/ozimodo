@@ -8,6 +8,9 @@
   - Improved link building in add_tag_link and tag_link
   - Fixed 'title' field on admin show page to parse textile
   - Added your_tumble_helper.rb for custom, non-type related helpers
+  - Added migration to remove redundant indices
+  - Locked to Rails 1.1 or earlier with semi-helpful error message.
+  - Removed cache directory in favor of new 1.1 tmp/cache directory.
   
 1.1.1:
   - Adding a 'component' field to tumble.yml to let you specify which
