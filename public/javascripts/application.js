@@ -1,6 +1,10 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+// place your unobtrusive javascript calls in here, to be run on window load
+function tumblelogInit() {
+  relativeDates();
+}
 
 // convert dates to relative onload
 function relativeDates() {
@@ -86,4 +90,4 @@ function addEvent( obj, type, fn ) {
 	}
 }
 
-addEvent(window, 'load', relativeDates);
+addEvent(window, 'load', tumblelogInit);
