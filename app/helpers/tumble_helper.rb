@@ -110,7 +110,7 @@ module TumbleHelper
   
   # if we're looking at a tag, give the option to add (or remove) another tag
   def tag_link(t)
-    %[<a href="/#{t}" class="tag-link">#{t}</a>]
+    link_to(t, {:controller => t}, { :class => 'tag-link' })
   end
   
   # add a + or - in front of tags if we're looking at a tag's listing
@@ -119,9 +119,10 @@ module TumbleHelper
       link = @params[:tag].split
       link = link.reject { |x| x =~ /^#{tag}$/ } * '+' unless link.size == 1
       link = '/' if link.size == 1
-      %[<a href="#{link}" class="remove-tag">-</a>]
+      link_to('-', {:controller => link}, { :class => 'remove-tag' })
     elsif @params[:tag]
-      %[<a href="#{@params[:tag].gsub(' ','+')}+#{tag}" class="add-tag">+</a>]
+      link_to('+', {:controller => "#{@params[:tag].gsub(' ','+')}+#{tag}"}, 
+                   { :class => 'add-tag' })      
     else
       ""
     end
