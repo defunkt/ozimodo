@@ -110,19 +110,28 @@ module TumbleHelper
   
   # if we're looking at a tag, give the option to add (or remove) another tag
   def tag_link(t)
-    link_to(t, {:controller => t}, { :class => 'tag-link' })
+    link_to(t, {:controller => 'tumble', :action => 'tag', :tag => t}, 
+               { :class => 'tag-link' })
   end
   
   # add a + or - in front of tags if we're looking at a tag's listing
   def add_tag_link(tag)
-    if @params[:tag] and !@params[:tag].split.select { |x| x =~ /^#{tag}$/ }.empty?
-      link = @params[:tag].split
-      link = link.reject { |x| x =~ /^#{tag}$/ } * '+' unless link.size == 1
-      link = '/' if link.size == 1
-      link_to('-', {:controller => link}, { :class => 'remove-tag' })
-    elsif @params[:tag]
-      link_to('+', {:controller => "#{@params[:tag].gsub(' ','+')}+#{tag}"}, 
-                   { :class => 'add-tag' })      
+    cur_tag = @params[:tag]
+    if cur_tag and !cur_tag.split.select { |x| x =~ /^#{tag}$/ }.empty?
+      link = cur_tag.split
+      if link.size == 1
+        link_to('-', '/', :class => 'remove-tag')
+      else
+        link = link.reject { |x| x =~ /^#{tag}$/ } * '+'
+        link_to('-', {:controller => 'tumble', :action => 'tag', :tag => link}, 
+                     { :class => 'remove-tag' })
+      end
+    elsif cur_tag
+      link = "#{cur_tag.gsub(' ','+')}+#{tag}"
+      # the gsub below is an annoying hack to fight against the uri encoding.
+      # need to find a way to turn it off..
+      link_to('+', {:controller => 'tumble', :action => 'tag', :tag => link}, 
+                   { :class => 'add-tag' }).gsub(/%2B/,'+') 
     else
       ""
     end
