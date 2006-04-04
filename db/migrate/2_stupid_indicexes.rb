@@ -1,8 +1,8 @@
 class StupidIndicexes < ActiveRecord::Migration
   def self.up
-    remove_index :posts, :id, :unique
-    remove_index :tags, :id, :unique    
-    remove_index :users, :id, :unique
+    remove_index :posts, :id
+    remove_index :tags, :id  
+    remove_index :users, :id
   end
 
   def self.down
