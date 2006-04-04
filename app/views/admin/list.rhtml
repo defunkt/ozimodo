@@ -10,7 +10,7 @@
 
 <% @posts.each do |p| -%>
   <tr>
-    <td><%=r p.title.length > 0 ? p.title : '&nbsp;' %></td>
+    <td><%= strip_textile(p.title.length > 0 ? p.title : p.content.to_s)[0..50] %></td>
     <td><%= p.post_type %></td>
     <% date = p.created_at -%>
     <td><%= date.year %>-<%= sprintf('%02d', date.month.to_s) %>-<%= sprintf('%02d', date.day.to_s) %></td>

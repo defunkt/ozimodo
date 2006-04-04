@@ -36,11 +36,4 @@ module FeedHelper
   def feed_content(content)
     rl(content)
   end
-  
-  # for feed titles, mostly.  strip out the textile markup.
-  def strip_textile(x)
-    x = x.gsub(/<.+?>/,'')
-    x = x.gsub(/\"(.*?)\":http:\/\/([^ ]*)( )?/,'\1 ') unless x.blank?
-    x
-  end
 end

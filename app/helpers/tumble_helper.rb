@@ -137,4 +137,11 @@ module TumbleHelper
   def self.caching?
     ActionController::Base.perform_caching
   end
+  
+  # for feed titles, mostly.  strip out the textile markup.
+  def strip_textile(x)
+    x = x.gsub(/<.+?>/,'')
+    x = x.gsub(/\"(.*?)\":http:\/\/([^ ]*)( )?/,'\1 ') unless x.blank?
+    x
+  end  
 end
