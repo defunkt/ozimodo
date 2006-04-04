@@ -7,20 +7,20 @@
     var tbodies = Array(<%= YAML_TYPES.keys.map {|k| "'#{k}'" }.join(',') -%>);
     
     // find out the value of the new selected post type
-    var select = document.getElementById('post_post_type');
+    var select = $('post_post_type');
     var current = select.options[select.selectedIndex].text;
 
     // get the content row
-    content_row = document.getElementById('post_content_row');
+    content_row = $('post_content_row');
     
     // hide all the special fields and the content tr
     for (i=0; i < tbodies.length; i++) {
-      document.getElementById(tbodies[i]).style.display = 'none';
+      $(tbodies[i]).style.display = 'none';
     }    
     content_row.style.display = 'none';
 
     // show the content tr or the special fields, if they exist
-    if (tbody = document.getElementById(current)) {
+    if (tbody = $(current)) {
       tbody.style.display = '';
     } else {
       content_row.style.display = '';
