@@ -36,7 +36,6 @@ class TumbleController < ApplicationController
 
   # list all the posts for the index page
   # do nothing if this info is already cached
-  # behavior is configured in config/tumble.yml
   def list
     # get the status of the cache so we know whether we should do db queries
     key = if @params[:page] and @params[:page].to_i > 1

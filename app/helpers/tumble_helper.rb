@@ -80,11 +80,11 @@ module TumbleHelper
   end
   
   # return the pagination links
-  def oz_back_in_time
+  def oz_pagination_links
     @page = @page.nil? ? 1 : @page
     key = %[pagination_links_#{@page}].to_sym
     return_cache(key) do
-      render :partial => 'back_in_time', :locals => { :pagination => @post_pages }
+      render :partial => 'pagination', :locals => { :pagination => @post_pages }
     end
   end
   
