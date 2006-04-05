@@ -1,6 +1,6 @@
 class YourTumblelog::TumbleController < ApplicationController
   uses_component_template_root  # know where our templates are
-  helper :tumble, :types, :your_tumble
+  helper :tumble, :types, :component
   layout TUMBLE['component'] + "/tumble/layout"
   
   # show a list of posts -- by date, tag, or the main page
