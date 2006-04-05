@@ -26,12 +26,13 @@
     <%= @content_for_layout %> 
   </div>
   
-  <div class="gem_test">
-    <!-- get rid of this -->
-    RubyGems: <%= require_test('rubygems') %> | 
-    RedCloth: <%= require_test('RedCloth', true) %> | 
-    Syntax: <%= require_test('syntax', true) %>
-  </div>
+  <% if RAILS_ENV == 'development' -%>
+    <div class="gem_test">
+      RubyGems: <%= require_test('rubygems') %> | 
+      RedCloth: <%= require_test('RedCloth', true) %> | 
+      Syntax: <%= require_test('syntax', true) %>
+    </div>
+  <% end -%>
   
   <div id="footer">
     <div class="powered-by">
