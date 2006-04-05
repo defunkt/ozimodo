@@ -1,13 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>your tumblelog<%= " &raquo; #{params[:tag]}" if params[:tag] %></title>
+  <title>your tumblelog <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
   <%= stylesheet_link_tag '/styles/tumble', '/styles/types' %>
   <%= javascript_include_tag 'prototype' if session[:user_id] %>
   <%= javascript_include_tag 'application' %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <%= auto_discovery_link_tag :atom, {:controller => 'feed',:action => 'atom.xml'}, :title => 'Atom Feed' %>  
-  <%# auto_discovery_link_tag :rss, {:controller => 'feed',:action => 'rss.xml'}, :title => 'RSS Feed' %>
 </head>
 <body>
 <div id="main">
@@ -16,11 +15,11 @@
       <a href="/admin">admin</a>
     </span>
     <span class="logo"><a href="/" class="logo">your tumblelog</a></span>
-    <span class="ready-set"><span class="quo">&raquo;</span> ready, set, <%= oz_current_tag('tumble') %></span>
+    <span class="ready-set"><span class="quo">&raquo; </span>ready, set, <%= oz_current_tag('tumble') %></span>
   </div>
 
   <div id="tags">
-    tags: <%= oz_all_tags %>
+    <%= oz_popular_tags %>
   </div>
   
   <div id="content">
