@@ -1,16 +1,23 @@
 Real README coming soon.  I promise.
 
+
 HOWTO: http://ozimodo.rubyforge.org/configure.html
 
+
 ##
-http://ozimodo.rubyforge.org
-http://rubyforge.org/projects/ozimodo/
+# http://ozimodo.rubyforge.org
+# http://rubyforge.org/projects/ozimodo/
 ##
 
-This is version 1.1.
+
+Follow development at the ozimodo backpack page: http://rubyurl.com/Kjb
+
+
+This is version 1.1.2.
+
 
 For your convenience, I've included a copy of the source text file I use to 
-build http://ozimodo.rubyforge.org/configure.html.  It's RedCloth so it should
+build http://ozimodo.rubyforge.org/configure.html.  It's textile so it should
 be pretty readable.
 
 
@@ -21,6 +28,7 @@ be pretty readable.
 * "Using the content variable as a hash":#content-as-hash
 * "Helper functions":#helper-functions
 * "Caching":#caching
+* "Switching components":#switching-components
 * "1.0.x => 1.1 upgrade":#upgrade-1.1
 
 <a name="how-it-works"></a>
@@ -42,14 +50,14 @@ We are making a bit of an assumption, here: you are familiar with Rails.  If
 not, there is a wealth of amazing "Rails":http://rubyonrails.org/community
 "documentation":http://api.rubyonrails.org out there.  Not to mention some very
 "poignant":http://poignantguide.net/ruby/ 
-"ruby documentation":http://ruby-doc.org/, as well.  Help yourself.
+"Ruby documentation":http://ruby-doc.org/, as well.  Help yourself.
 
 <a name="look-and-feel"></a>
 h1. That Tumbly Look and Feel
 
 ozimodo separates your tumblelog's rhtml templates and related code from its
 own code through the use of Rails' components. All your blog specific code
-can be found in @components/your_tumblelog/tumble/@.
+can be found in @components/your_tumblelog/@.
 
 When you're ready to throw your own HTML at ozimodo, these are the files you 
 will need to edit.  Their purposes are pretty self explanatory.
@@ -58,7 +66,7 @@ will need to edit.  Their purposes are pretty self explanatory.
 * components/your_tumblelog/tumble/list.rhtml
 * components/your_tumblelog/tumble/show.rhtml
 * components/your_tumblelog/tumble/error.rhtm
-* public/stylesheets/tumble.css
+* components/your_tumblelog/tumble/styles/tumble.css
 
 *components/your_tumblelog/tumble/_post.rhtml*
 
@@ -66,12 +74,20 @@ This is the important one.  Both @show.rhtml@ and @list.rhtml@ call this file
 for each post.  It sets up the basic divs and layout for a post, including
 anchor links, and then calls a @post type@ (%(aside)see below%) partial.
 
+*components/your_tumblelog/tumble/component_helper.rb*
+
+Check out this file.  It's where you put all your random helpers, ones that have
+nothing to do with post types (%(aside)explained below%).
+
 *components/your_tumblelog/tumble/tumble_controller.rb*
 
 If you want to add controller-like code to your tumblelog, this is the place to 
 do it.  It contains three methods: @list@, @show@, and @error@.  They are called
 after the data is assembled (%(aside)like Post.find_all for list%) but before
 the view is invoked.
+
+You can create new dynamic pages by adding methods to this controller and creating
+the corresponding .rhtml files.  No need to worry about the @app/@ directory.
 
 <a name="custom-post-types"></a>
 h1. Post Types
@@ -134,7 +150,7 @@ Your complete @_quote.rhtml@ file might then look like this:
 Note that any changes to a @fields:@ directive requires a restart of your web
 server, _even in development mode_.  
 
-*public/stylesheets/types.css*
+*components/your_tumblelog/tumble/styles/types.css*
 
 Simple enough.  Keep all your type-specific CSS in this file.  The styles 
 contained within will always be available to your post type partials.
@@ -164,32 +180,58 @@ wish to use ozimodo's caching facilities.
 <a name="caching"></a>
 h1. Cache It Up
 
-ozimodo uses Rails' built in 
+ozimodo automatically uses Rails' built in 
 "fragment caching":http://api.rubyonrails.org/classes/ActionController/Caching.html
 to cache any database-dependent HTML rendered and 
 "page caching":http://api.rubyonrails.com/classes/ActionController/Caching/Pages.html
 to cache your feeds.
 
-You can check out the Rails docs for 
-"fragments":http://api.rubyonrails.org/classes/ActionController/Caching/Fragments.html
-(%(aside)specifically under 'fragment stores'%) to see your options.  A really
-easy one to pull off is disk based caching.  That is, Rails stores the rendered
-HTML in a file and displays the file instead of calling the DB and rendering the
-data each request.
+Make sure that @ozimodo/tmp/cache@ is writable to your web server.  If your app
+is failing for no (%(aside)apparent%) reason in production mode, this may be the
+reason.
 
-It's simple, really.  Just open up @config/environment.rb@ and uncomment this 
-line:
+<a name="switching-components"></a>
+h1. ozimodo components are like baseball cards!  Trade them!
 
-@config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/cache"@
+As of 1.1.1, ozimodo components are entirely self contained.  You can download
+someone else's ozimodo tumblelog, slip it into your @components@ directory, and
+away you go!  This also means you can have more than one tumblelog component 
+living in the @components@ directory.  While you can't run more than one 
+tumblelog with the same instance of ozimodo, you can swap between components 
+rather quickly.
 
-Now create a @cache@ directory within your app's directory structure and ensure
-it is readable/writable to the application.  Something like @chmod 777 cache@.
+*Using A Different Component*
 
-Your feeds' caches are stored in your webserver document root, ala 
-@public/feeds@.  Your webserver must also have read/write access to this 
-directory for caching to work.
+Let's say you've downloaded someone else's ozimodo tumblelog component and you
+want to use it yourself.  No problem!  To follow along at home, download the
+"ones zeros major and minors":http://ozmm.org component from 
+"http://code.ozmm.org/ozmm-1.1.1.tar.gz":http://code.ozmm.org/ozmm-1.1.1.tar.gz
+Unzip it into your @components@ directory so it lives alongside the 
+@your_tumblelog@ directory.  Good.
 
-All set.
+Now open @config/tumble.yml@ and change the 'components' line from @your_tumblelog@
+to @ozmm@, which is the directory name of the component you downloaded.  Start 
+your tumblelog with @ruby script/server@.  When you visit 
+"http://localhost:3000":http://localhost:3000 you should see the 
+"ozmm.org":http://ozmm.org tumblelog look instead of the default.  If it looks
+almost right but not quite, try clearing your browser cache.  
+(%(aside)Option-Apple-e in Safari%)
+
+Okay okay.  That's all there is to it. 
+
+*Preparing Your Component For Trading*
+
+In only a few steps, your component can be as portable as the ozmm component.  
+
+# Change the name of your component directory from @your_tumblelog@ to something
+else.  Whatever you want.  Let's say you changed it to @baseball_card@.
+# Open @components/baseball_card/tumble_controller.rb@ and change the name of the
+class from @YourTumblelog::TumbleController@ to @BaseballCard::TumbleController@.
+# Trade trade trade!
+
+Remember to change @config/tumble.yml@ to specify which component your tumblelog
+should be using.  Other than that little caveat, it's all rather elementary, my 
+dear.
 
 <a name="upgrade-1.1"></a>
 h1. 1.0.x => 1.1
