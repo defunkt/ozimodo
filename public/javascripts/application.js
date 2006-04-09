@@ -21,7 +21,7 @@ function relativeDates() {
 // Nathan Ashby-Kuhlman
 // 2002-12-19
 
-var monthAbbreviations = new Array("Jan ", "Feb ", "March ", "April ", "May ", "June ", "July ", "Aug. ", "Sept ", "Oct ", "Nov ", "Dec ");
+var monthAbbreviations = new Array("Jan ", "Feb ", "March ", "April ", "May ", "June ", "July ", "Aug ", "Sept ", "Oct ", "Nov ", "Dec ");
 var daysOfTheWeek = new Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
 
 // In milliseconds:
