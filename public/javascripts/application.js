@@ -1,6 +1,3 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 // place your unobtrusive javascript calls in here, to be run on window load
 function tumblelogInit() {
   relativeDates();
@@ -20,7 +17,6 @@ function relativeDates() {
 // relativedates.js
 // Nathan Ashby-Kuhlman
 // 2002-12-19
-
 var monthAbbreviations = new Array("Jan ", "Feb ", "March ", "April ", "May ", "June ", "July ", "Aug ", "Sept ", "Oct ", "Nov ", "Dec ");
 var daysOfTheWeek = new Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
 
