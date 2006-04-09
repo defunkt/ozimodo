@@ -20,19 +20,15 @@ function relativeDates() {
 // relativedates.js
 // Nathan Ashby-Kuhlman
 // 2002-12-19
-//
-// I'm hereby releasing this script into the public domain.
-// Do whatever you want with it, especially if you want to make it better.
 
-var monthAbbreviations = new Array("Jan. ", "Feb. ", "March ", "April ", "May ", "June ", "July ", "Aug. ", "Sept. ", "Oct. ", "Nov. ", "Dec. ");
+var monthAbbreviations = new Array("Jan ", "Feb ", "March ", "April ", "May ", "June ", "July ", "Aug. ", "Sept ", "Oct ", "Nov ", "Dec ");
 var daysOfTheWeek = new Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
 
 // In milliseconds:
 ONEDAYAGO = -86400000;
-ONEDAYFROMNOW = 86400000;
 TWODAYSAGO = -172800000;
 SEVENDAYSAGO = -604800000;
-SIXDAYSFROMNOW = 518400000;
+THREEMONTHSAGO = -8035200000;
 
 function dateReference(dateString) {
   var relative = relativeDate(dateString);
@@ -48,20 +44,14 @@ function relativeDate(dateString) {
   var now = new Date();
   var reference = new Date(dateString);
   if (isNaN(reference)) return dateString;
-  // Calculate time offset between the two dates
   var offset = reference.getTime() - now.getTime();
-
-  // Today, tomorrow, yesterday
   if ((offset > ONEDAYAGO) && (offset <= 0)) return "today";
-  if ((offset > 0) && (offset < ONEDAYFROMNOW )) return "tomorrow";
   if ((offset > TWODAYSAGO) && (offset <= ONEDAYAGO)) return "yesterday";
-
-  // Past week or coming week
   if ((offset > SEVENDAYSAGO) && (offset <= TWODAYSAGO)) return "last " + daysOfTheWeek[reference.getDay()];
-  if ((offset >= ONEDAYFROMNOW) && (offset < SIXDAYSFROMNOW)) return "this " + daysOfTheWeek[reference.getDay()];
+  if (offset > THREEMONTHSAGO) return Math.round((now - reference) / Math.abs(ONEDAYAGO)) + " days ago";
 
   // None of the above
-  return explicitDate(dateString, false);
+  return explicitDate(dateString, true);
 }
 
 function explicitDate(dateString, includeYearRegardless) {
@@ -81,9 +71,9 @@ function explicitDate(dateString, includeYearRegardless) {
 
 // By John Resig http://www.quirksmode.org/blog/archives/2005/10/_and_the_winner_1.html
 function addEvent( obj, type, fn ) {
-	if (obj.addEventListener)
+	if (obj.addEventListener) {
 		obj.addEventListener( type, fn, false );
-	else if (obj.attachEvent) {
+	} else if (obj.attachEvent) {
 		obj["e"+type+fn] = fn;
 		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); }
 		obj.attachEvent( "on"+type, obj[type+fn] );
