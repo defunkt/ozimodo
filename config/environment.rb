@@ -4,21 +4,7 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
-# Lock to Rails 1.1
-LOCK_TO_RAILS = '1.1.0'
-begin
-  require_gem 'rails', "<= #{LOCK_TO_RAILS}"
-rescue Gem::LoadError => e
-  if e.to_s =~ /version error/
-    puts "=> ozimodo is locked to Rails #{LOCK_TO_RAILS} or earlier."
-    puts "=> You are probably running a newer version.  Open config/environment.rb"
-    puts "=> and change the LOCK_TO_RAILS constant to your version if you're feeling"
-    puts "=> adventurous."
-    exit
-  else
-    raise e
-  end
-end
+RAILS_GEM_VERSION = '1.1.1'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
