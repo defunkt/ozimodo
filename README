@@ -20,7 +20,6 @@ For your convenience, I've included a copy of the source text file I use to
 build http://ozimodo.rubyforge.org/configure.html.  It's textile so it should
 be pretty readable.
 
-
 *Travel Guide:*
 * "How does it work?":#how-it-works
 * "How to change the look and feel":#look-and-feel
@@ -119,8 +118,21 @@ To add new post types, simply add new files to the
 and once the file is created a new post type will become available to you in the 
 @Post Type@ dropdown box when creating a new post.
 
+*components/your_tumblelog/tumble/styles/types.css*
+
+Simple enough.  Keep all your type-specific CSS in this file.  The styles 
+contained within will always be available to your post type partials.
+
+*components/your_tumblelog/tumble/types_helper.rb*
+
+If you need to do any complex (%(aside)or not so complex%) logic, or if you plan
+to share a function between more than one partial, place that code in this 
+helper file.  The functions within will always be available to your post type
+partials.  Code for how to display your crazy post types in your Atom and RSS
+feeds also goes here.
+
 <a name="content-as-hash"></a>
-*Post Types with @content@ Hashes*
+h1. Post Types with @content@ Hashes
 
 Sometimes just a @content@ variable isn't enough.  A quote, for instance, may
 typically have two separate value: the quote itself and the originator.  What 
@@ -150,19 +162,6 @@ Your complete @_quote.rhtml@ file might then look like this:
 Note that any changes to a @fields:@ directive requires a restart of your web
 server, _even in development mode_.  
 
-*components/your_tumblelog/tumble/styles/types.css*
-
-Simple enough.  Keep all your type-specific CSS in this file.  The styles 
-contained within will always be available to your post type partials.
-
-*components/your_tumblelog/tumble/types_helper.rb*
-
-If you need to do any complex (%(aside)or not so complex%) logic, or if you plan
-to share a function between more than one partial, place that code in this 
-helper file.  The functions within will always be available to your post type
-partials.  Code for how to display your crazy post types in your Atom and RSS
-feeds also goes here.
-
 <a name="helper-functions"></a>
 h1. oz_help_me_out()
 
@@ -186,9 +185,9 @@ to cache any database-dependent HTML rendered and
 "page caching":http://api.rubyonrails.com/classes/ActionController/Caching/Pages.html
 to cache your feeds.
 
-Make sure that @ozimodo/tmp/cache@ is writable to your web server.  If your app
-is failing for no (%(aside)apparent%) reason in production mode, this may be the
-reason.
+Make sure that @ozimodo/tmp/cache@ and @ozimodo/public/feed@ are writable to 
+your web server.  If your app is failing for no (%(aside)apparent%) reason in 
+production mode, this may be the reason.
 
 <a name="switching-components"></a>
 h1. ozimodo components are like baseball cards!  Trade them!
