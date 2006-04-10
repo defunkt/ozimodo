@@ -168,10 +168,8 @@ class AdminController < ApplicationController
   #
   
   # see if the poor user is authorized
-  def authorize
-    unless session[:user_id]
-      redirect_to :controller => 'admin', :action => 'login'
-    end
+  def authorize    
+    redirect_to :controller => 'admin', :action => 'login' unless session[:user_id]
   end  
   
   # try to login, obviously
