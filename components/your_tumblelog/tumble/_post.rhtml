@@ -26,8 +26,7 @@
   <div class="post-title" id="post-header<%= post.id %>" <% if post.title.empty? %>style="display:none;"<% end %>>
     <span id="post-title<%= post.id %>"><%=t post.title %></span>
     <span class="post-date">
-      <%= link_to '#', 
-          '/' + oz_clean_date(post.created_at) + '/' %>
+      <%= link_to '#', '/' + oz_clean_date(post.created_at) + '/' %>
     </span>
   </div>
   
