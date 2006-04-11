@@ -82,8 +82,9 @@ module TumbleHelper
   # return the pagination links
   def oz_pagination_links
     @page = @page.nil? ? 1 : @page
-    key = %[pagination_links_#{@page}].to_sym
-    return_cache(key) do
+    key = %[pagination_links_#{@page}]
+    tags = @params[:tag] ? @params[:tag].split(' ') : nil
+    return_cache(key, tags) do
       render :partial => 'pagination', :locals => { :pagination => @post_pages }
     end
   end
