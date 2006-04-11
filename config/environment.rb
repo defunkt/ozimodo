@@ -27,32 +27,13 @@ Rails::Initializer.run do |config|
   # (create the session table with 'rake db:sessions:create')
   # config.action_controller.session_store = :active_record_store
 
-  # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper, 
-  # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
-
-  # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector
-
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
   config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"  
+  config.action_controller.page_cache_directory = "#{RAILS_ROOT}/tmp/cache"  
 end
-
-# Add new inflection rules using the following format 
-# (all these examples are active by default):
-# Inflector.inflections do |inflect|
-#   inflect.plural /^(ox)$/i, '\1en'
-#   inflect.singular /^(ox)en/i, '\1'
-#   inflect.irregular 'person', 'people'
-#   inflect.uncountable %w( fish sheep )
-# end
-
-# cache feeds and such in tmp directory along with other cache stuffs
-ActionController::Base.page_cache_directory = "#{RAILS_ROOT}/tmp/cache"
 
 # load yaml config file, mostly for rss and api
 TUMBLE = YAML.load( File.open( File.dirname(__FILE__) + '/tumble.yml' ) )
