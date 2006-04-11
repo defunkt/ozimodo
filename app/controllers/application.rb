@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
   
   # create a key for our @cache object
   def cache_obj_key(id, tags)
+    tags.sort! # always alphabetical, cut down on cache keys
     (id.to_s + (tags ? tags * '+' : '')).to_sym
   end
   
@@ -91,7 +92,11 @@ class ApplicationController < ActionController::Base
     cache_id_hash = { :controller => 'tumble', :action => 'cache', :id => id }
     
     # if we got tags, include those in our hash identifier
-    cache_id_hash.merge!({ :tags => tags * ' ' }) unless tags.nil?
+    # alphabetize tags to keep number of redundant keys down
+    unless tags.nil?
+      tags.sort!
+      cache_id_hash.merge!({ :tags => tags * ' ' })
+    end
     
     # return the finished product
     cache_id_hash
