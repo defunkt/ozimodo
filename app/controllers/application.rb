@@ -56,7 +56,8 @@ class ApplicationController < ActionController::Base
   
   # create a key for our @cache object
   def cache_obj_key(id, tags)
-    tags.sort! # always alphabetical, cut down on cache keys
+    # always alphabetical, cut down on cache keys
+    tags.sort! unless tags.nil?
     (id.to_s + (tags ? tags * '+' : '')).to_sym
   end
   
