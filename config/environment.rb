@@ -5,6 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 RAILS_GEM_VERSION = '1.1'
+OZIMODO_VERSION = '1.1.3'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -49,6 +50,9 @@ end
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
 # end
+
+# cache feeds and such in tmp directory along with other cache stuffs
+ActionController::Base.page_cache_directory = "#{RAILS_ROOT}/tmp/cache"
 
 # load yaml config file, mostly for rss and api
 TUMBLE = YAML.load( File.open( File.dirname(__FILE__) + '/tumble.yml' ) )
