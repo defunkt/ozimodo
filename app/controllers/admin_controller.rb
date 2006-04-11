@@ -164,6 +164,31 @@ class AdminController < ApplicationController
   end
   
   #
+  # crazy calls to mother base
+  #
+  
+  # tries to see if this version of ozimodo is up to date
+  def up_to_date
+    @version = begin
+      # libraries we need
+      require 'net/http'
+      require 'uri'
+      # try to grab the most recent version from the ozimodo site
+      host = URI.parse(VERSION_CHECK[:domain]).host
+      version = Net::HTTP.start(host, VERSION_CHECK[:port]) do |http|
+        http.get(VERSION_CHECK[:page]).body.chomp
+      end
+      # don't accept anything except x.x(.x[.x])
+      return false unless version =~ /^\d{1}\.\d{1}(\.\d){0,2}$/
+      # still here, return what we got
+      version
+    rescue
+      # something broke, return false
+      false
+    end
+  end
+  
+  #
   # user handling
   #
   

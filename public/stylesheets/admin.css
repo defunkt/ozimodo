@@ -66,6 +66,11 @@ p {
   text-align: left;
 }
 
+#version {
+  font-size: .8em;
+ float: right;
+}
+
 #footer {
   margin: 10px;
   margin-top: 50px;
