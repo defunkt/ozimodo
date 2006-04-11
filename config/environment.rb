@@ -74,3 +74,7 @@ Dir[File.dirname(__FILE__) + '/../components/' + TUMBLE['component'] + '/tumble/
   # if the first line contains 'fields:', run it through the fields parser  
   YAML_TYPES[type] = first_line.gsub(/(<%#|%>|-%>|fields:)/, '').split if first_line['fields:']
 end
+
+# version check information
+VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
+                  :page => '/current_version.txt' }
