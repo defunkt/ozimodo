@@ -8,7 +8,7 @@ class TumbleController < ApplicationController
     begin
       # try and find posts for this day in history - add a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                        :order => 'created_at DESC') unless cached
+                        :include => :tags, :order => 'created_at DESC') unless cached
       params = @params
       params.merge!(:posts => posts) unless cached
       render_tumblelog_component(:list, params)
@@ -25,7 +25,7 @@ class TumbleController < ApplicationController
     begin
       # try and find posts for this day in history - add a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                        :order => 'created_at DESC') unless cached
+                        :include => :tags, :order => 'created_at DESC') unless cached
       params = @params
       params.merge!(:posts => posts) unless cached
       render_tumblelog_component(:list, params)
@@ -44,8 +44,7 @@ class TumbleController < ApplicationController
       'list_posts'
     end.to_sym
     cached = is_cached? key
-  
-    post_pages, posts = paginate :posts, :order => 'created_at DESC', 
+    post_pages, posts = paginate :posts, :order => 'created_at DESC', :include => :tags,
                                  :per_page => TUMBLE['limit'] unless cached 
     render_component_list(:posts => posts, :post_pages => post_pages, :page => @params[:page])
   end
@@ -59,7 +58,7 @@ class TumbleController < ApplicationController
     # passed tags.  otherwise get all the posts with just the one tag.
     # don't do any processing if this information is already cached.
     begin
-      posts = tags.is_a?(Array) ? Post.find_by_tags(tags) : Tag.find_by_name(tags).posts unless is_cached? :list_tags, tags      
+      posts = tags.is_a?(Array) ? Post.find_by_tags(tags) : Tag.find_by_name(tags).posts unless is_cached? :list_tags, tags
       render_component_list( :posts => posts, :tag => params[:tag] )
     rescue NoMethodError
       error "Tag not found."
@@ -71,7 +70,7 @@ class TumbleController < ApplicationController
   def show
     begin
       if params[:id]
-        post = Post.find(params[:id]) unless is_cached? params[:id]
+        post = Post.find(params[:id], :include => :tags) unless is_cached? params[:id]
         render_component_show(post)
       else
         redirect_to :action => 'list'
