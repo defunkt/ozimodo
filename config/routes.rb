@@ -41,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # show a tag
   map.connect ':tag', :controller => 'tumble', :action => 'tag', 
-                      :tag => /[A-Za-z0-9+]+/
+                      :tag => /[A-Za-z0-9+ ]+/
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id'
