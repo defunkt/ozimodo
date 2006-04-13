@@ -4,8 +4,8 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
-RAILS_GEM_VERSION = '1.1'
-OZIMODO_VERSION = '1.1.3'
+RAILS_GEM_VERSION = '1.1.2'
+OZIMODO_VERSION = '1.1.4'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -32,7 +32,6 @@ Rails::Initializer.run do |config|
   
   # See Rails::Configuration for more options
   config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"  
-  config.action_controller.page_cache_directory = "#{RAILS_ROOT}/tmp/cache"  
 end
 
 # load yaml config file, mostly for rss and api
