@@ -31,7 +31,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
-  config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"  
+  config.action_controller.page_cache_directory = "#{RAILS_ROOT}/public/cache"  
 end
 
 # load yaml config file, mostly for rss and api
