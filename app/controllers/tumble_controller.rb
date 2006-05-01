@@ -1,16 +1,16 @@
 class TumbleController < ApplicationController      
+  caches_page :list, :show_for_date, :show_for_month, :tag, :show
     
   # show all the posts for a specific date
   def show_for_date
     # build a date string
     datestring = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
-    cached = is_cached? "show_date_#{datestring}"
     begin
       # try and find posts for this day in history - add a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                        :include => :tags, :order => 'created_at DESC') unless cached
+                        :include => :tags, :order => 'created_at DESC') 
       params = @params
-      params.merge!(:posts => posts) unless cached
+      params.merge!(:posts => posts) 
       render_tumblelog_component(:list, params)
     rescue ActiveRecord::RecordNotFound
       error "No posts found for that date."
@@ -21,13 +21,12 @@ class TumbleController < ApplicationController
   def show_for_month
     # build a date string
     datestring = "#{params[:year]}-#{params[:month]}"
-    cached = is_cached? "show_month_#{datestring}"
     begin
       # try and find posts for this day in history - add a wildcard
       posts = Post.find(:all, :conditions => ["created_at LIKE ?", datestring + '%'], 
-                        :include => :tags, :order => 'created_at DESC') unless cached
+                        :include => :tags, :order => 'created_at DESC') 
       params = @params
-      params.merge!(:posts => posts) unless cached
+      params.merge!(:posts => posts) 
       render_tumblelog_component(:list, params)
     rescue ActiveRecord::RecordNotFound
       error "No posts found for that month."
@@ -35,17 +34,9 @@ class TumbleController < ApplicationController
   end
 
   # list all the posts for the index page
-  # do nothing if this info is already cached
   def list
-    # get the status of the cache so we know whether we should do db queries
-    key = if @params[:page] and @params[:page].to_i > 1
-      %[list_posts_page_#{@params[:page]}]
-    else
-      'list_posts'
-    end.to_sym
-    cached = is_cached? key
     post_pages, posts = paginate :posts, :order => 'created_at DESC', :include => :tags,
-                                 :per_page => TUMBLE['limit'] unless cached 
+                                 :per_page => TUMBLE['limit'] 
     render_component_list(:posts => posts, :post_pages => post_pages, :page => @params[:page])
   end
   
@@ -56,9 +47,8 @@ class TumbleController < ApplicationController
     
     # if more than one tag is specified, get the posts containing all the
     # passed tags.  otherwise get all the posts with just the one tag.
-    # don't do any processing if this information is already cached.
     begin
-      posts = tags.is_a?(Array) ? Post.find_by_tags(tags) : Tag.find_by_name(tags).posts unless is_cached? :list_tags, tags
+      posts = tags.is_a?(Array) ? Post.find_by_tags(tags) : Tag.find_by_name(tags).posts 
       render_component_list( :posts => posts, :tag => params[:tag] )
     rescue NoMethodError
       error "Tag not found."
@@ -66,11 +56,10 @@ class TumbleController < ApplicationController
   end
 
   # show a post based on its id, or redirect if we got here through hackery.
-  # again, don't grab any info if we've already cached this momma.
   def show
     begin
       if params[:id]
-        post = Post.find(params[:id], :include => :tags) unless is_cached? params[:id]
+        post = Post.find(params[:id], :include => :tags)
         render_component_show(post)
       else
         redirect_to :action => 'list'
