@@ -1,0 +1,5 @@
+1.1.4 from 1.1.x:
+  - Replace app/ directory with 1.1.4's app/ directory.
+  - Replace config/environment.rb with the new.
+  - Replace public/.htaccess with the new.
+  - Create public/cache and chmod 755 cache
