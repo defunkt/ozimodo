@@ -103,8 +103,7 @@ class AdminController < ApplicationController
   # could be better.  grab the last post and save it, forcing a refresh of
   # most of our cache.  
   def kill_cache
-    Post.find(:first, :order => "created_at DESC").save
-    expire_fragment /show_date/    
+    CacheSweeper.sweep
     flash[:notice] = "Cache killed."
     redirect_to request.env['HTTP_REFERER']
   end
