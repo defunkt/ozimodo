@@ -6,6 +6,7 @@
 
 RAILS_GEM_VERSION = '1.1.2'
 OZIMODO_VERSION = '1.1.4'
+ENV['RAILS_ASSET_ID'] = Time.now.to_i.to_s
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -60,6 +61,4 @@ VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
                   :page => '/current_version.txt' }
 
 # wipe cache dir if we're entering production mode
-if ENV['RAILS_ENV'] == 'production'
-  CacheSweeper.sweep
-end
+CacheSweeper.sweep if ENV['RAILS_ENV'] == 'production'
