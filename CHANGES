@@ -4,7 +4,9 @@
   - Locked to Rails 1.1.2 (included in distro)
   - Changed caching implementation from messy fragments to page caching.
   - Added public/cache for page caching.
-
+  - Cache is cleared when production app is launched.
+  - Took out inline Ajax editing.  Did anyone even want it?
+  
 1.1.3:
   - Fixed annoying pagination cache bug (tags were not being included in key)
   - Improved cache key generation (tags are always alphabetized)
