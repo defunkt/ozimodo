@@ -107,7 +107,7 @@ module TumbleHelper
       # the gsub below is an annoying hack to fight against the uri encoding.
       # need to find a way to turn it off..
       link_to('+', {:controller => 'tumble', :action => 'tag', :tag => link}, 
-                   { :class => 'add-tag' }).gsub(/%2B/,'+') 
+                   { :class => 'add-tag', :rel => 'nofollow' }).gsub(/%2B/,'+') 
     else
       ""
     end
