@@ -9,9 +9,7 @@ class AdminController < ApplicationController
   # app/models/cache_sweeper.rb's after_save method is invoked if a Post
   # or Tag is saved within any of these methods.  it then clears the appropriate
   # caches.
-  cache_sweeper :cache_sweeper, :only => [ :new, :edit, :delete, :kill_cache, 
-                                           :ajax_edit_title, :ajax_edit_content,
-                                           :ajax_edit_tag_names ]
+  cache_sweeper :cache_sweeper, :only => [ :new, :edit, :delete ]
   
   
   #
@@ -108,32 +106,6 @@ class AdminController < ApplicationController
     redirect_to request.env['HTTP_REFERER']
   end
   
-  #
-  # ajax editing of posts
-  #
-  
-  # a hash of methods we want to define... ajax_edit_#{key} will be the 
-  # method name.  the attribute we care about will be params[:post_#{key}].
-  # we will set it to post.#{key}.  the values in the hash are the code we will
-  # run upon success, what we return.
-  ajax_methods = { 
-    :title => 'render_text post.title.blank? ? "empty-title" : post.title', 
-    :tag_names => %q[render_text(if post.tag_names.size>0;post.tag_names.split.map { |t| 
-                    "<a href=\"#{t}\">#{t}</a>"}.join(' '); else;'empty-tags';end)],
-    :content => %q[post.yaml_content_to_hash!; render :partial => "post", :locals => {:post=>post}]
-  }
-  
-  # define our methods three
-  ajax_methods.each do |m, r|
-    define_method("ajax_edit_#{m}".to_sym) do
-      if request.post?
-        post = Post.find(params[:post_id])
-        post.send("#{m}=", self.instance_eval("params[:post_#{m}]"))
-        post.save
-        self.instance_eval r
-      end
-    end
-  end
   
   #
   # tag management
@@ -192,7 +164,7 @@ class AdminController < ApplicationController
   #
   
   # see if the poor user is authorized
-  def authorize    
+  def authorize 
     redirect_to :controller => 'admin', :action => 'login' unless session[:user_id]
   end  
   

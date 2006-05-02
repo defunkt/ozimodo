@@ -1,6 +1,6 @@
 class TumbleController < ApplicationController      
   caches_page :list, :show_for_date, :show_for_month, :tag, :show, :styles
-    
+  
   # show all the posts for a specific date
   def show_for_date
     # build a date string
