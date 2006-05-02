@@ -58,3 +58,8 @@ end
 # version check information
 VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
                   :page => '/current_version.txt' }
+
+# wipe cache dir if we're entering production mode
+if ENV['RAILS_ENV'] == 'production'
+  CacheSweeper.sweep
+end
