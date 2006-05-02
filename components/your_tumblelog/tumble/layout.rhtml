@@ -3,7 +3,6 @@
 <head>
   <title>your tumblelog <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
   <%= stylesheet_link_tag '/styles/tumble', '/styles/types' %>
-  <%= javascript_include_tag 'prototype' if session[:user_id] %>
   <%= javascript_include_tag 'application' %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <%= auto_discovery_link_tag :atom, {:controller => 'feed',:action => 'atom.xml'}, :title => 'Atom Feed' %>  
@@ -23,7 +22,7 @@
   </div>
   
   <div id="content">
-    <%= @content_for_layout %> 
+    <%= yield %> 
   </div>
   
   <% if RAILS_ENV == 'development' -%>
