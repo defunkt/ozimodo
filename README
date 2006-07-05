@@ -199,7 +199,7 @@ themes/your_tumblelog/tumble/types/_quote.rhtml telling ozi you want the
 content variable to be a hash instead of a string.  The line might look like
 this:
 
-<%# fields: [quote, author] %>
+  <%# fields: [quote, author] %>
 
 This is an ERB comment; it will not be displayed in your rendered HTML and 
 will be ignored by normal Rails processing.  It's special to ozimodo, though.  
@@ -208,10 +208,42 @@ will have available both content.quote and content.author.
 
 Your complete _quote.rhtml file might then look like this:
 
-<%# fields: [quote, author] %>
+  <%# fields: [quote, author] %>
 
-<blockquote><%= content.quote %></blockquote><br/>
-<% if content.author %>-- <%= content.author %><% end %>
+  <blockquote><%= content.quote %></blockquote><br/>
+  <% if content.author %>-- <%= content.author %><% end %>
+
+Of course, that's a simple example.  What if you want more control over
+how the your custom fields are edited on the admin side?  Well, you can
+just tell ozimodo what you want and it will listen.  How about, say,
+an 'image' post type?
+
+  <%# 
+  src:
+    type: text
+    default: http://ozmm.org/images/typed/
+  alt: text
+  blurb: textarea
+  -%>
+
+  <img src="<%= content.src %>" class="type-img" alt="<%= content.alt %>" />
+  <% unless content.blurb.blank? -%><br/>also: <%= content.blurb -%><% end -%>
+
+That makes sense, right?  You can also get fancy with stuff like this:
+
+  <%# 
+  quote: 
+    type: textarea
+    cols: 20
+    rows: 30
+    default: Nothing to see here.
+  author: textarea
+  source:
+    type: text
+    size: 20
+  -%>
+
+Eat your heart out.
 
 Note that any changes to a fields: directive requires a restart of your web
 server, _even in development mode_.  
