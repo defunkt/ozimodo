@@ -40,12 +40,12 @@ class OzTest < Test::Unit::TestCase
 
   def test_parse_site_switch_good
     args = %w[--site chris:jimmy@ozmm.org] 
-    assert_equal %w[ozmm.org chris jimmy] + [''], Oz.parse_site_switch(args.last)
+    assert_equal %w[ozmm.org chris jimmy] + [80], Oz.parse_site_switch(args.last)
   end
   
   def test_parse_site_switch_with_http
     args = %w[--site http://jimmy:chris@ozmm.org] 
-    assert_equal %w[ozmm.org jimmy chris] + [''], Oz.parse_site_switch(args.last)
+    assert_equal %w[ozmm.org jimmy chris] + [80], Oz.parse_site_switch(args.last)
   end
 
   def test_parse_site_switch_with_port
