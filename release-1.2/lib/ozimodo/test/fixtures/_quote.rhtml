@@ -1,9 +1,0 @@
-<%# fields: [quote, author] -%>
-
-<div class="type-quote">
-  <table><tr>
-  <td valign="top"><sub><span class="type-quote-quotation">&ldquo;</span></sub></td>
-  <td class="type-quoted"><%=rl content.quote %>
-  <% unless content.author.blank? -%><br/> -- <em><%=rl content.author -%></em><% end -%></td>
-  </tr></table>
-</div>
