@@ -1,7 +1,27 @@
-#
-# where all the helper functions related to your tumble types go.
-# 
-module TypesHelper
+# helpers you put in here will be accessible to your tumblelog and are 
+# super portable.  if you're looking for the core ozi helpers, check out
+# app/helpers/tumble_helper.rb
+module ThemeHelper
+  #
+  # general theme helpers
+  #
+  
+  # get an array of tag names and generate a comma separated, linked string of tags
+  def linked_tags_with_commas(tags)
+    tags.dup.map { |tag|
+      link_to(tag.name, :controller => 'tumble', :action => 'tag', :tag => tag.name)
+    }.join(', ')
+  end
+
+  def popular_tags
+    popular = Tag.find_most_popular(4).map { |t| tag_link(t.name) }
+    popular[-1] = "and " + popular.last
+    popular.join(', ')
+  end
+  
+  #
+  # type helpers
+  #
   
   # for titles -- protect irc channel names, specifically
   def t(x)

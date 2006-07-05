@@ -16,7 +16,7 @@
   </div>
   
   <div class="post-body" id="post-body<%= post.id %>">
-    <%= oz_render_post_type(post) %>
+    <%= render :partial => oz_type_partial(post.post_type), :locals => { :content => post.content } %>
   </div>
   
   <div class="post-tags">

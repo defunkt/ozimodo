@@ -1,23 +1,43 @@
 module TumbleHelper
-  # try and grab the partial for this post type.  if it doesn't exist, grab the
-  # default partial.  re-raise any actionview errors we're not interested in.
-  def oz_render_post_type(post)
-    begin
-      render :partial => "#{TUMBLE['component']}/tumble/types/" + post.post_type, :locals => { :content => post.content }
-    rescue ActionView::ActionViewError => e
-      if e.to_s =~ /No rhtml/
-        render :partial => "#{TUMBLE['component']}/tumble/types/post", :locals => { :content => post.content }
-      else
-        raise e
-      end
-    end 
+  # if the types partial doesn't exist, serve post
+  def oz_type_partial(post_type)
+    types_base = 'tumble/types/'
+    if File.exists? controller.template_root + '/' + types_base + '_' + post_type + '.rhtml'
+      types_base + post_type
+    else 
+      types_base + 'post'
+    end
   end
-  
+
+  # links to months we have posts for with year prepended
+  def oz_archived_months(sep = ', ')
+    year, string = 0, ''
+    months = {}
+    years = []
+
+    Post.archived_months.map do |month| 
+      date = Time.parse(month)
+      if date.year > year
+        year = date.year
+        months[year] = []
+        years << year
+      end
+      months[year] << month_link(date.strftime('%B').downcase, month) 
+    end
+
+    years.map { |y| "#{y}: " << months[year].join(sep) }.join('<br/>')
+  end
+
   # clean date
   def oz_clean_date(date)
-    sprintf "%d/%02d/%02d", date.year, date.month, date.day 
+    "%d/%02d/%02d" % [date.year, date.month, date.day]
   end
   
+  # return linked post types
+  def oz_post_types(sep = ', ')
+    TYPES.dup.keys.map { |type| post_type_link(type + 's', type) }.join(sep)
+  end
+
   # the 5 most recent tags
   def oz_recent_tags(sep = ' . ', limit = 5)
     Tag.find(:all, :order => "updated_at DESC", :limit => limit).map { |t| tag_link(t.name) }.join(sep)
@@ -25,74 +45,48 @@ module TumbleHelper
   
   # popular tags (by frequency)
   def oz_popular_tags(sep = ' . ', limit = 5)
-    Tag.find(:all).sort { |x, y| y.posts.size <=> x.posts.size }[0..limit-1].map { |t| tag_link(t.name) }.join(sep)
+    Tag.find_most_popular(limit).map { |t| tag_link(t.name) }.join(sep)
   end
   
   # display all the tags
-  def oz_all_tags
-    tags = @params[:tag].split(' ') if @params[:tag]
-    Tag.find(:all, :order => 'name ASC').map { |t| add_tag_link(t.name) << tag_link(t.name) }.join(' ')
+  def oz_all_tags(sep = ' ', plus_tag_link = true)
+    tags = params[:tag].split(' ') if params[:tag]
+    Tag.find(:all, :order => 'name ASC').map { |t| (plus_tag_link ? add_tag_link(t.name) : '') << tag_link(t.name) }.join(sep)
   end
   
   # the current tag
   def oz_current_tag(default = 'tumble')
     if @error_msg
       "error"
-    elsif @params[:tag]
-      @params[:tag].gsub(' ','+')
+    elsif params[:tag]
+      params[:tag].gsub(' ','+')
     else
       default
     end
   end
-  
-  # return a list of posts
-  def oz_show_list
-    output = String.new
-    @posts.each do |post|
-      output << render(:partial => 'post', :locals => { :post => post })
-    end if @posts
-    return output unless output.empty?
-    %q[<div id="error-box">I tried to find what you're looking for really hard.
-      No matches, though.  Sorry.</div>]
+
+  # builds a link to a list of posts for a type
+  def post_type_link(text, type = nil)
+    type = text if type.nil?
+    link_to text, :controller => 'tumble', :action => 'list_by_post_type',
+                  :type => type
   end
-  
-  # return the pagination links
-  def oz_pagination_links
-    @page = @page.nil? ? 1 : @page
-    key = %[pagination_links_#{@page}]
-    tags = @params[:tag] ? @params[:tag].split(' ') : nil
-    render :partial => 'pagination', :locals => { :pagination => @post_pages }
-  end
-  
-  # return the post  
-  def oz_show_post
-    output = render(:partial => 'post', :locals => { :post => @post })
-  end
-  
-  # the relative date
-  def oz_relative_date(date = Date.today)
-    date = Date.parse(date, true) unless /Date.*/ =~ date.class.to_s
-    days = (date - Date.today).to_i
-    case 
-      when (days >= 0 and days < 1)     then 'today'
-      when (days >= 1 and days < 2)     then 'tomorrow' 
-      when (days >= -1 and days < 0)    then 'yesterday' 
-      when (days.abs < 60 and days > 0) then "in #{days} days" 
-      when (days.abs < 60 and days < 0) then "#{days.abs} days ago"
-      when days.abs < 182               then date.strftime('%A, %B %e') 
-      else                                   date.strftime('%A, %B %e, %Y')
-    end
+
+  # builds a link to a month
+  def month_link(text, date)
+    date = date.respond_to?(:strftime) ? date : Time.parse(date)
+    link_to text, :controller => 'tumble', :action => 'list_by_date',
+                  :year => date.strftime('%Y'), :month => date.strftime('%m')
   end
   
   # if we're looking at a tag, give the option to add (or remove) another tag
   def tag_link(t)
-    link_to(t, {:controller => 'tumble', :action => 'tag', :tag => t}, 
-               { :class => 'tag-link' })
+    link_to(t, {:controller => 'tumble', :action => 'tag', :tag => t}, { :class => 'tag-link' })
   end
   
   # add a + or - in front of tags if we're looking at a tag's listing
   def add_tag_link(tag)
-    cur_tag = @params[:tag]
+    cur_tag = params[:tag]
     if cur_tag and !cur_tag.split.select { |x| x =~ /^#{tag}$/ }.empty?
       link = cur_tag.split
       if link.size == 1

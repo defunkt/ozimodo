@@ -5,8 +5,10 @@
 
 class CantDestroyAdminUser < StandardError; end
   
-  
 class User < ActiveRecord::Base
+  ADMIN_USER_ID = 1
+  PASSWORD_MIN_LENGTH = 6
+
   has_many :posts, :order => 'created_at DESC'
  
   before_destroy :dont_destroy_admin
@@ -20,7 +22,7 @@ class User < ActiveRecord::Base
   
   def before_save
     # hash the plaintext password and set it to an instance variable
-    self.hashed_password = User.hash_password(self.password)
+    self.hashed_password = User.hash_password(self.password) if self.password
   end
   
   def after_save
@@ -44,7 +46,15 @@ class User < ActiveRecord::Base
   
   def try_to_login
     # return a user if we find anything
-    User.login(self.name,self.password)
+    User.login(self.name, self.password)
+  end
+
+  def self.password_long_enough?(password)
+    (password.length >= PASSWORD_MIN_LENGTH ? true : false)  
+  end
+
+  def self.passwords_match?(password, confirm)
+    (password == confirm ? true : false)
   end
   
   def dont_destroy_admin

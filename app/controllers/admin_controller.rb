@@ -1,16 +1,23 @@
 class AdminController < ApplicationController
+  include Ozimodo::CookieAuth      # login stuff
+  session :on
+
   before_filter :authorize,        # run the authorize method before we execute
                 :except => :login  # any methods (except login) to see if the user
                                    # is actually logged in or not
+
+  before_filter :admin_user_only, :only => [ :users, :rename_user, :delete_user, :create_user ]
+ 
                                    
-  layout "admin"   # admin layout
-  helper :tumble, :types # load up our helpers
+  layout "admin/layout"   # admin layout
+
+  helper :tumble, ThemeHelper
   
   # app/models/cache_sweeper.rb's after_save method is invoked if a Post
   # or Tag is saved within any of these methods.  it then clears the appropriate
   # caches.
-  cache_sweeper :cache_sweeper, :only => [ :new, :edit, :delete ]
-  
+  cache_sweeper :cache_sweeper, :only => [ :new, :edit, :delete, :rename_tag, :delete_tag,
+                                           :delete_user, :rename_user ]
   
   #
   # post management
@@ -23,18 +30,18 @@ class AdminController < ApplicationController
   end
   
   # new and edit just wrap to the same method
-  def new; save_post; end
-  def edit; save_post; end
+  def new() save_post end
+  def edit() save_post end
 
   # this method handles creation of new posts and editing of existing posts
   def save_post
-    if params[:id] and request.get?
+    if params[:id] && request.get?
       # want to edit a specific post -- go for it
       @post = Post.find(params[:id])
       @tags = @post.tag_names
       render :action => :new
       
-    elsif !params[:id] and request.get?
+    elsif !params[:id] && request.get?
       # want to create a new post -- go for it
       @post = Post.new
       @tags = nil
@@ -51,7 +58,7 @@ class AdminController < ApplicationController
       post.attributes = params[:post]
       
       # if post has no user_id set, give it the id of the logged in user
-      post.user_id ||= session[:user_id]
+      post.user_id ||= current_user[:id]
       
       # reset all the tag names attached to those submitted
       post.tag_names = params[:tags]
@@ -59,7 +66,7 @@ class AdminController < ApplicationController
       # if this is a yaml post type, grab the params we need, yamlize them, 
       # then set them as the content
       type = params[:post][:post_type]
-      post.content = params[:yaml][type].to_yaml if YAML_TYPES[type]
+      post.content = params[:yaml][type].to_yaml if TYPES[type]
       
       # save the post - if it fails, send the user back from whence she came
       if post.save
@@ -78,7 +85,7 @@ class AdminController < ApplicationController
   # be polite and show a post
   def show
     if params[:id]
-      @post = Post.find(params[:id])
+      @post = Post.find(params[:id], :include => [:tags, :user])
       @tags = @post.tag_names
     else
       redirect_to :action => :list
@@ -103,7 +110,7 @@ class AdminController < ApplicationController
   def kill_cache
     CacheSweeper.sweep
     flash[:notice] = "Cache killed."
-    redirect_to request.env['HTTP_REFERER']
+    redirect_to :back
   end
   
   
@@ -117,7 +124,7 @@ class AdminController < ApplicationController
       tag = Tag.find(params[:tag_id])
       tag.name = params[:tag_name]
       tag.save
-      render_text tag.name
+      render :text => tag.name
     end
   end
   
@@ -165,25 +172,36 @@ class AdminController < ApplicationController
   
   # see if the poor user is authorized
   def authorize 
-    redirect_to :controller => 'admin', :action => 'login' unless session[:user_id]
+    redirect_to :controller => 'admin', :action => 'login' unless logged_in?
   end  
+
+  # certain actions only the big man can perform
+  def admin_user_only
+    redirect_to :controller => 'admin', :action => 'password' unless is_admin_user?
+  end
+
+  # the big man
+  def is_admin_user?
+    (logged_in? && current_user[:id] == User::ADMIN_USER_ID)
+  end
   
   # try to login, obviously
   def login
     if request.post?
       @user = User.new(params[:user])
+      
       # login check is built into the user model
       logged_in_user = @user.try_to_login
+
       if logged_in_user
-        # the mere existence of :user_id in the session hash means a user
-        # is logged in 
-        session[:user_id] = logged_in_user.id
+        set_logged_in(logged_in_user, params[:remember_me])
         redirect_to :action => 'list'
       else
         # hax.
         flash[:notice] = 'Username or password incorrect.'
       end
-    elsif session[:user_id]
+
+    elsif logged_in?
       # user's already logged in
       redirect_to :action => 'list'
     else
@@ -192,28 +210,94 @@ class AdminController < ApplicationController
   end
 
   def logout
-    # important to get rid of the session variable
-    session[:user_id] = nil
+    set_logged_out
     flash[:notice]    = "Logged out."
+
     # if they got here from a page other than the admin section, send them back
     ref = request.env['HTTP_REFERER']
-    redirect_to ref =~ /admin/ ? {:action => :login} : ref
+    redirect_to ((ref =~ /admin/ || nil) ? { :action => :login } : :back)
+  end
+
+  # user list
+  def users
+    @users = User.find(:all, :order => 'id ASC')
+  end
+  
+  # ajaxly rename a user
+  def rename_user
+    if request.post?
+      user = User.find(params[:user_id])
+      user.name = params[:user_name]
+      user.save
+      render :text => user.name
+    end
+  end
+  
+  # up and delete a user
+  def delete_user
+    user_id = params[:id]
+    user = User.find(user_id)
+
+    flash[:notice] = begin
+                       user.destroy
+                       Post.chown_posts(user_id,User::ADMIN_USER_ID)
+                       "User deleted."
+                     rescue CantDestroyAdminUser
+                       "Can't delete admin user :("
+                     end
+
+    redirect_to :action => :users
+  end
+
+  # add a new user
+  def create_user
+    if request.post?
+      @user = User.new(params[:user])
+      flash[:notice] = case true
+                       when !User.password_long_enough?(params[:password][:new])
+                         "You gotta make your password longer than five letters... come on."
+                       when !User.passwords_match?(params[:password][:new], params[:password][:confirm])
+                         "Passwords don't match."
+                       end
+
+      return flash[:notice] if flash[:notice]
+
+      @user.password = params[:password][:new]
+
+      if @user.save
+        flash[:notice] = "User #{@user.name} created."
+        redirect_to :action => 'users'
+      else
+        flash[:error] = "Error creating user."
+      end
+    end
   end
 
   # change your password
   def password
+    if params[:id] && is_admin_user?
+      @user_id = params[:id].to_i
+    elsif params[:id] && !is_admin_user?
+      flash[:notice] = "Permission denied.  Must be admin user."
+      redirect_to :action => 'users'
+    else
+      @user_id = current_user[:id]
+    end
+
     if request.post?
       # grab our lovely user
-      user = User.find(session[:user_id])
+      user = User.find(@user_id)
       
       # see if there's anything wrong with the submitted passwords
       flash[:error] = case true
-        when User.hash_password(params[:password][:old]) != user.hashed_password
-          "Old password is wrong, sorry."
-        when params[:password][:new].length < 6
-          "You gotta make your password longer than six letters... come one."
-        when params[:password][:new] != params[:password][:confirm]
-          "Passwords don't match."
+                      when !User.password_long_enough?(params[:password][:new])
+                        "You gotta make your password longer than five letters... come on."
+                      when !User.passwords_match?(params[:password][:new], params[:password][:confirm])
+                        "Passwords don't match."
+                      end
+
+      if params[:password][:old] && User.hash_password(params[:password][:old]) != user.hashed_password
+        flash[:error] = "Old password is wrong, sorry." 
       end
       
       # end this transaction if we got an error

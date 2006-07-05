@@ -4,7 +4,7 @@
   // swap content textboxes on change of the dropdown
   function changeType() {
     // all the special tbodys
-    var tbodies = Array(<%= YAML_TYPES.keys.map {|k| "'#{k}'" }.join(',') -%>);
+    var tbodies = <%= TYPES.dup.map { |k,v| k if v }.compact.to_json -%>;
     
     // find out the value of the new selected post type
     var select = $('post_post_type');
@@ -40,10 +40,10 @@
     <td>
       <% if controller.action_name = :new %>
         <select id="post_post_type" name="post[post_type]" onChange="javascript:changeType();">
-          <%= options_for_select( TYPES, @post.post_type ? @post.post_type : ( TYPES.include?('post') ? 'post' : '') ) %>
+          <%= options_for_select( TYPES.dup.keys, (@post.post_type ? @post.post_type : ( TYPES['post'] ? 'post' : '')) ) %>
         </select>
       <% else %>
-        <%= select 'post', 'post_type', TYPES, :size => 40 %>
+        <%= select 'post', 'post_type', TYPES.dup.keys, :size => 40 %>
       <% end %>
     </td>
   </tr>
@@ -53,19 +53,17 @@
     <td><%= text_field_tag 'tags', @tags, :size => 40 %></td>
   </tr>
   
-  <% YAML_TYPES.each do |type, fields| -%>
-    <tbody id="<%= type -%>" style="display:none;">
-    <% fields.each do |field| %>
-      <tr id="<%= "#{type}-#{field}" -%>">
-        <th><%= field.capitalize %>:</th>
-        <td><%= text_field_tag "yaml[#{type}][#{field}]", 
-                ( @post.new_record? ? '' : 
-                  ( @post.post_type == type ? @post.content.send(field) : '' )
-                ), 
-                :size => 40 %></td>
-      </tr>  
+  <% TYPES.dup.each do |type, hash| -%>
+    <% if hash %>
+      <tbody id="<%= type -%>" style="display:none;">
+        <% hash.each do |field, options| %>
+          <tr id="<%= "#{type}-#{field}" -%>">
+            <th><%= field.capitalize %>:</th>
+            <td><%= write_field(type, field, options, @post) -%></td>
+          </tr>  
+        <% end %>
+      </tbody>
     <% end %>
-    </tbody>
   <% end -%>  
   
   <tr id="post_content_row">
@@ -82,7 +80,6 @@
   <tr><th colspan="2" align="center"><%= submit_tag 'Save Your Tumble' %></th></tr>
 </table>
 
-  <%# no real support for multiple users yet%>
-  <%= hidden_field 'post', 'user_id' %>  
+  <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? session[:user_id] : @post.user_id) %>  
       
 <%= end_form_tag %>

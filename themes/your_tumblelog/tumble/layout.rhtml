@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
   <title>your tumblelog <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
-  <%= stylesheet_link_tag '/styles/tumble', '/styles/types' %>
-  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag '/stylesheets/theme/tumble', '/stylesheets/theme/types' %>
+  <%= javascript_include_tag '/javascripts/theme/theme' %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <%= auto_discovery_link_tag :atom, {:controller => 'feed',:action => 'atom.xml'}, :title => 'Atom Feed' %>  
 </head>
@@ -25,14 +25,6 @@
     <%= yield %> 
   </div>
   
-  <% if RAILS_ENV == 'development' -%>
-    <div class="gem_test">
-      RubyGems: <%= require_test('rubygems') %> | 
-      RedCloth: <%= require_test('RedCloth', true) %> | 
-      Syntax: <%= require_test('syntax', true) %>
-    </div>
-  <% end -%>
-  
   <div id="footer">
     <div class="powered-by">
       <span class="bracket">{</span>
@@ -40,8 +32,7 @@
       <span class="bracket">}</span>
     </div>
     <span class="feeds">
-      feeds: 
-      <a href="/feed/rss.xml">rss</a>, 
+      feed me: 
       <a href="/feed/atom.xml">atom</a>
     </span>
   </div>

@@ -1,0 +1,22 @@
+<% form_for :user do |f| %>
+  <table>
+    <tr>
+      <th>Name:</th>
+      <td><%= f.text_field 'name', :size => 20 %></td>
+    </tr>
+
+    <tr>
+      <th>Password:</th>
+      <td><input type="password" name="password[new]" size="20" /></td>
+    </tr>
+
+    <tr>
+      <th>Confirm:</th>
+      <td><input type="password" name="password[confirm]" size="20" /></td>
+    </tr>
+      
+    
+    <tr><th colspan="2" align="center"><%= submit_tag 'Create User' %></th></tr>
+  </table>
+        
+<% end %>

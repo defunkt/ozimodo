@@ -1,5 +1,7 @@
 class FeedController < ApplicationController
-  helper :types, :tumble
+  helper ThemeHelper
+  caches_page :atom, :rss
+  session :off
   
   # the feed method.
   def feed

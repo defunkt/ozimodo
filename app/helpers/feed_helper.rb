@@ -1,6 +1,4 @@
 module FeedHelper
-  include TypesHelper
-  
   # look for feed_content_posttype and give it content, serving its return
   # if it exists.  otherwise just use feed_content
   def serve_content(post)

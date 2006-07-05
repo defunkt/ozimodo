@@ -4,8 +4,8 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
-RAILS_GEM_VERSION = '1.1.2'
-OZIMODO_VERSION = '1.1.4'
+RAILS_GEM_VERSION = '1.1.4'
+OZIMODO_VERSION = '1.2'
 ENV['RAILS_ASSET_ID'] = Time.now.to_i.to_s
 
 # Bootstrap the Rails environment, frameworks, and default configuration
@@ -18,11 +18,7 @@ Rails::Initializer.run do |config|
   config.frameworks -= [ :action_web_service, :action_mailer ]
 
   # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
-
-  # Force all environments to use the same logger level 
-  # (by default production uses :info, the others :debug)
-  # config.log_level = :debug
+  config.load_paths += %W( #{RAILS_ROOT}/themes )
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
@@ -32,33 +28,32 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
-  config.action_controller.page_cache_directory = "#{RAILS_ROOT}/public/cache"  
+  config.action_controller.page_cache_directory = File.join(RAILS_ROOT, 'public', 'cache')
 end
 
 # load yaml config file, mostly for rss and api
-TUMBLE = YAML.load( File.open( File.dirname(__FILE__) + '/tumble.yml' ) )
+TUMBLE = YAML.load(File.open(File.join(File.dirname(__FILE__), 'tumble.yml')))
 
 # initialize constants
-TYPES = []
-YAML_TYPES = HashWithIndifferentAccess.new
+TYPES = {}
+
+THEME_DIR = File.join(File.dirname(__FILE__), '..', 'themes', TUMBLE['theme'])
 
 # figure out what type of post types we have by looking in the types directory for partials
 # for each partial, check the first line for fields: 
-# if it exists, arrayize the arguments and add the array to YAML_TYPES[:type]
-Dir[File.dirname(__FILE__) + '/../components/' + TUMBLE['component'] + '/tumble/types/*'].each do |f|
-  # get the name of this type
-  type = File.basename(f).sub(/^_/,'').sub('.rhtml','')
-  # add the post type to our TYPES constant
-  TYPES << type
-  # grab the first line to see if the post type needs a YAMLized content variable 
-  first_line = File.readlines(f)[0]  
-  # if the first line contains 'fields:', run it through the fields parser  
-  YAML_TYPES[type] = first_line.gsub(/(<%#|%>|-%>|fields:)/, '').split if first_line['fields:']
+# if it exists, arrayize the arguments and add the array to TYPES[:type]
+Dir[File.join(THEME_DIR, 'tumble', 'types', '*')].each do |f|
+  TYPES[File.basename(f).sub(/^_/,'').sub('.rhtml','')] = Ozimodo::TypeParser.parse_file(f)
 end
+
+TYPES.freeze
 
 # version check information
 VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
                   :page => '/current_version.txt' }
 
-# wipe cache dir if we're entering production mode
-CacheSweeper.sweep if ENV['RAILS_ENV'] == 'production'
+# load theme .rb files
+$LOAD_PATH << THEME_DIR
+
+# wipe cache dir
+CacheSweeper.sweep

@@ -3,7 +3,7 @@
 <head>
   <title>ozimodo::<%= @page_name %></title>
   <%= stylesheet_link_tag 'admin' %>
-  <%= stylesheet_link_tag '/styles/types' %>
+  <%= stylesheet_link_tag '/stylesheets/theme/types' %>
   <%= javascript_include_tag 'prototype' %>
   <%= javascript_include_tag 'application' %>
 </head>
@@ -23,10 +23,13 @@
     <%= link_to 'posts', :action => :list %> | 
     <%= link_to 'tags', :action => :list_tags %> |
     <%= link_to 'tumble', :action => :new %> | 
+    <% if controller.is_admin_user? %> 
+      <%= link_to 'users', :action => :users %> |
+    <% end %>
     <%= link_to 'password', :action => :password %> |
     <%= link_to 'kill cache', :action => :kill_cache %> | 
     <%= link_to 'tumblelog', "/" %> |
-    <% if session[:user_id] -%>
+    <% if controller.logged_in? -%>
       <%= link_to 'logout', :action => :logout %>
     <% else -%>
       <%= link_to 'login', :action => :login %>
@@ -41,13 +44,16 @@
   <% end %>
   
   <div id="content">
-    <%= @content_for_layout %>
+    <%= yield %>
   </div>
   
   <div id="footer">
     <div id="version">
       <%= link_to 'v' + OZIMODO_VERSION, :action => 'up_to_date' -%>
     </div>
+    <% if session[:user_name] %>
+      hey, <%= session[:user_name] %>.&nbsp;
+    <% end %>
     you're on the admin side, where we keep it casual ~ 
     <a href="http://ozimodo.rubyforge.org/">ozimodo</a>
   </div>

@@ -16,15 +16,15 @@ class Post < ActiveRecord::Base
   # if the post_type of this post says our content is stored as YAML turn it 
   # into a hash.  otherwise just return the content.
   def yaml_content_to_hash
-    return self.content unless YAML_TYPES.is_a?(Hash) and YAML_TYPES[self.post_type]
+    return self.content unless TYPES[self.post_type]
     # turn the content (yaml) into a hash
     new_content   = YAML.load(self.content) unless self.content.blank?
     new_content ||= {}
     # meta mumbo jumbo to turn content.key into content['key']
     class <<new_content 
       def method_missing(key, *args)
-        return nil if !self[key] and !self[key.to_s]
-        self[key] or self[key.to_s]
+        return nil if !self[key] && !self[key.to_s]
+        self[key] || self[key.to_s]
       end
     end
     # commit
@@ -39,20 +39,19 @@ class Post < ActiveRecord::Base
   # return yaml from hash if the content needs to be yaml, otherwise return the 
   # content as it stands
   def content_to_yaml
-    return self.content.to_yaml if YAML_TYPES[self.post_type]
-    self.content
+    (TYPES[self.post_type] ? self.content.to_yaml : self.content)
   end
   
   # returns a space separated string of all this post's tags
   def tag_names
-    self.tags.map { |t| t.name }.join ' '
+    self.tags.map { |t| t.name }.join(' ')
   end
   
   # take a space separated string or array of tags and sets this post's
   # tags to those, touching their updated_at time as well.
   def tag_names=(tag_names)
     # if we don't get an array or string, abort
-    return false unless tag_names.is_a?(Array) or tag_names.is_a?(String)
+    return false unless tag_names.is_a?(Array) || tag_names.is_a?(String)
     
     # get rid of the current tags
     self.tags.clear
@@ -81,11 +80,26 @@ class Post < ActiveRecord::Base
     end
   end
   
+  # get an array of months which have posts.
+  def self.archived_months
+    sql = 'SELECT DATE_FORMAT(created_at, "%m/%y") month 
+           FROM posts GROUP BY month ORDER BY created_at ASC'
+    ActiveRecord::Base.connection.select_all(sql).map { |row| row['month'] }
+  end
+
+  # chown all posts from one user_id to another
+  def self.chown_posts(owner_id, new_owner_id)
+    Post.find_by_user_id(owner_id).each do |post|
+      post.user_id = new_owner_id
+      post.save
+    end
+  end
+  
   # update the updated_at for all the tags we're touching
   def touch_tags
     self.tags.each { |t| t.updated_at = Time.now; t.save }
   end
-  
+
   # get rid of any tags which are not associated with any posts
   def after_save
     touch_tags

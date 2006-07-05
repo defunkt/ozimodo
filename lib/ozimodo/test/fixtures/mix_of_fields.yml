@@ -1,0 +1,35 @@
+---
+privacy:
+  type: checkbox
+  options: 
+    0: Hidden
+    1: Friends Only
+    2: Everyone
+
+quote: 
+  type: textarea
+  cols: 20
+  rows: 30
+  default: Nothing to see here.
+
+author: textarea
+
+source:
+  type: text
+  size: 20
+
+city:
+  type: select
+  options: 
+    - Cincinnati
+    - San Francisco
+
+state:
+  type: select
+  options:
+    OH: Ohio
+    CA: California
+
+fields:
+  - director
+  - imdb
