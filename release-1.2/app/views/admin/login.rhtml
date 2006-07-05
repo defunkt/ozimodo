@@ -1,0 +1,30 @@
+<% @page_name = "Login" %>
+<%= error_messages_for 'user' %>
+
+<% unless session[:user_id] %>
+
+  <%= form_tag %>
+  <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td>User name:</td>
+      <td><%= text_field 'user', 'name', :size => 20 %></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><%= password_field 'user', 'password', :size => 20 %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= submit_tag "Login" %></td>
+    </tr>
+  </table>
+
+  <div style="padding-top: 10px;"><%= check_box_tag 'remember_me' %> Remember me? </div>
+
+  <%= end_form_tag %>
+
+<% else %>
+  <div id="notice">
+    You are already logged in.  <%= link_to 'Log out.', :action => 'logout' %>
+  </div>
+<% end %>

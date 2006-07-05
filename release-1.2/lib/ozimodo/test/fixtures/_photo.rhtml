@@ -1,0 +1,13 @@
+<%# 
+src: { type: text, default: http://static.flickr.com/ }
+alt: { type: text, default: flickr. }
+author: 
+  type: text
+  default: fauxtank
+fields:
+  - date
+  - camera
+-%>
+
+<img src="<%= content.src %>" class="type-photo" alt="<%= content.alt %>" />
+<br/>taken by <%= content.author %> on <%= content.date %> with a <%= content.camera %>

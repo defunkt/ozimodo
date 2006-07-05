@@ -1,0 +1,11 @@
+---
+city:
+  type: select
+  options: 
+    - Cincinnati
+    - San Francisco
+state:
+  type: select
+  options:
+    OH: Ohio
+    CA: California

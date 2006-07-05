@@ -1,0 +1,27 @@
+kids_tagged_quote:
+  post_id: 1
+  tag_id: 1
+  
+kids_tagged_dinosaur:
+  post_id: 1
+  tag_id: 5
+  
+spacetime_tagged_ruby:
+  post_id: 2
+  tag_id: 2
+  
+spacetime_tagged_oatmeal:
+  post_id: 2
+  tag_id: 3
+
+spacetime_tagged_rock:
+  post_id: 2
+  tag_id: 4
+
+rubyforge_tagged_ruby:
+  post_id: 3
+  tag_id: 2
+  
+senses_tagged_rock:
+  post_id: 4
+  tag_id: 4

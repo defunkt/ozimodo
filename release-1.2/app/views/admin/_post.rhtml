@@ -1,0 +1,3 @@
+<% partial = controller.theme_dir + "/tumble/types/_#{post.post_type}.rhtml" -%>
+<% partial = controller.theme_dir + "/tumble/types/_post.rhtml" unless File.exists?(partial) %>
+<%= render_file partial, false, { :content => post.content } %>

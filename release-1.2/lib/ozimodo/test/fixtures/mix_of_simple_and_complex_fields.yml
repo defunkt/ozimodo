@@ -1,0 +1,10 @@
+---
+fields:
+  - book
+  - context
+quote: 
+  type: textarea
+  cols: 20
+  rows: 30
+  default: Nothing to see here.
+author: textarea

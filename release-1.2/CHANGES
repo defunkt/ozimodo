@@ -1,0 +1,58 @@
+1.2:
+  - Added eager loading for posts in list view
+  - Allow spaces in tag urls
+  - Locked to Rails 1.1.2 (included in distro)
+  - Changed caching implementation from messy fragments to page caching.
+  - Added public/cache for page caching.
+  - Cache is cleared when production app is launched.
+  - Took out inline Ajax editing.  Did anyone even want it?
+  - Changed components to faster 'themes', big refactor in tumble_controller
+  - Merged types_helper and component_helper into theme_helper
+  - Cleaned up default templates and helpers
+  - Added pagination to (single) tag and date views
+  - Added 'view by post type' option
+  - Added new oz_ helpers
+  - Added stylesheets and javascripts into theme
+  - Added support for multiple user accounts
+  - Changed simple 'fields:' declaration to more powerful and flexible mini-DSL
+  
+1.1.3:
+  - Fixed annoying pagination cache bug (tags were not being included in key)
+  - Improved cache key generation (tags are always alphabetized)
+  - Got rid of public/feed in favor of keeping all cache in tmp/cache
+  - Added OZIMODO_VERSION constant
+  - Added 'up to date' check on admin side.  Click the version number.
+
+1.1.2:
+  - Made some minor changes to get in line with Rails 1.1
+  - Changed all instances of 'back_in_time' to 'pagination' or 
+    'pagination_links'
+  - Improved "list" admin view by always showing a short desc of the tumble
+  - Relative dates are now handled unobtrusively in javascript to avoid caching 
+    issues
+  - Improved link building in add_tag_link and tag_link
+  - Fixed 'title' field on admin show page to parse textile
+  - Added component_helper.rb for custom, non-type related helpers
+  - Added migration to remove redundant indices
+  - Locked to Rails 1.1 or earlier with semi-helpful error message.
+  - Removed cache directory in favor of new 1.1 tmp/cache directory.
+  - Made some aesthetic tweaks to the default layout
+  - Made the admin link on default layout nofollow for Googlebots
+  - Updated robots.txt to hide admin, too.
+  - Hide the RubyGems status when not in development mode
+  
+1.1.1:
+  - Adding a 'component' field to tumble.yml to let you specify which
+    component directory houses your tumblelog.
+  - Fixed bug in default quote type rendering.
+  - Moved stylesheets into your_tumblelog component (and made them erbish).
+  - Fixed a lot of caching logic, renamed some related methods.
+  - Added method_missing to main TumbleController -- send unknown requests.
+    down the pipe to allow for easier adding of custom component actions.
+  - Added cache directory to help youngin's along.
+  - Got rid of the "date" listing option.  Don't see it as useful.
+  - Refactored some helpers.
+  - Added oz_popular_tags()
+  - Cut down length of feed title.
+  - Added show by month. (http://site.com/yyyy/mm/)
+  - Pagination on main listing.

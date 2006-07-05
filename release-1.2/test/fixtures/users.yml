@@ -1,0 +1,4 @@
+admin:
+  id: 1
+  name: admin
+  hashed_password: ac0452da134c2a204d7b5a7f5bb516147d27ee84 # raptor

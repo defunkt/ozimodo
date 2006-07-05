@@ -1,0 +1,14 @@
+# Your tumblelog's URL.  Make sure it ends with a /
+url: http://ozimodo.rubyforge.org/
+
+# The name of your tumblelog
+name: your tumblelog
+
+# how many tumbles to show per page?
+limit: 30 
+
+# under themes/, what is your tumblelog's directory?
+theme: your_tumblelog
+
+# your secret salt, for your cookies
+salt: 3t3ttWtiLT$W(t$WTljegW#$g

@@ -1,0 +1,33 @@
+post_kids:
+  id: 1
+  user_id: 1
+  title: "Kids Playing Guns in the Street"
+  post_type: post
+  content: "The moon's layin low in the sky, forcin everything metal to shine."
+  created_at: 2006-02-15 20:15:00 
+  
+post_spacetime:
+  id: 2
+  user_id: 1
+  title: 
+  post_type: quote
+  content: 
+    quote: "Space and time are your first and second mistakes."
+    author: Harry Lance
+  created_at: 2006-02-15 21:13:00 
+  
+post_rubyforge:
+  id: 3
+  user_id: 1
+  title: 
+  post_type: link
+  content: '"Like Iron Forge, but cooler.":http://www.rubyforge.org/'
+  created_at: 2006-02-16 12:02:00 
+  
+post_senses:
+  id: 4
+  user_id: 1
+  title:
+  post_type: quip
+  content: "Have you lost your senses, sir?"
+  created_at: 2006-02-16 15:17:00 

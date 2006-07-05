@@ -1,0 +1,24 @@
+tag_quote:
+  id: 1
+  name: quote
+  updated_at: 2006-02-15 21:13:00 
+  
+tag_ruby:
+  id: 2
+  name: ruby
+  updated_at: 2006-02-16 12:02:00 
+  
+tag_oatmeal:
+  id: 3
+  name: oatmeal
+  updated_at: 2006-02-15 21:13:00 
+  
+tag_rock:
+  id: 4
+  name: rock
+  updated_at: 2006-02-15 20:15:00
+  
+tag_dinosaur:
+  id: 5
+  name: dinosaur
+  updated_at: 2006-02-16 15:17:00 
