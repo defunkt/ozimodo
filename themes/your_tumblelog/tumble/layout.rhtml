@@ -13,7 +13,7 @@
     <span class="admin">
       <%= link_to 'admin', { :controller => 'admin' }, :rel => 'nofollow' %>
     </span>
-    <span class="logo"><a href="/" class="logo">your tumblelog</a></span>
+    <span class="logo"><%= link_to 'your tumblelog', { :controller => 'tumble', :action => 'list' }, :class => 'logo' %></span>
     <span class="ready-set"><span class="quo">&raquo; </span>ready, set, <%= oz_current_tag('tumble') %></span>
   </div>
 

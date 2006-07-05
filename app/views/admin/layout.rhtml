@@ -28,7 +28,7 @@
     <% end %>
     <%= link_to 'password', :action => :password %> |
     <%= link_to 'kill cache', :action => :kill_cache %> | 
-    <%= link_to 'tumblelog', "/" %> |
+    <%= link_to 'tumblelog', :controller => 'tumble', :action => 'list' %> |
     <% if controller.logged_in? -%>
       <%= link_to 'logout', :action => :logout %>
     <% else -%>
