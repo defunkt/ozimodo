@@ -32,6 +32,12 @@ module TumbleHelper
   def oz_clean_date(date)
     "%d/%02d/%02d" % [date.year, date.month, date.day]
   end
+
+  # clean date link
+  def oz_clean_date_link(date)
+    url_for :controller => 'tumble', :action => 'list_by_date', :year => date.year,
+            :month => ("%02d" % date.month), :day => ("%02d" % date.day)
+  end
   
   # return linked post types
   def oz_post_types(sep = ', ')
