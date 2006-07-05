@@ -1,8 +1,8 @@
 1.2:
   - Added eager loading for posts in list view
   - Allow spaces in tag urls
-  - Locked to Rails 1.1.2 (included in distro)
-  - Changed caching implementation from messy fragments to page caching.
+  - Locked to Rails 1.1.4 (included in distro)
+  - Changed caching implementation from messy fragments to clean page caching.
   - Added public/cache for page caching.
   - Cache is cleared when production app is launched.
   - Took out inline Ajax editing.  Did anyone even want it?
@@ -12,9 +12,13 @@
   - Added pagination to (single) tag and date views
   - Added 'view by post type' option
   - Added new oz_ helpers
-  - Added stylesheets and javascripts into theme
+  - Added stylesheets, images, and javascripts into theme
   - Added support for multiple user accounts
   - Changed simple 'fields:' declaration to more powerful and flexible mini-DSL
+  - Fixed links which didn't work when running ozimodo off a subdirectory.
+  - Added 'oz' command line tumbler.
+  - Added backend API which can deliver xml, yaml, or plaintext payloads.
+  - Changed session login system to cookie login system, allowing indefinite logins.
   
 1.1.3:
   - Fixed annoying pagination cache bug (tags were not being included in key)
