@@ -1,12 +1,12 @@
 class ThemeController < ApplicationController
-  caches_page :stylesheets, :javascript, :images
+  caches_page :stylesheets, :javascripts, :images
   
   def stylesheets
     render_theme_item :stylesheets, params[:filename], 'text/css'
   end
 
-  def javascript
-    render_theme_item :javascript, params[:filename], 'text/javascript'
+  def javascripts
+    render_theme_item :javascripts, params[:filename], 'text/javascript'
   end
 
   def images
