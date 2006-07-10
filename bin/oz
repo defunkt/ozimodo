@@ -34,15 +34,7 @@ class Oz
     @@debug = false
 
     def tumble(args)
-      if args.index('--clear-cache')
-        clear_cache
-        exit
-      end
-
-      if i = args.index('--debug')
-        args.delete_at(i)
-        @@debug = true
-      end
+      check_oz_switches(args)
 
       host, port, cookie = load_cache
 
@@ -166,6 +158,70 @@ class Oz
 
     def debug(msg)
       info msg if @@debug
+    end
+
+    def check_oz_switches(args)
+      if args.index('--clear-cache')
+        clear_cache
+        exit
+      end
+
+      if i = args.index('--debug')
+        args.delete_at(i)
+        @@debug = true
+      end
+
+      if i = args.index('--help')
+        show_help
+        exit
+      end
+    end
+
+    def show_help
+      break_length = 29
+      puts "Usage: oz [command] [arguments] <switch>"
+
+      show_switch = proc { |s| (' ' * 4) + sprintf("%-#{break_length}s", s) }
+      
+      print show_switch.call('--site user:pass@host:port')
+      puts "Login.  Once you do this, your login cookie and server will be cached"
+
+      print show_switch.call('--debug')
+      puts "Print debug information"
+
+      print show_switch.call('--clear-cache')
+      puts "Clear your local login/site cache"
+
+      print show_switch.call('--help')
+      puts "This message"
+
+      puts
+      puts "Remote Commands:"
+
+      print show_switch.call('commands')
+      puts "Get a list of valid commands from the server"
+
+      print show_switch.call('types')
+      puts "Get a list of valid type commands and their arguments from the server"
+
+      print show_switch.call('list')
+      puts "See a list of recent posts"
+
+      print show_switch.call('show #')
+      puts "Examine post number #"
+
+      puts
+      puts "Example usage:"
+      puts "    $ ./oz --site mark:love@ozmm.org list"
+      puts "    => Login successful, you don't have to use --site anymore."
+      puts "    <list of recent posts>"
+      puts "    $ ./oz show 12"
+      puts "    <YAML description of post 12>"
+      puts "    $ ./oz image --src http://ozmm.org/images/smiley_face.jpg --alt 'smile!' --tags 'photos faces'"
+      puts "    --- Post saved with id of 13"
+      
+      puts
+      puts "   See http://ozimodo.rubyforge.org/oz.html for a more in-depth tutorial."
     end
 
   end
