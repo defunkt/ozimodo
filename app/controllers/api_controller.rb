@@ -86,12 +86,12 @@ private
     false
   end
 
-  # don't want to include user password and just need tags as an array
+  # don't want to include user password and just need tags as a string
   def hasherize_post(post)
     if post.is_a? Array
       post.map { |p| hasherize_post(p) }
     else
-      { post.id => post.attributes.merge({ 'tags' => post.tags.map(&:name), 'user' => post.user.name }) }
+      { post.id => post.attributes.merge({ 'tags' => post.tags.map(&:name).join(' '), 'user' => post.user.name }) }
     end
   end
 end
