@@ -29,7 +29,7 @@ class ApiController < ApplicationController
   end
 
   def whoami
-    respond_with :user => current_user[:name]
+    respond_with :user => current_user[:name], :host => request.host, :port => request.port
   end
 
   def commands
