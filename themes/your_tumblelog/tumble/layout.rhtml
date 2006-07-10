@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>your tumblelog <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
+  <title><%= TUMBLE['name'] %> <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
   <%= stylesheet_link_tag '/stylesheets/theme/tumble', '/stylesheets/theme/types' %>
   <%= javascript_include_tag '/javascripts/theme/application' %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
