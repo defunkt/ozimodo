@@ -1,7 +1,12 @@
+require_dependency 'lib/ozimodo/cookie_auth'
+
 class TumbleController < ApplicationController      
-  caches_page :list, :tag, :show
+  include Ozimodo::CookieAuth
   session :off
+
+  caches_page :list, :tag, :show
   layout 'tumble/layout.rhtml'
+
   helper ThemeHelper 
 
   # list all the posts

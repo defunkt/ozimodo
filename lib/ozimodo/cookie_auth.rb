@@ -57,4 +57,10 @@ module Ozimodo::CookieAuth
   def clear_cookie
     cookies.delete(:ozimodo)
   end
+
+  def self.included(klass)
+    klass.helper_method :logged_in?
+    klass.helper_method :current_user
+  end
+
 end

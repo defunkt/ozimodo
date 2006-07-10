@@ -1,3 +1,5 @@
+require_dependency 'lib/ozimodo/cookie_auth'
+
 class AdminController < ApplicationController
   include Ozimodo::CookieAuth      # login stuff
   session :on
