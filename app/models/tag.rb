@@ -3,7 +3,7 @@ class Tag < ActiveRecord::Base
   
   # get rid of any tags that aren't attached to a post
   def self.prune_tags
-    find(:all).each { |t| t.destroy if t.posts.size == 0 }
+    find(:all, :include => [:posts]).each { |t| t.destroy if t.posts.size == 0 }
   end
 
   def self.find_most_popular(limit = 5)
