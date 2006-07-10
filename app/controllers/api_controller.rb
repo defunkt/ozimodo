@@ -5,13 +5,13 @@ class ApiController < ApplicationController
                 :only => [ :post, :edit, :delete ] # we do anything that modifies stuff
 
   def list
-    respond_with Post.find(:all, :limit => 20, :order => 'created_at DESC').map(&:attributes)
+    respond_with hasherize_post(Post.find(:all, :limit => 20, :order => 'created_at DESC', :include => [:tags, :user]))
   end
 
   def show
     begin
       if params[:id].to_i > 0
-        respond_with Post.find(params[:id], :include => [:tags, :user])
+        respond_with hasherize_post(Post.find(params[:id], :include => [:tags, :user]))
       else
         respond_with :error => "Give me an ID"
       end
@@ -84,5 +84,14 @@ private
 
     respond_with :error => "You need to login to do that."
     false
+  end
+
+  # don't want to include user password and just need tags as an array
+  def hasherize_post(post)
+    if post.is_a? Array
+      post.map { |p| hasherize_post(p) }
+    else
+      { post.id => post.attributes.merge({ 'tags' => post.tags.map(&:name), 'user' => post.user.name }) }
+    end
   end
 end
