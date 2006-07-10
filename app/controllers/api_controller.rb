@@ -1,8 +1,8 @@
 class ApiController < ApplicationController
   include Ozimodo::CookieAuth      # login's for our API friends too
 
-  before_filter :authorize,                        # run the authorize method before  
-                :only => [ :post, :edit, :delete ] # we do anything that modifies stuff
+  # run the authorize method before we do anything that modifies stuff
+  before_filter :authorize, :only => [ :post, :edit, :delete, :whoami ] 
 
   def list
     respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
@@ -26,6 +26,10 @@ class ApiController < ApplicationController
 
   def version
     respond_with :version => OZIMODO_VERSION
+  end
+
+  def whoami
+    respond_with :user => current_user[:name]
   end
 
   def commands
