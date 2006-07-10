@@ -64,7 +64,7 @@ class ApiController < ApplicationController
       post = Post.new(post_params)
 
       if post.save
-        respond_with "Post saved with id of #{post.id}"
+        respond_with :success => "Post saved with id of #{post.id}"
       else
         respond_with :error => "Posting error."
       end
@@ -81,7 +81,7 @@ private
     respond_to do |type|
       type.yaml { render :text => var.to_yaml }
       type.xml  { render :text => var.to_xml }
-      type.text { render :text => var.inspect }
+      type.text { render :text => var.to_yaml.sub("---", '').lstrip } # yaml without the --- starter
     end
   end
 

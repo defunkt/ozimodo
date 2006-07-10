@@ -143,7 +143,7 @@ class Oz
     end
 
     def build_headers(cookie = nil)
-      headers = { 'User-Agent' => USER_AGENT, 'Accept' => 'text/yaml' }
+      headers = { 'User-Agent' => USER_AGENT, 'Accept' => 'text/plain' }
       cookie ? headers.merge('Cookie' => cookie) : headers
     end
 
@@ -218,7 +218,7 @@ class Oz
       puts "    $ ./oz show 12"
       puts "    <YAML description of post 12>"
       puts "    $ ./oz image --src http://ozmm.org/images/smiley_face.jpg --alt 'smile!' --tags 'photos faces'"
-      puts "    --- Post saved with id of 13"
+      puts "    success: Post saved with id of 13"
       
       puts
       puts "   See http://ozimodo.rubyforge.org/oz.html for a more in-depth tutorial."
