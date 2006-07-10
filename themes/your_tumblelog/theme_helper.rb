@@ -21,6 +21,7 @@ module ThemeHelper
   # ajaxy editing
   #
   def ajaxy_edit(type, post)
+    return unless logged_in? && controller.perform_caching == false
     oz_render_theme_partial "ajax/edit_#{type}", { :locals => { :post => post } }
   end
   
