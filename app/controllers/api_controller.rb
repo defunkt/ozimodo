@@ -24,6 +24,14 @@ class ApiController < ApplicationController
     respond_with TYPES.map { |k, v| { k => (v ? v.keys : 'content') } }
   end
 
+  def commands
+    commands  = self.methods - %w[login method_missing]
+    commands -= ApplicationController.instance_methods
+    commands -= Ozimodo::CookieAuth.instance_methods
+    commands += TYPES.keys
+    respond_with commands.sort
+  end
+
   def login
     user = User.new(:name => params[:username], :password => params[:password])
     logged_in_user = user.try_to_login
