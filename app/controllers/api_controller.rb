@@ -33,15 +33,23 @@ class ApiController < ApplicationController
 
   def method_missing(meth, *args)
     if TYPES.keys.include?(meth.to_s)
-      return unless authorize
+      return respond_with(:error => "You must login.") unless authorize
       return respond_with(:error => "Missing post parameters.") unless params[:post].is_a?(Hash)
 
-      if params[:post][:tags]
-        params[:post][:tag_names] = params[:post][:tags]
-        params[:post].delete(:tags)
+      # fix stupid legacy mistake of mine
+      params[:post][:tag_names] = params[:post][:tags] if params[:post][:tags]
+
+      # special case for 'link' type
+      if meth.to_s == 'link' && params[:post][:url] && params[:post][:text]
+        params[:post][:content] = %["#{params[:post][:text]}":#{params[:post][:url]}]
       end
-      
-      post = Post.new(params[:post].merge(:post_type => meth.to_s, :user_id => current_user[:id]))
+
+      # we only want good post parameters
+      post_params = {}
+      %w[content tag_names title].each { |key| post_params[key] = (params[:post][key] || '') }
+      post_params.merge!(:post_type => meth.to_s, :user_id => current_user[:id])
+
+      post = Post.new(post_params)
 
       if post.save
         respond_with "Post saved with id of #{post.id}"
