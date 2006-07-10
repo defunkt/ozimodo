@@ -1,7 +1,10 @@
 require 'test/unit'
 require 'fileutils'
 require 'tempfile'
-require 'oz'
+load 'oz'
+
+# don't let oz exit when it wants to
+Kernel.send(:define_method, :exit, proc {})
 
 class OzTest < Test::Unit::TestCase
 
@@ -32,6 +35,14 @@ class OzTest < Test::Unit::TestCase
     assert_equal '127.0.0.1', YAML.load(File.read('ozidom'))['host']
     assert_equal 3000, YAML.load(File.read('ozidom'))['port']
     FileUtils.rm 'ozidom'
+  end
+
+  def test_load_cache_or_login
+    assert false
+  end
+
+  def test_cache_info_from_switch
+    assert false
   end
 
   def test_do_login_good
@@ -135,6 +146,32 @@ class OzTest < Test::Unit::TestCase
     assert_equal true, File.exists?('clearme')
     Oz.clear_cache
     assert_equal false, File.exists?('clearme')
+  end
+
+  def test_check_switches_clear_cache
+    $stdout = StringIO.new
+    ENV['OZCACHE'] = 'clearme'
+    FileUtils.touch 'clearme'
+    assert_equal true, File.exists?('clearme')
+    Oz.check_oz_switches(%w[nothing new --clear-cache something else])
+    assert_equal false, File.exists?('clearme')
+    $stdout = STDOUT
+  end
+
+  def test_check_switches_debug_is_on
+    Oz.check_oz_switches(%w[list --debug leet haxor])
+    assert Oz.send(:class_variable_get, :@@debug)
+  end
+
+  def test_check_switches_help_prints_something
+    $tmpout, $stdout = '', StringIO.new
+    Kernel.send(:alias_method, :real_print, :print)
+    Kernel.send(:define_method, :print, proc { |s| $tmpout << s.to_s })
+    Oz.check_oz_switches(%w[idont commands --help])
+    assert /--site/ =~ $tmpout
+    assert /--debug/ =~ $tmpout
+    Kernel.send(:alias_method, :print, :real_print)
+    $stdout = STDOUT
   end
 
 end

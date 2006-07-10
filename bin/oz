@@ -36,23 +36,7 @@ class Oz
     def tumble(args)
       check_oz_switches(args)
 
-      host, port, cookie = load_cache
-
-      if args.first =~ /^--(login|site)/
-        case args.first
-        when '--login'
-          raise CantLoginWithoutHost unless host
-          user, pass = parse_login_switch(args[1])
-        when '--site'
-          host, user, pass, port = parse_site_switch(args[1]) 
-        end
-        args.slice!(0, 2)
-
-        raise LoginFailed unless cookie = do_login(host, port, user, pass)
-
-        info "Login successful, you don't have to use --site anymore."
-        write_to_cache(:host => host, :port => port.to_i, :cookie => cookie)
-      end
+      host, port, cookie = load_cache_or_login(args)
 
       error "No cache file or host info found.  Please run the script with --site user:pass@host:port." unless host
 
@@ -109,12 +93,20 @@ class Oz
 
     def clear_cache
       files = [ENV['OZCACHE'], File.expand_path('~') + '/.ozcache'].compact
-      info "No cache exists." if files.size == 0
+
+      return info("No cache exists.") unless files.any? { |f| File.exists?(f) }
+
       while file = files.shift
         next unless File.exists? file
         File.unlink file
         info "Deleted cache file #{file}"
       end
+    end
+
+    def load_cache_or_login(args)
+      host, port, cookie = load_cache
+      host, port, cookie = cache_info_from_switch(host, args) if args.any? { |a| a =~ /site|login/ }
+      [host, port, cookie]
     end
 
     def load_cache
@@ -123,7 +115,33 @@ class Oz
       else return false
       end
       yaml = YAML.load(File.read(file))
+      debug "Loaded cache file #{file}"
       yaml['host'] ? [yaml['host'], yaml['port'], yaml['cookie']] : false
+    end
+
+    def cache_info_from_switch(host, args)
+      if ((i = args.index('--login')) || (i = args.index('--site')))
+        switch_type, info = args[i], args[i+1]
+        args.delete_at(i+1)
+        args.delete_at(i)
+      else
+        return false
+      end
+
+      case switch_type
+      when '--login'
+        raise CantLoginWithoutHost unless host
+        user, pass = parse_login_switch(info)
+      when '--site'
+        host, user, pass, port = parse_site_switch(info)
+      end
+
+      raise LoginFailed unless cookie = do_login(host, port, user, pass)
+
+      info "Login successful, you don't have to use --site anymore."
+      write_to_cache(:host => host, :port => port.to_i, :cookie => cookie)
+
+      [host, port, cookie]
     end
 
     def build_url(host, port, args)
@@ -170,14 +188,14 @@ class Oz
         exit
       end
 
+      if args.index('--help')
+        show_help
+        exit
+      end
+
       if i = args.index('--debug')
         args.delete_at(i)
         @@debug = true
-      end
-
-      if i = args.index('--help')
-        show_help
-        exit
       end
     end
 
