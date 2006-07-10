@@ -12,7 +12,7 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 development:
   adapter: mysql
-  database: ozmm_tumblelog
+  database: tumblelog_development
   username: root
   password:
   host: localhost
