@@ -63,8 +63,12 @@ class Oz
 
       debug "Hitting #{url} with headers #{headers.inspect}."
       
-      open(url, headers) do |body|
-        puts body.read
+      begin
+        open(url, headers) do |body|
+          puts body.read
+        end
+      rescue => e
+        error "There was an error connecting to http://#{host}:#{port}:\n   #{e}"
       end
     end
 
