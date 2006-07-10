@@ -1,6 +1,7 @@
 module TumbleHelper
   # if the types partial doesn't exist, serve post
   def oz_type_partial(post_type)
+    # this is messy
     types_base = 'tumble/types/'
     if File.exists? controller.template_root + '/' + types_base + '_' + post_type + '.rhtml'
       types_base + post_type
@@ -119,4 +120,9 @@ module TumbleHelper
     x = x.gsub(/\"(.*?)\":http:\/\/([^ ]*)( )?/,'\1 ') unless x.blank?
     x
   end  
+
+  # messy.  sorry.
+  def oz_render_theme_partial(partial, options = {})
+    render({:partial => ('tumble/' + partial) }.merge(options))
+  end
 end

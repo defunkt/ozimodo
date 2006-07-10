@@ -1,0 +1,5 @@
+<div class="admin-actions"><span class="admin-bracket">admin: </span> 
+  <%= link_to_function 'title', "Element.toggle('edit-title#{post.id}');if ($('post-title#{post.id}').innerHTML != 'empty-title') { Element.toggle('post-header#{post.id}') }" %> | 
+  <%= link_to_function 'body', "Element.toggle('edit-body#{post.id}');Element.toggle('post-body#{post.id}')" %> | 
+  <%= link_to_function 'tags', "Element.toggle('edit-tags#{post.id}');if ($('post-tags#{post.id}').innerHTML != 'empty-tags') { Element.toggle('post-tags#{post.id}') }" %>
+</div>

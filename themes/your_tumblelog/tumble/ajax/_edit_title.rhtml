@@ -1,0 +1,12 @@
+<div class="edit-title" id="edit-title<%= post.id %>" style="display:none;">
+  <%= form_remote_tag :update => "post-title#{post.id}", :url => { :controller => 'admin', 
+    :action => 'ajax_edit_title' },
+    :complete => "Element.toggle('edit-title#{post.id}');
+    header = $('post-header#{post.id}');
+    div = $('post-title#{post.id}');
+    if (div.innerHTML == 'empty-title') { header.style.display = 'none'; } else { header.style.display = ''; } " %>
+  <%= hidden_field_tag 'post_id', post.id %>
+  <%= text_field_tag 'post_title', post.title %>
+  <%= submit_tag 'save' %>
+  <%= end_form_tag %>
+</div>

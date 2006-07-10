@@ -1,0 +1,11 @@
+<div id="edit-tags<%= post.id %>" style="display:none;">
+  <%= form_remote_tag :update => "post-tags#{post.id}", :url => { :controller => 'admin', 
+                                                        :action => 'ajax_edit_tag_names' },
+                                                        :complete => "Element.toggle('edit-tags#{post.id}');
+                                                                      div = $('post-tags#{post.id}');
+                                                                      if (div.innerHTML == 'empty-tags') { div.style.display = 'none'; } else { div.style.display = ''; } " %>
+  <%= hidden_field_tag 'post_id', post.id %>
+  <%= text_field_tag 'post_tag_names', post.tag_names %>
+  <%= submit_tag 'save' %>
+  <%= end_form_tag %>
+</div>

@@ -9,14 +9,19 @@ module ThemeHelper
   # get an array of tag names and generate a comma separated, linked string of tags
   def linked_tags_with_commas(tags)
     tags.dup.map { |tag|
-      link_to(tag.name, :controller => 'tumble', :action => 'tag', :tag => tag.name)
+      tag_link(tag.name)
     }.join(', ')
   end
 
   def popular_tags
-    popular = Tag.find_most_popular(4).map { |t| tag_link(t.name) }
-    popular[-1] = "and " + popular.last
-    popular.join(', ')
+    Tag.find_most_popular(4).map { |t| tag_link(t.name) }.to_sentence
+  end
+
+  #
+  # ajaxy editing
+  #
+  def ajaxy_edit(type, post)
+    oz_render_theme_partial "ajax/edit_#{type}", { :locals => { :post => post } }
   end
   
   #

@@ -1,4 +1,5 @@
 require_dependency 'lib/ozimodo/cookie_auth'
+require_dependency "themes/#{TUMBLE['theme']}/theme_helper"
 
 class TumbleController < ApplicationController      
   include Ozimodo::CookieAuth

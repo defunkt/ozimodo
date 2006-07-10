@@ -4,6 +4,8 @@
   <title><%= TUMBLE['name'] %> <%= "&raquo; #{params[:tag]}" if params[:tag] %></title>
   <%= stylesheet_link_tag '/stylesheets/theme/tumble', '/stylesheets/theme/types' %>
   <%= javascript_include_tag '/javascripts/theme/application' %>
+  <%= javascript_include_tag '/javascripts/prototype' %>
+  <%= javascript_include_tag '/javascripts/controls' %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <%= auto_discovery_link_tag :atom, {:controller => 'feed',:action => 'atom.xml'}, :title => 'Atom Feed' %>  
 </head>

@@ -114,6 +114,45 @@ class AdminController < ApplicationController
     flash[:notice] = "Cache killed."
     redirect_to :back
   end
+
+  def method_missing(m, *args)
+    # check if it's an ajax method
+    if self.respond_to?(return_method = "#{m}_return")
+      return unless request.post? && logged_in?
+
+      post = Post.find(params[:post_id])
+
+      # ajax_edit_title => title
+      property = m.to_s.split('_')[2..-1].join('_')
+
+      post.send("#{property}=", self.instance_eval("params[:post_#{property}]"))
+
+      post.save
+
+      self.send(return_method, post)
+    else
+      raise NoMethodError, m.to_s
+    end
+  end
+
+  def ajax_edit_title_return(post)
+    render :text => post.title.blank? ? "empty-title" : post.title
+  end
+
+  def ajax_edit_tag_names_return(post)
+    render :text => unless post.tag_names.empty?
+                      post.tag_names.split.map { |t| 
+                        '<a href="' << url_for({:controller => 'tumble', :action => 'tag', :tag => t}) << %[" class="tag_link">#{t}</a>]
+                      }.join(' ')
+                    else
+                      'empty-tags'
+                    end
+  end
+
+  def ajax_edit_content_return(post)
+    post.yaml_content_to_hash!
+    render :partial => "post", :locals => { :post => post }
+  end
   
   
   #

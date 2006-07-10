@@ -1,0 +1,9 @@
+<div class="edit-body" id="edit-body<%= post.id %>" style="display:none;">
+  <%= form_remote_tag :update => "post-body#{post.id}", :url => { :controller => 'admin', 
+                                                                  :action => 'ajax_edit_content' },
+                                                                  :complete => "Element.toggle('edit-body#{post.id}');Element.toggle('post-body#{post.id}')" %>
+  <%= hidden_field_tag 'post_id', post.id %>
+  <%= text_area_tag 'post_content', post.content_to_yaml, :cols => 50, :rows => 4 %><br/>
+  <%= submit_tag 'save' %>
+  <%= end_form_tag %>
+</div>

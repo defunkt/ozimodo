@@ -14,10 +14,15 @@
       <%= link_to '#', oz_clean_date_link(post.created_at) + '/' %>
     </span>
   </div>
+  <%= ajaxy_edit(:title, post) %>
+
+  <%= ajaxy_edit(:links, post) %>
   
   <div class="post-body" id="post-body<%= post.id %>">
     <%= render :partial => oz_type_partial(post.post_type), :locals => { :content => post.content } %>
   </div>
+
+  <%= ajaxy_edit(:body, post) %>
   
   <div class="post-tags">
     <% unless post.tags.empty? -%> tagged with <% end %>
@@ -25,5 +30,7 @@
       <%= linked_tags_with_commas(post.tags) %>
     </span>
   </div>
-  
+
+  <%= ajaxy_edit(:tags, post) %>
+
 </div>
