@@ -5,7 +5,7 @@ class ApiController < ApplicationController
                 :only => [ :post, :edit, :delete ] # we do anything that modifies stuff
 
   def list
-    respond_with hasherize_post(Post.find(:all, :limit => 20, :order => 'created_at DESC', :include => [:tags, :user]))
+    respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
   end
 
   def show
