@@ -151,7 +151,7 @@ class Oz
     end
 
     def build_headers(cookie = nil)
-      headers = { 'User-Agent' => USER_AGENT, 'Accept' => 'text/plain' }
+      headers = { 'User-Agent' => USER_AGENT, 'Accept' => 'text/yaml' }
       cookie ? headers.merge('Cookie' => cookie) : headers
     end
 
