@@ -24,6 +24,10 @@ class ApiController < ApplicationController
     respond_with TYPES.map { |k, v| { k => (v ? v.keys : 'content') } }
   end
 
+  def version
+    respond_with :version => OZIMODO_VERSION
+  end
+
   def commands
     commands  = self.methods - %w[login method_missing]
     commands -= ApplicationController.instance_methods
