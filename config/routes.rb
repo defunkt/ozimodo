@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   # theme stuffs
   map.connect 'stylesheets/theme/:filename', :controller => 'theme', :action => 'stylesheets'
-  map.connect 'javascripts/theme/:filename', :controller => 'theme', :action => 'javascript'
+  map.connect 'javascripts/theme/:filename', :controller => 'theme', :action => 'javascripts'
   map.connect 'images/theme/:filename', :controller => 'theme', :action => 'images'
   
   # pretty-fy the feed urls
