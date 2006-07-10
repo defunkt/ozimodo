@@ -79,6 +79,13 @@ class Post < ActiveRecord::Base
       posts = posts & Tag.find_by_name(tag).posts
     end
   end
+
+  # find all posts with a single tag
+  def self.find_by_tag(tag)
+    find(:all, :joins => 'JOIN posts_tags pt ON pt.post_id = posts.id', 
+         :conditions => ['pt.tag_id = tags.id AND tags.name = ?', tag],
+         :include => [:tags, :user], :order => 'created_at DESC')
+  end
   
   # get an array of months which have posts.
   def self.archived_months

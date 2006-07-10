@@ -24,6 +24,15 @@ class ApiController < ApplicationController
     respond_with TYPES.map { |k, v| { k => (v ? v.keys : 'content') } }
   end
 
+  def tags
+    # order by most popular.  could do this in sql but i am lazy and ruby is my best friend.
+    respond_with Tag.find(:all, :include => :posts).map { |t| { t.name => t.posts.size } }.sort_by { |k| k[k.keys.first] }.reverse
+  end
+
+  def posts_with_tag
+    respond_with params[:id] ?  hasherize_post(Post.find_by_tag(params[:id])) : { :error => "Please supply a tag" }
+  end
+
   def version
     respond_with :version => OZIMODO_VERSION
   end
