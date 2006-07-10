@@ -271,6 +271,10 @@ Make sure that ozimodo/public/cache are writable to your web server.
 If your app is failing for no apparent reason in production mode, this may be 
 the reason.
 
+Note that as of 1.2, caching is *off* by default.  To turn it back on, open up
+ozimodo/config/environments/production.rb and change perform_caching from
+false to true.
+
 
 === ozimodo themes are like baseball cards!  Trade them!
 

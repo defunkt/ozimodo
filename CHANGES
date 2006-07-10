@@ -5,7 +5,7 @@
   * Changed caching implementation from messy fragments to clean page caching.
   * Added public/cache for page caching.
   * Cache is cleared when production app is launched.
-  * Took out inline Ajax editing.  Did anyone even want it?
+  * Cleaned up Ajaxy inline editing.
   * Changed components to faster 'themes', big refactor in tumble_controller
   * Merged types_helper and component_helper into theme_helper
   * Cleaned up default templates and helpers
