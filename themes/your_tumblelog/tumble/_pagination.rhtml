@@ -3,7 +3,7 @@
     <span id="pagination">
       <% if pagination.current.next -%>
         <span class="back">
-          <%= link_to 'Back in time', { :page => pagination.current.next } -%>
+          <%= link_to '<span style="color:red;">&laquo;</span> Back in time', { :page => pagination.current.next } -%>
         </span>
       <% end -%>
       <% if pagination.current.next and pagination.current.previous -%>
@@ -11,7 +11,7 @@
       <% end -%>
       <% if pagination.current.previous -%>        
         <span class="next">
-          <%= link_to 'To the future!', 
+          <%= link_to 'To the future! <span style="color:red;">&raquo;</span>', 
               pagination.current.previous.to_i == 1 ? '/' : { :page => pagination.current.previous } -%>
         </span>
       <% end -%>

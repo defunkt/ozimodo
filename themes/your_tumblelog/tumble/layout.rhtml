@@ -24,6 +24,8 @@
   <div id="content">
     <%= yield %> 
   </div>
+
+  <%= render :partial => 'pagination', :locals => { :pagination => @post_pages } %>
   
   <div id="footer">
     <div class="powered-by">
