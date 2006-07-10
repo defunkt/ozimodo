@@ -64,6 +64,8 @@ class ApiController < ApplicationController
 private
   # wrap up our response idiom
   def respond_with(var)
+    var.stringify_keys! if var.is_a? Hash
+
     respond_to do |type|
       type.yaml { render :text => var.to_yaml }
       type.xml  { render :text => var.to_xml }
