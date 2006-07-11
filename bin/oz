@@ -42,7 +42,6 @@ class Oz
         host, port, cookie = load_cache_or_login(args)
       end
 
-
       error "No cache file or host info found.  Please run the script with --site user:pass@host:port." unless host
 
       url = build_url(host, port, args)
@@ -62,10 +61,12 @@ class Oz
     end
 
     def do_login(host, port, user, pass)
-      debug "Tried to login to #{host}:#{port} as #{user}/#{pass}."
+      uri = URI.parse("http://#{host}")
+      uri.send(:set_port, port)
+      debug "Tried to login to #{uri.host}:#{port}#{uri.path} as #{user}/#{pass}."
       begin
-        site = Net::HTTP.new(host, port)
-        res  = site.post2('/api/login', "username=#{user}&password=#{pass}", build_headers)
+        site = Net::HTTP.new(uri.host, uri.port)
+        res  = site.post2("#{uri.path}/api/login", "username=#{user}&password=#{pass}", build_headers)
       rescue Errno::ECONNREFUSED 
         error "Couldn't connect to http://#{host}:#{port} to login."
       end
@@ -167,7 +168,7 @@ class Oz
       port = (port == 80) ? '' : ":#{port}"
       domain = host =~ /([^\/]+)\/(.+)/ ? "#{$1}#{port}/#{$2}" : "#{host}#{port}"
       url  = "http://#{domain}/api/"
-      url << args.shift   # something like 'list' or 'show' -- the page you want to hit
+      url << args.shift # something like 'list' or 'show' -- the page you want to hit
       url << "/#{args.shift}" if args.size.nonzero? unless args.first =~ /^--/    # the '33' part of /api/show/33
 
       # turns --link http://ozmm.org into &post[link]=http://ozmm.org
