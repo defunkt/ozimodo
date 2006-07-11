@@ -90,6 +90,16 @@ class OzTest < Test::Unit::TestCase
     end
   end
 
+  def test_parse_at_switch
+    args = %w[--at http://ozmm.org] 
+    assert_equal ['ozmm.org', 80], Oz.parse_at_switch(args)
+  end
+  
+  def test_parse_at_switch_with_port
+    args = %w[--at http://onepointzero.com:4000] 
+    assert_equal ['onepointzero.com', 4000], Oz.parse_at_switch(args)
+  end
+
   def test_build_url_no_params
     host = 'ozmm.org'
     port = 80

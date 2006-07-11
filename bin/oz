@@ -36,7 +36,12 @@ class Oz
     def tumble(args)
       check_oz_switches(args)
 
-      host, port, cookie = load_cache_or_login(args)
+      if args.include?('--at')
+        host, port = parse_at_switch(args) 
+      else
+        host, port, cookie = load_cache_or_login(args)
+      end
+
 
       error "No cache file or host info found.  Please run the script with --site user:pass@host:port." unless host
 
@@ -70,6 +75,19 @@ class Oz
     def parse_site_switch(site)
       raise BadFormatOfSiteSwitch unless site =~ /^(http:\/\/)?(.+):(.+)@([^:]+):?(\d*)$/
       [$4, $2, $3, ($5.empty? ? 80 : $5)]
+    end
+
+    def parse_at_switch(args)
+      if i = args.index('--at')
+        info = args[i+1]
+        args.delete_at(i+1)
+        args.delete_at(i)
+      else
+        return false
+      end
+
+      raise BadFormatOfAtSwitch unless info =~ /^(http:\/\/)?([^:!]+):?(\d*)$/
+      [$2, ($3.empty? ? 80 : $3).to_i]
     end
 
     def parse_login_switch(login)
