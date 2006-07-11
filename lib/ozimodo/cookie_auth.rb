@@ -1,7 +1,7 @@
 require 'digest/md5'
 
 module Ozimodo::CookieAuth
-  SALT = "ahal3th8iht3a#T*Hhas"
+  SALT = ::TUMBLE['salt'] unless defined? SALT
 
   def set_logged_in(user, permanent = false)
     set_cookie(user.id, user.name, permanent)
@@ -46,8 +46,7 @@ module Ozimodo::CookieAuth
   end
 
   def hash(id, name)
-    salt = (TUMBLE && TUMBLE['salt'] ? TUMBLE['salt'] : nil) || SALT
-    Digest::MD5.hexdigest([salt, id, name].join(',' ))
+    Digest::MD5.hexdigest([SALT, id, name].join(',' ))
   end
 
   def hash_valid?(id, name, hash)
