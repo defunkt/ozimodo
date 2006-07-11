@@ -226,6 +226,9 @@ class Oz
       print show_switch.call('--site user:pass@host:port')
       puts "Login.  Once you do this, your login cookie and server will be cached"
 
+      print show_switch.call('--at host:port')
+      puts "Hit a specific host once.  Use this for hitting APIs you don't want to login to."
+
       print show_switch.call('--debug')
       puts "Print debug information"
 
