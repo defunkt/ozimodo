@@ -58,7 +58,7 @@ class ApiController < ApplicationController
 
   def method_missing(meth, *args)
     if TYPES.keys.include?(meth.to_s)
-      return respond_with(:error => "You must login.") unless authorize
+      return unless authorize
       return respond_with(:error => "Missing post parameters.") unless params[:post].is_a?(Hash)
 
       # fix stupid legacy mistake of mine
