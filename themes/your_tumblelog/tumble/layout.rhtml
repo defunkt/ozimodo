@@ -27,7 +27,7 @@
     <%= yield %> 
   </div>
 
-  <%= render :partial => 'pagination', :locals => { :pagination => @post_pages } %>
+  <%= render :partial => 'pagination', :locals => { :pagination => @post_pages } if @post_pages %>
   
   <div id="footer">
     <div class="powered-by">
