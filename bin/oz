@@ -165,7 +165,8 @@ class Oz
     def build_url(host, port, args)
       return unless args.size.nonzero?
       port = (port == 80) ? '' : ":#{port}"
-      url  = "http://#{host}#{port}/api/"
+      domain = host =~ /([^\/]+)\/(.+)/ ? "#{$1}#{port}/#{$2}" : "#{host}#{port}"
+      url  = "http://#{domain}/api/"
       url << args.shift   # something like 'list' or 'show' -- the page you want to hit
       url << "/#{args.shift}" if args.size.nonzero? unless args.first =~ /^--/    # the '33' part of /api/show/33
 
@@ -282,4 +283,4 @@ class Hash
   end
 end
 
-Oz.tumble(ARGV.dup) if $0 == __FILE__
+Oz.tumble(ARGV.dup) unless $DONT_RUN
