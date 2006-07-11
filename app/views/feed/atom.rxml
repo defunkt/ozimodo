@@ -13,7 +13,7 @@ xml.feed "version" => "0.3", "xml:lang"=>"en-US", "xmlns"=>"http://purl.org/atom
 
     xml.entry do
   
-#      xml.author { xml.name post.user.name }
+      xml.author { xml.name post.user.name }
       xml.id "tag:#{controller.request.host},2005:ozimodo-#{post.id}"
 
       xml.issued post.created_at.xmlschema
