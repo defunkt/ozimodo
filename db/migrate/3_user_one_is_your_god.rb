@@ -4,6 +4,6 @@ class UserOneIsYourGod < ActiveRecord::Migration
   end
 
   def self.down
-    raise "Migrateion UserOneIsYourGod Not Reversible!"
+    puts "Migration UserOneIsYourGod not reversible... not a big deal."
   end
 end

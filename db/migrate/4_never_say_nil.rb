@@ -5,6 +5,6 @@ class NeverSayNil < ActiveRecord::Migration
   end
 
   def self.down
-    raise "Migration NeverSayNil Not Reversible!"
+    puts "Migration NeverSayNil not reversible... not a big deal."
   end
 end
