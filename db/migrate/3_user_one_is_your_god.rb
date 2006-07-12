@@ -1,9 +1,9 @@
 class UserOneIsYourGod < ActiveRecord::Migration
   def self.up
-    execute "ALTER TABLE posts MODIFY COLUMN user_id INT(11) DEFAULT 1"
+    change_column :posts, :user_id, :integer, :default => 1
   end
 
   def self.down
-    execute "ALTER TABLE posts MODIFY COLUMN user_id INT(11) DEFAULT NULL"
+    raise "Migrateion UserOneIsYourGod Not Reversible!"
   end
 end

@@ -1,6 +1,7 @@
 1.2.1
   * Fixed bug in API causing special post type posts to fail
   * Added init.rb to themes directory, loaded by TumbleController
+  * Fix migrations 3 and 4 to be cross platform [Ben Bleything]
 
 1.2
   * Added eager loading for posts in list view
