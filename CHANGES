@@ -1,3 +1,6 @@
+1.2.1
+  * Fixed bug in API causing special post type posts to fail
+
 1.2
   * Added eager loading for posts in list view
   * Allow spaces in tag urls
