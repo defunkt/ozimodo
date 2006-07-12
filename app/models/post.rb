@@ -7,7 +7,11 @@ class Post < ActiveRecord::Base
   # call yamlize_content after we load each record, to translate its content
   # from yaml to a hash (if necessary)
   def after_find() yaml_content_to_hash! end
-  
+
+  def before_save
+    content_to_yaml! if content.is_a? Hash
+  end
+ 
   # yamlize in place
   def yaml_content_to_hash!
     self.content = yaml_content_to_hash

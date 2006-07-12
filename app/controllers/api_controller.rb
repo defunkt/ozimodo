@@ -64,14 +64,23 @@ class ApiController < ApplicationController
       # fix stupid legacy mistake of mine
       params[:post][:tag_names] = params[:post][:tags] if params[:post][:tags]
 
+      # get this type's parameters
+      TYPES[meth.to_s].keys.each do |key|
+        params[:post][:content] ||= {}
+        params[:post][:content][key] = params[:post][key]
+      end if TYPES[meth.to_s]
+
       # special case for 'link' type
       if meth.to_s == 'link' && params[:post][:url] && params[:post][:text]
         params[:post][:content] = %["#{params[:post][:text]}":#{params[:post][:url]}]
       end
 
-      # we only want good post parameters
+      # get the good post parameters
       post_params = {}
-      %w[content tag_names title].each { |key| post_params[key] = (params[:post][key] || '') }
+      %w[content tag_names title].each do |key| 
+        post_params[key] = (params[:post][key] || '')
+      end
+
       post_params.merge!(:post_type => meth.to_s, :user_id => current_user[:id])
 
       post = Post.new(post_params)
