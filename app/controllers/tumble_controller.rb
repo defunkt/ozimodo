@@ -1,5 +1,6 @@
 require_dependency 'lib/ozimodo/cookie_auth'
 require_dependency "themes/#{TUMBLE['theme']}/theme_helper"
+require_dependency "themes/#{TUMBLE['theme']}/init" if File.exists?(RAILS_ROOT + "themes/#{TUMBLE['theme']}/init.rb")
 
 class TumbleController < ApplicationController      
   include Ozimodo::CookieAuth
