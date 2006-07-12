@@ -48,6 +48,9 @@ end
 
 TYPES.freeze
 
+# theme_init
+require_dependency "themes/#{TUMBLE['theme']}/theme_init" if File.exists?(File.join(RAILS_ROOT, 'themes', TUMBLE['theme'], 'theme_init.rb'))
+
 # version check information
 VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
                   :page => '/current_version.txt' }
