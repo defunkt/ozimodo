@@ -8,3 +8,6 @@ class ApplicationController < ActionController::Base
     self.class.theme_dir
   end
 end
+
+# theme_init
+require_dependency "themes/#{TUMBLE['theme']}/theme_init" if File.exists?(File.join(RAILS_ROOT, 'themes', TUMBLE['theme'], 'theme_init.rb'))
