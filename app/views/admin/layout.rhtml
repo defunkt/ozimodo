@@ -51,8 +51,8 @@
     <div id="version">
       <%= link_to 'v' + OZIMODO_VERSION, :action => 'up_to_date' -%>
     </div>
-    <% if session[:user_name] %>
-      hey, <%= session[:user_name] %>.&nbsp;
+    <% if current_user[:name] %>
+      hey, <%= current_user[:name] %>.&nbsp;
     <% end %>
     you're on the admin side, where we keep it casual ~ 
     <a href="http://ozimodo.rubyforge.org/">ozimodo</a>

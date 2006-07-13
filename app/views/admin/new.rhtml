@@ -80,6 +80,6 @@
   <tr><th colspan="2" align="center"><%= submit_tag 'Save Your Tumble' %></th></tr>
 </table>
 
-  <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? session[:user_id] : @post.user_id) %>  
+  <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? current_user[:id] : @post.user_id) %>  
       
 <%= end_form_tag %>
