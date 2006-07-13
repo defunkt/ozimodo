@@ -1,7 +1,7 @@
 <% @page_name = "Login" %>
 <%= error_messages_for 'user' %>
 
-<% unless session[:user_id] %>
+<% unless logged_in? %>
 
   <%= form_tag %>
   <table border="0" cellpadding="0" cellspacing="0">
