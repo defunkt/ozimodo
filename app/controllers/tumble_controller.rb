@@ -39,9 +39,10 @@ class TumbleController < ApplicationController
     if tags.size > 1
       @posts = Post.find_by_tags(tags)
     else
-      @post_pages, @posts = paginate :posts, :joins => 'JOIN posts_tags pt ON pt.post_id = posts.id', 
-        :conditions => ['pt.tag_id = tags.id AND tags.name = ?', tags],
-        :include => [:tags, :user], :order => 'created_at DESC', :per_page => TUMBLE['limit']
+      post_ids = Post.find(:all, :joins => 'JOIN posts_tags pt ON pt.post_id = posts.id', :include => :tags,
+                           :conditions => ['pt.tag_id = tags.id AND tags.name = ?', tags]).map(&:id)
+      @post_pages, @posts = paginate :posts, :include => [:tags, :user], :order => 'created_at DESC', 
+                                     :per_page => TUMBLE['limit'], :conditions => ['posts.id IN (?)', post_ids.join(',')]
     end
 
     if @posts.size.nonzero?
