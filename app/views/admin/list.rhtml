@@ -4,6 +4,7 @@
   <tr>
     <th>Title</th>
     <th>Type</th>
+    <th>User</th>
     <th>Date</th>
     <th>&nbsp;</th>
   </tr>
@@ -12,6 +13,7 @@
   <tr>
     <td><%= strip_textile(p.title.length > 0 ? p.title : p.content.to_s)[0..50] %></td>
     <td><%= p.post_type %></td>
+    <td><%= p.user.name %></td>
     <% date = p.created_at -%>
     <td><%= date.year %>-<%= sprintf('%02d', date.month.to_s) %>-<%= sprintf('%02d', date.day.to_s) %></td>
     <td><small><%= link_to 'show', :action => :show, :id => p %> | 

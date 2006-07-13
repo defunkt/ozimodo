@@ -3,6 +3,7 @@
   * Added theme_init.rb to themes directory, loaded by TumbleController
   * Fix migrations 3 and 4 to be cross platform [Ben Bleything]
   * Fixed some big bugs in multi-user posting
+  * Added 'users' field to admin post listing view, made admin layout wider
 
 1.2
   * Added eager loading for posts in list view
