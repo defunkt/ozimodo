@@ -2,7 +2,7 @@ require_dependency File.join(RAILS_ROOT, 'lib', 'ozimodo', 'cookie_auth')
 
 class AdminController < ApplicationController
   include Ozimodo::CookieAuth      # login stuff
-  session :on
+  session :disabled => false
 
   before_filter :authorize,        # run the authorize method before we execute
                 :except => :login  # any methods (except login) to see if the user

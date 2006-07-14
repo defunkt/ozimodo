@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  session :off
+  session :disabled => true
 
   def self.theme_dir
     File.join(RAILS_ROOT, 'themes', TUMBLE['theme'])
