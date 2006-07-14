@@ -1,4 +1,6 @@
 1.2 from 1.1.3:
+  - Changed the 'ruby_code' post type to 'code' post type.  Run 
+    'rake ozimodo:update_code_type' to update your database.
   - Replace app/ directory with 1.2's app/ directory.
   - Replace config/environment.rb with the new.
   - Replace config/tumble.yml with the new.
