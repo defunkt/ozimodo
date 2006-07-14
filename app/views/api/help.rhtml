@@ -1,7 +1,7 @@
 <% if @command  %>
 <%= 
-   if File.exists?("app/views/api/_#{@command}.rhtml")
-     render_partial "api/#{@command}" 
+   if File.exists?("app/views/api/help/_#{@command}.rhtml")
+     render_partial "api/help/#{@command}" 
    else 
      "I don't have a help file for #{@command}.  Sorry"
    end 
