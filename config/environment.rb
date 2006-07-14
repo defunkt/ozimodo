@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 RAILS_GEM_VERSION = '1.1.4'
-OZIMODO_VERSION = '1.2'
+OZIMODO_VERSION = '1.2.1'
 ENV['RAILS_ASSET_ID'] = Time.now.to_i.to_s
 
 # Bootstrap the Rails environment, frameworks, and default configuration
