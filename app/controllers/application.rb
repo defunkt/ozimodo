@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   session :disabled => true
 
   def self.theme_dir
-    File.join(RAILS_ROOT, 'themes', TUMBLE['theme'])
+    THEME_DIR
   end
   def theme_dir
     self.class.theme_dir
@@ -10,4 +10,4 @@ class ApplicationController < ActionController::Base
 end
 
 # theme_init
-require_dependency "themes/#{TUMBLE['theme']}/theme_init" if File.exists?(File.join(RAILS_ROOT, 'themes', TUMBLE['theme'], 'theme_init.rb'))
+require_dependency File.join(THEME_DIR, 'theme_init') if File.exists?(File.join(THEME_DIR, 'theme_init.rb'))
