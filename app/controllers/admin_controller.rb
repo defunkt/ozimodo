@@ -1,4 +1,4 @@
-require_dependency 'lib/ozimodo/cookie_auth'
+require_dependency File.join(RAILS_ROOT, 'lib', 'ozimodo', 'cookie_auth')
 
 class AdminController < ApplicationController
   include Ozimodo::CookieAuth      # login stuff

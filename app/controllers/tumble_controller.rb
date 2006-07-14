@@ -1,5 +1,5 @@
-require_dependency 'lib/ozimodo/cookie_auth'
-require_dependency "themes/#{TUMBLE['theme']}/theme_helper"
+require_dependency File.join(RAILS_ROOT, 'lib', 'ozimodo', 'cookie_auth')
+require_dependency File.join(THEME_DIR, 'theme_helper')
 
 class TumbleController < ApplicationController      
   include Ozimodo::CookieAuth

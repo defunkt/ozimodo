@@ -37,7 +37,7 @@ TUMBLE = YAML.load(File.open(File.join(File.dirname(__FILE__), 'tumble.yml')))
 # initialize constants
 TYPES = {}
 
-THEME_DIR = File.join(File.dirname(__FILE__), '..', 'themes', TUMBLE['theme'])
+THEME_DIR = File.join(RAILS_ROOT, 'themes', TUMBLE['theme'])
 
 # figure out what type of post types we have by looking in the types directory for partials
 # for each partial, check the first line for fields: 
