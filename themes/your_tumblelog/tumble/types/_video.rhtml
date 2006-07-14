@@ -1,0 +1,20 @@
+<%# 
+video_id: text
+blurb: text
+service:
+  type: select
+  options: 
+    - YouTube
+    - Google Video
+    - GameSpot
+-%>
+<% if content.service == 'Google Video' %>
+  <embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId=<%= content.video_id[0...1] == '-' ? '' : '-' -%><%= content.video_id -%>"> </embed>
+<% elsif content.service == 'YouTube' %>
+  <object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/<%= content.video_id -%>"></param><embed src="http://www.youtube.com/v/<%= content.video_id -%>" type="application/x-shockwave-flash" width="425" height="350"></embed></object>
+<% elsif content.service == 'GameSpot' %>
+  <embed src="http://www.gamespot.com/v/<%= content.video_id -%>" type="application/x-shockwave-flash" width="432" height="400"></embed>
+<% end %>
+<% unless content.blurb.blank? %>
+  <%=r content.blurb %>
+<% end %>

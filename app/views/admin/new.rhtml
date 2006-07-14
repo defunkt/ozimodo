@@ -58,7 +58,7 @@
       <tbody id="<%= type -%>" style="display:none;">
         <% hash.each do |field, options| %>
           <tr id="<%= "#{type}-#{field}" -%>">
-            <th><%= field.capitalize %>:</th>
+            <th><%= field.camelize %>:</th>
             <td><%= write_field(type, field, options, @post) -%></td>
           </tr>  
         <% end %>
