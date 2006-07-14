@@ -6,6 +6,7 @@
   * Added 'users' field to admin post listing view, made admin layout wider
   * Fixed bugs in admin views with session => cookie conversion
   * Fixed bug in tag listing
+  * Fixed bug with logged out users in admin layout [Matthias Tarasiewicz]
 
 1.2
   * Added eager loading for posts in list view

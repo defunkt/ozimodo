@@ -51,7 +51,7 @@
     <div id="version">
       <%= link_to 'v' + OZIMODO_VERSION, :action => 'up_to_date' -%>
     </div>
-    <% if current_user[:name] %>
+    <% if logged_in? %>
       hey, <%= current_user[:name] %>.&nbsp;
     <% end %>
     you're on the admin side, where we keep it casual ~ 
