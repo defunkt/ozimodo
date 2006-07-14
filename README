@@ -17,9 +17,7 @@ Project Site: http://ozimodo.rubyforge.org
 Project Page: http://rubyforge.org/projects/ozimodo/
   Complaints: chris[at]ozmm[dot]org
 
-Follow development at the ozimodo backpack page: http://rubyurl.com/Kjb
-
-Also, check us out in IRC on the freenode network in #ozimodo.
+Too: check us out in IRC on the freenode network in #ozimodo.
 
 
 == Lay the Blame
@@ -78,6 +76,18 @@ If you're hosting with the Rails-friendly Dreamhost you may want to check out
 zenchi's guide: Howto Install ozimodo on Dreamhost
 - http://www.zenchic.net/articles/2006/04/18/howto-install-ozimodo-on-dreamhost
 
+Of interest: Joseph DeVivo has noted the above instructions didn't work for him on
+Dreamhost.  He says: 
+
+  chmoding my log and tmp directories to 0666 like in the dreamhost tutorial you link 
+  to actually was breaking my install. chmoding them the way dreamhost 
+  suggested fixed it:
+
+  chmod a+x dispatch.fcgi
+  chmod -R u+rwX,go-w public log
+
+Joe recommends checking out the Dreamhost wiki's entry on Ruby on Rails:
+  - http://wiki.dreamhost.com/index.php/Ruby_on_Rails
 
 === rescue TheDamnThingBroke
 
@@ -101,6 +111,7 @@ Here's an extract from the config guide available at:
 - http://ozimodo.rubyforge.org/configure.html
 
   * How does it work?
+  * Tumble Dot YAML
   * How to change the look and feel
   * Adding custom post types
   * Using the content variable as a hash
@@ -124,6 +135,18 @@ We are making a bit of an assumption, here: you are familiar with Rails.  If
 not, there is a wealth of amazing Rails documentation out there.  Not to 
 mention some very poignant Ruby documentation, as well.  Help yourself.
 Google works.
+
+
+=== Tumble Dot YAML
+
+If you want to hang out with the default ozimodo theme, by all means.  However, note
+that there are some out-of-the-box configurable options available to you.  Open up
+ozimodo/config/tumble.yml and have a look.
+
+Whatever the 'name' option is set to will be displayed in the header and title of your
+tumblelog, as well as in your feeds.  Also of interest is the 'salt' option, used by
+ozimodo for cookie authentication.  Just make something up, but try to steer clear of the
+default.
 
 
 === That Tumbly Look and Feel
