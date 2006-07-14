@@ -9,7 +9,8 @@ module AdminHelper
                'text_area_tag'
              when 'select'
                hash['options'] = hash['options'].is_a?(Hash) ? hash['options'].invert : hash['options']
-               content = options_for_select(hash['options'], (post.new_record? ? nil : post.content.send(field)))
+               selected = post.post_type == type ? post.content.send(field) : nil
+               content = options_for_select(hash['options'], selected)
                'select_tag'
              when 'checkbox'
                content = hash['options']
