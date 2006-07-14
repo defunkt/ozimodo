@@ -5,8 +5,19 @@ class ApiController < ApplicationController
   before_filter :authorize, :only => [ :post, :edit, :delete, :whoami ] 
 
   def list
-    respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
+		case params[:id]
+		when 'short'
+			posts = Post.find(:all, :limit => 30, :order => 'created_at DESC')
+			posts = posts.collect {|a| { a.id => a.title, } }
+			respond_with posts
+    else
+			respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
+		end
   end
+
+	def help
+		@command = params[:id]
+	end
 
   def show
     begin
@@ -19,6 +30,23 @@ class ApiController < ApplicationController
       respond_with :error => "Post not found with an ID of #{params[:id]}"
     end
   end
+
+	def delete
+		begin
+			if params[:id].to_i > 0
+				post = Post.find(params[:id])
+				if post.destroy	
+					respond_with :text => "all has gone according to plan. you post #{params[:id]} has been removed"
+				else
+					respond_with :error => "Unable to delete that post"
+				end
+			else
+				respond_with :error => 'Give me and ID'
+			end
+		rescue ActiveRecord::RecordNotFound
+			respond_with :error => "Post not found with and ID of #{params[:id]}"
+		end
+	end
 
   def types
     respond_with TYPES.map { |k, v| { k => (v ? v.keys : 'content') } }
@@ -130,4 +158,5 @@ private
       { post.id => post.attributes.merge({ 'tags' => post.tags.map(&:name).join(' '), 'user' => post.user.name }) }
     end
   end
+
 end
