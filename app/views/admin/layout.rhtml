@@ -18,23 +18,32 @@
     </tr></table>
   </div>
   
-  <div id="nav">  
-    [ 
-    <%= link_to 'posts', :action => :list %> | 
-    <%= link_to 'tags', :action => :list_tags %> |
-    <%= link_to 'tumble', :action => :new %> | 
-    <% if controller.is_admin_user? %> 
-      <%= link_to 'users', :action => :users %> |
+  <div id="nav">
+    <div>
+      [ 
+      <%= link_to 'posts', :action => :list %> | 
+      <%= link_to 'tags', :action => :list_tags %> |
+      <%= link_to 'tumble', :action => :new %> | 
+      <% if controller.is_admin_user? %> 
+        <%= link_to 'users', :action => :users %> |
+      <% end %>
+      <%= link_to 'password', :action => :password %> |
+      <%= link_to 'kill cache', :action => :kill_cache %> | 
+      <%= link_to 'tumblelog', :controller => 'tumble', :action => 'list' %> |
+      <% if logged_in? -%>
+        <%= link_to 'logout', :action => :logout %>
+      <% else -%>
+        <%= link_to 'login', :action => :login %>
+      <% end -%>
+      ]
+    </div>
+    <% if Ozimodo::Plugins.admin_links.size.nonzero? %>
+      <div>
+        [ 
+        <%= Ozimodo::Plugins.admin_links.map { |meth, name| link_to(name, :action => meth)}.join(' | ') %>
+        ]
+      </div>
     <% end %>
-    <%= link_to 'password', :action => :password %> |
-    <%= link_to 'kill cache', :action => :kill_cache %> | 
-    <%= link_to 'tumblelog', :controller => 'tumble', :action => 'list' %> |
-    <% if logged_in? -%>
-      <%= link_to 'logout', :action => :logout %>
-    <% else -%>
-      <%= link_to 'login', :action => :login %>
-    <% end -%>
-    ]
   </div>
 
   <% if flash[:notice] %>
