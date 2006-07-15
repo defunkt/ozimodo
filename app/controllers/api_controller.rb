@@ -133,7 +133,7 @@ private
   end
 
   def yaml_sans_starter(yaml)
-    yaml.sub("---", '').lstrip
+    yaml.sub(/^---/, '').lstrip
   end
 
   # admin_controller's authorize not friendly for api people
