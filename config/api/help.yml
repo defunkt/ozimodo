@@ -6,8 +6,11 @@ help: |
   This should provide the latest and greatest help for the commands offered
   on that ozimodo tumblelog.
 
-  To see what commands are offered to you use:
-  $  oz commands
+  To see what commands are offered use:
+  $ oz commands
+
+  To see what help topics are offered use:
+  $ oz help topics
 
 delete: |
   DANGER DANGER!!
