@@ -5,19 +5,20 @@ class ApiController < ApplicationController
   before_filter :authorize, :only => [ :post, :edit, :delete, :whoami ] 
 
   def list
-		case params[:id]
-		when 'short'
-			posts = Post.find(:all, :limit => 30, :order => 'created_at DESC', :include => :tags)
-			respond_with posts.map{|a| { a.id => %[#{a.title}#{a.title.blank? ? nil : ' '}<type:#{a.post_type}> <tags:#{a.tag_names}>] } }
+    case params[:id]
+    when 'short'
+      posts = Post.find(:all, :limit => 30, :order => 'created_at DESC', :include => :tags)
+      respond_with posts.map{|a| { a.id => %[#{a.title}#{a.title.blank? ? nil : ' '}<type:#{a.post_type}> <tags:#{a.tag_names}>] } }
     else
-			respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
-		end
+      respond_with hasherize_post(Post.find(:all, :limit => 10, 
+                   :order => 'created_at DESC', :include => [:tags, :user]))
+      end
   end
 
-	def help
+  def help
     yaml, topic = API[:help_yaml], params[:id]
     render :text => (topic == 'topics') ? yaml_sans_starter(yaml.keys.sort.to_yaml) : (yaml[topic] ? yaml[topic] : yaml['help'])
-	end
+  end
 
   def show
     return respond_with(:error => 'Give me an ID') unless params[:id].to_i > 0
@@ -29,7 +30,7 @@ class ApiController < ApplicationController
     end
   end
 
-	def delete
+  def delete
     return respond_with(:error => 'Give me an ID') unless params[:id].to_i > 0
 
     begin
@@ -43,7 +44,7 @@ class ApiController < ApplicationController
     else
       respond_with :error => "Unable to delete post."
     end
-	end
+  end
 
   def types
     respond_with TYPES.map { |k, v| { k => (v ? v.keys : 'content') } }
