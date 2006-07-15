@@ -27,6 +27,12 @@ module Ozimodo
         end
       end
 
+      def migrate(plugin, direction)
+        return unless File.exists?("#{migration_file = File.join(plugin_path(plugin), 'install', 'migration')}.rb")
+        require migration_file
+        Object.const_get("#{plugin.camelize.to_s}Migration").migrate(direction)
+      end
+
     protected
 
       def plugin_path(plugin)
