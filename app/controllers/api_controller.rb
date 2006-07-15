@@ -33,20 +33,19 @@ class ApiController < ApplicationController
   end
 
 	def delete
-		begin
-			if params[:id].to_i > 0
-				post = Post.find(params[:id])
-				if post.destroy	
-					respond_with :text => "all has gone according to plan. you post #{params[:id]} has been removed"
-				else
-					respond_with :error => "Unable to delete that post"
-				end
-			else
-				respond_with :error => 'Give me and ID'
-			end
-		rescue ActiveRecord::RecordNotFound
-			respond_with :error => "Post not found with and ID of #{params[:id]}"
-		end
+    return respond_with(:error => 'Give me and ID') unless params[:id].to_i > 0
+
+    begin
+      post = Post.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      respond_with :error => "Post not found with an ID of #{params[:id]}"
+    end
+
+    if post.destroy	
+      respond_with :success => "All has gone according to plan. Post #{params[:id]} gone forever!"
+    else
+      respond_with :error => "Unable to delete post."
+    end
 	end
 
   def types
