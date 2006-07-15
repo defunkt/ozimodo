@@ -1,0 +1,79 @@
+---
+help: |
+  You can get help for the various commands available on the tumblelog by using:
+  $ oz help <command>
+
+  This should provide the latest and greatest help for the commands offered
+  on that ozimodo tumblelog.
+
+  To see what commands are offered to you use:
+  $  oz commands
+
+delete: |
+  DANGER DANGER!!
+
+  Interesting note: http://dictionary.reference.com/browse/delete
+     The ASCII control character code is 127.  The choice of code 
+     127 (binary 1111111) is not arbitrary but dates back to the 
+     use of paper tape for input. The delete key rewound the tape 
+     by one character and punched out all seven holes, thus 
+     obliterating whatever character was there before. The tape 
+     reading software ignored any delete characters in the input.
+
+  Usage:
+  Figure out the [id] of the post you want to delete and then:
+  $ oz delete [id]
+
+  No confirmation required yet.  You can just delete things and they are GONE
+  FOREVER!  DANGER DANGER
+
+image: |
+  image:
+    Have a pretty picture from somewhere show up on the tumblelog
+
+  Example usage:
+  $ oz image --src http://ozmm.org/images/smiley_face.jpg \
+        --alt 'smile!' --tags 'photos faces'
+link: |
+  link:
+     A segment of text or a graphical item that serves as a cross-reference 
+     between parts of a hypertext document or between files or hypertext 
+     documents. Also called hotlink, hyperlink.
+
+  link options:
+    --url http://ozmm.org 
+    --tags "more key words"
+    --title "the cool title"
+
+list: |
+  $ oz list        #=> returns a dump of the latest 10 posts
+  $ oz list short  #=> returns title and id of the latest 30 posts
+
+post: |
+  post:
+    An annoucement (electronic message) created and publish by you.
+  post options:
+    --title   "the title of the post"
+    --content "the main body of your post here"
+    --tags "key words"
+quip: |
+  quip: http://dictionary.reference.com/browse/quip
+     1. A clever, witty remark often prompted by the occasion.
+     2. A clever, often sarcastic remark; a gibe. See Synonyms at joke.
+     3. A petty distinction or objection; a quibble.
+     4. Something curious or odd.
+   
+  quip options: 
+    --title   "the title of the post"
+    --content "the main body of your post here"
+    --tags "key words"
+
+quote: |
+  quote:
+    To repeat or copy the words of (another), usually with acknowledgment of 
+    the source.
+  quote options:
+    --title   "the title of the post"
+    --author  "I. Zim"
+    --quote "GIR, your waffles have sickened me! Fetch the bucket!"
+    --tags    "waffle bucket"

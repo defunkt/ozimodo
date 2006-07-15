@@ -16,7 +16,8 @@ class ApiController < ApplicationController
   end
 
 	def help
-		@command = params[:id]
+    yaml, topic = API[:help_yaml], params[:id]
+    render :text => (topic == 'topics') ? yaml_sans_starter(yaml.keys.sort.to_yaml) : (yaml[topic] ? yaml[topic] : yaml['help'])
 	end
 
   def show
@@ -131,8 +132,12 @@ private
     respond_to do |type|
       type.yaml { render :text => var.to_yaml }
       type.xml  { render :text => var.to_xml }
-      type.text { render :text => var.to_yaml.sub("---", '').lstrip } # yaml without the --- starter
+      type.text { render :text => yaml_sans_starter(var.to_yaml) } 
     end
+  end
+
+  def yaml_sans_starter(yaml)
+    yaml.sub("---", '').lstrip
   end
 
   # admin_controller's authorize not friendly for api people

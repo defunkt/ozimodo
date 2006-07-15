@@ -48,6 +48,10 @@ end
 
 TYPES.freeze
 
+# api config / help
+API = {}
+API[:help_yaml] = YAML.load(File.open(File.join(RAILS_ROOT, 'config', 'api', 'help.yml')))
+
 # version check information
 VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
                   :page => '/current_version.txt' }
