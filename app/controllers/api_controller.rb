@@ -7,9 +7,8 @@ class ApiController < ApplicationController
   def list
 		case params[:id]
 		when 'short'
-			posts = Post.find(:all, :limit => 30, :order => 'created_at DESC')
-			posts = posts.collect {|a| { a.id => a.title, } }
-			respond_with posts
+			posts = Post.find(:all, :limit => 30, :order => 'created_at DESC', :include => :tags)
+			respond_with posts.map{|a| { a.id => %[#{a.title}#{a.title.blank? ? nil : ' '}<type:#{a.post_type}> <tags:#{a.tag_names}>] } }
     else
 			respond_with hasherize_post(Post.find(:all, :limit => 10, :order => 'created_at DESC', :include => [:tags, :user]))
 		end
@@ -21,19 +20,17 @@ class ApiController < ApplicationController
 	end
 
   def show
+    return respond_with(:error => 'Give me an ID') unless params[:id].to_i > 0
+
     begin
-      if params[:id].to_i > 0
-        respond_with hasherize_post(Post.find(params[:id], :include => [:tags, :user]))
-      else
-        respond_with :error => "Give me an ID"
-      end
+      respond_with hasherize_post(Post.find(params[:id], :include => [:tags, :user]))
     rescue ActiveRecord::RecordNotFound
       respond_with :error => "Post not found with an ID of #{params[:id]}"
     end
   end
 
 	def delete
-    return respond_with(:error => 'Give me and ID') unless params[:id].to_i > 0
+    return respond_with(:error => 'Give me an ID') unless params[:id].to_i > 0
 
     begin
       post = Post.find(params[:id])
@@ -62,7 +59,7 @@ class ApiController < ApplicationController
   end
 
   def version
-    respond_with :version => OZIMODO_VERSION
+    respond_with :ozimodo_version => OZIMODO_VERSION
   end
 
   def whoami
