@@ -1,7 +1,7 @@
 module Ozimodo
-  class Plugins
+  module Plugins
     @@admin_links = {}
-    cattr_reader :admin_links
+    mattr_reader :admin_links
 
     class << self
 
