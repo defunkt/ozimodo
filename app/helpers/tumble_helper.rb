@@ -97,11 +97,11 @@ module TumbleHelper
     if cur_tag and !cur_tag.split.select { |x| x =~ /^#{tag}$/ }.empty?
       link = cur_tag.split
       if link.size == 1
-        link_to('-', '/', :class => 'remove-tag')
+        link_to('-', { :controller => 'tumble', :action => 'list' }, :class => 'remove-tag')
       else
         link = link.reject { |x| x =~ /^#{tag}$/ } * '+'
         link_to('-', {:controller => 'tumble', :action => 'tag', :tag => link}, 
-                     { :class => 'remove-tag' })
+                     { :class => 'remove-tag' }).gsub(/%2B/,'+')
       end
     elsif cur_tag
       link = "#{cur_tag.gsub(' ','+')}+#{tag}"
