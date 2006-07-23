@@ -36,29 +36,19 @@ module ThemeHelper
   end
   
   # RedCloth wrapper -- clean this up if you have redcloth installed for sure
-  def r(x)
-    begin
-      require_gem 'RedCloth'
-      RedCloth.new(x).to_html
-    rescue
-      x
-    end
+  def r(x, options = [])
+    RedCloth.new(x, options).to_html
   end
   
   # RedCloth lite
   def rl(x)
-    begin
-      require_gem 'RedCloth'
-      RedCloth.new(x, [:lite_mode]).to_html
-    rescue
-      x
-    end
+    r(x, [:lite_mode])
   end
   
   # syntax highlight ruby code -- same as redcloth, clean it up
   def rc(x)
     begin
-      require_gem 'syntax'
+      require 'syntax'
       require 'syntax/convertors/html'
       Syntax::Convertors::HTML.for_syntax("ruby").convert(x)
     rescue
