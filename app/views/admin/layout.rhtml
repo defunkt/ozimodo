@@ -13,7 +13,7 @@
   <div id="header">
     <table><tr>
     <td class="bracket">{</td>
-    <td class="logo">tumblelog maintenance</td>
+    <td class="logo"><%=_ 'tumblelog maintenance' -%></td>
     <td class="bracket">}</td>
     </tr></table>
   </div>
@@ -21,19 +21,19 @@
   <div id="nav">
     <div>
       [ 
-      <%= link_to 'posts', :action => :list %> | 
-      <%= link_to 'tags', :action => :list_tags %> |
-      <%= link_to 'tumble', :action => :new %> | 
+      <%= link_to _('posts'), :action => :list %> | 
+      <%= link_to _('tags'), :action => :list_tags %> |
+      <%= link_to _('tumble'), :action => :new %> | 
       <% if controller.is_admin_user? %> 
-        <%= link_to 'users', :action => :users %> |
+        <%= link_to _('users'), :action => :users %> |
       <% end %>
-      <%= link_to 'password', :action => :password %> |
-      <%= link_to 'kill cache', :action => :kill_cache %> | 
-      <%= link_to 'tumblelog', :controller => 'tumble', :action => 'list' %> |
+      <%= link_to _('password'), :action => :password %> |
+      <%= link_to _('kill cache'), :action => :kill_cache %> | 
+      <%= link_to _('tumblelog'), :controller => 'tumble', :action => 'list' %> |
       <% if logged_in? -%>
-        <%= link_to 'logout', :action => :logout %>
+        <%= link_to _('logout'), :action => :logout %>
       <% else -%>
-        <%= link_to 'login', :action => :login %>
+        <%= link_to _('login'), :action => :login %>
       <% end -%>
       ]
     </div>
@@ -63,7 +63,7 @@
     <% if logged_in? %>
       hey, <%= current_user[:name] %>.&nbsp;
     <% end %>
-    you're on the admin side, where we keep it casual ~ 
+    <%=_ "you're on the admin side, where we keep it casual" -%> ~ 
     <a href="http://ozimodo.rubyforge.org/">ozimodo</a>
   </div>
 </div>
