@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+# setup our environment, if we need to use a different one than the default
+if env = ARGV.grep(/(-e|--env)/).first
+  RAILS_ENV = env =~ /=/ ? env.split('=').last : ARGV[ARGV.index(env)+1]
+end
 require File.dirname(__FILE__) + '/../config/boot'
 require File.dirname(__FILE__) + '/../config/environment'
 require File.join(RAILS_ROOT, 'lib', 'ozimodo', 'commands')

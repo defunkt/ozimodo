@@ -5,7 +5,7 @@ module Ozimodo
     class << self
       
       def parse!(args)
-        self.send(cmd = args.shift, args) #rescue help
+        self.send(cmd = args.shift, args) rescue help
       end
 
       def plugin(args)
@@ -22,6 +22,10 @@ module Ozimodo
 
       def help
         puts "Usage: ozimodo <command> [options]"
+        puts
+        puts "Possible arguments:"
+        puts "  -e, --env=ENV                Your Rails environment."
+        puts "                               Default: development"
         puts
         puts "Available commands:"
         puts 
