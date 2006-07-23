@@ -1,7 +1,7 @@
-<% @page_name = 'listing tags' -%>
+<% @page_name = _('listing tags') -%>
 
 <table>
-  <tr><th colspan="2">Tags</th></tr>
+  <tr><th colspan="2"><%=_ 'Tags' -%></th></tr>
 <% @tags.each do |t| -%>
   <tr>
     <td><div id="name-<%= t.id %>"><%= t.name %></div>
@@ -14,14 +14,14 @@
         </div>
 
     </td>
-    <td><%= link_to_function 'rename', "Element.toggle('rename-#{t.id}');Element.toggle('name-#{t.id}')" %> | 
-        <%= link_to 'delete', {:action => :delete_tag, :id => t}, 
-                    :confirm => 'Are you sure you want to delete this tag?' %>
+    <td><%= link_to_function _('rename'), "Element.toggle('rename-#{t.id}');Element.toggle('name-#{t.id}')" %> | 
+        <%= link_to _('delete'), {:action => :delete_tag, :id => t}, 
+                    :confirm => _('Are you sure you want to delete this tag?') %>
     </td>
   </tr>
 <% end -%>
 
 </table>
 
-<%= link_to "prev page", { :page => @tag_pages.current.previous } if @tag_pages.current.previous %>
-<%= link_to "next page", { :page => @tag_pages.current.next } if @tag_pages.current.next %> 
+<%= link_to _("prev page"), { :page => @tag_pages.current.previous } if @tag_pages.current.previous %>
+<%= link_to _("next page"), { :page => @tag_pages.current.next } if @tag_pages.current.next %> 

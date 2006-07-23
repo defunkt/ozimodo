@@ -1,22 +1,24 @@
+<% @page_name = _("create user") %>
+
 <% form_for :user do |f| %>
   <table>
     <tr>
-      <th>Name:</th>
+      <th><%=_ 'Name' -%>:</th>
       <td><%= f.text_field 'name', :size => 20 %></td>
     </tr>
 
     <tr>
-      <th>Password:</th>
+      <th><%=_ 'Password' -%>:</th>
       <td><input type="password" name="password[new]" size="20" /></td>
     </tr>
 
     <tr>
-      <th>Confirm:</th>
+      <th><%=_ 'Confirm' -%>:</th>
       <td><input type="password" name="password[confirm]" size="20" /></td>
     </tr>
       
     
-    <tr><th colspan="2" align="center"><%= submit_tag 'Create User' %></th></tr>
+    <tr><th colspan="2" align="center"><%= submit_tag _('Create User') %></th></tr>
   </table>
         
 <% end %>

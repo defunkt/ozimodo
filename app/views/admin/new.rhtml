@@ -1,4 +1,4 @@
-<% @page_name = 'tumble' -%>
+<% @page_name = _('tumble') -%>
 
 <script type="text/javascript">
   // swap content textboxes on change of the dropdown
@@ -32,11 +32,11 @@
 <%= form_tag %>
 <table>
   <tr>
-    <th>Title:</th>
+    <th><%=_ 'Title' -%>:</th>
     <td><%= text_field 'post', 'title', :size => 40 %></td>
   </tr>
   <tr>
-    <th>Post Type:</th>
+    <th><%=_ 'Post Type' -%>:</th>
     <td>
       <% if controller.action_name = :new %>
         <select id="post_post_type" name="post[post_type]" onChange="javascript:changeType();">
@@ -49,7 +49,7 @@
   </tr>
     
   <tr>
-    <th>Tags:</th>
+    <th><%=_ 'Tags' -%>:</th>
     <td><%= text_field_tag 'tags', @tags, :size => 40 %></td>
   </tr>
   
@@ -67,17 +67,17 @@
   <% end -%>  
   
   <tr id="post_content_row">
-    <th>Content:</th>
+    <th><%=_ 'Content' -%>:</th>
     <td><%= text_area 'post', 'content', :cols => 38, :rows => 10 %></td>
   </tr>
 
   
   <tr>
-    <th>Created at:</th>
+    <th><%=_ 'Created at' -%>:</th>
     <td><%= datetime_select 'post', 'created_at' %></td>
   </tr>
   
-  <tr><th colspan="2" align="center"><%= submit_tag 'Save Your Tumble' %></th></tr>
+  <tr><th colspan="2" align="center"><%= submit_tag _('Save Your Tumble') %></th></tr>
 </table>
 
   <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? current_user[:id] : @post.user_id) %>  

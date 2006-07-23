@@ -1,11 +1,11 @@
-<% @page_name = 'am.i.up.to.date?' -%>
+<% @page_name = _('am.i.up.to.date?') -%>
 <% if @version == false or @version.nil? -%>
 
-  Version check failed.  Maybe you're not connected to the internet?
+  <%=_ "Version check failed.  Maybe you're not connected to the internets?" -%>
   
   <br/><br/>
   
-  I'm trying to grab 
+  <%=_ "I'm trying to grab " -%>
   <% 
     url  = VERSION_CHECK[:domain] 
     url += VERSION_CHECK[:port] != 80 ? (':' + VERSION_CHECK[:port].to_s) : ''
@@ -15,11 +15,11 @@
   
   <br/><br/>
   
-  It's set in <i>rails_root/config/environment.rb</i>.  Maybe it's wrong?
+  <%=_ "It's set in <em>rails_root/config/environment.rb</em>.  Maybe it's wrong?" -%>
   
 <% elsif @version == OZIMODO_VERSION %>
 
-  Your ozimodo is up to date.  Congratulations!
+  <%=_ 'Your ozimodo is up to date.  Congratulations!' -%>
 <pre align="left"> 
 <%=' '*19<<','*13<<' '*30<<"\n"<<' '*15<<'.'<<';'*19<<',.'<<' '*25<<"\n"<<' '*13<<'.'<<';'*24<<','<<' '*23<<"\n"<<' '*11<<'.'<<';'*28<<'.'<<' '*21<<"\n"\
 <<' '*10<<';;;;;@'<<';'*26<<"' "<<'.'*13<<' '*5<<"\n"<<' '*10<<';;;;@@'<<';'*25<<"'"<<'.'*17<<"   \n"<<' '*10<<';;;;@@'<<';'*24<<"'"<<'.'*19<<" \n"\
@@ -33,16 +33,16 @@
 
 <% else %>
 
-  Your ozimodo is not up to date.
+  <%=_ 'Your ozimodo is not up to date.' -%>
   
   <br/><br/>
   
-  The current version is <strong><%= @version %></strong> and you are running 
+  <%=_ 'The current version is' -%> <strong><%= @version %></strong> <%=_ 'and you are running' -%>
   <strong><%= OZIMODO_VERSION %></strong>.  
   
   <br/><br/>
   
-  Grab the freshest copy from 
+  <%=_ 'Grab the freshest copy from' -%>
   <a href="http://ozimodo.rubyforge.org">http://ozimodo.rubyforge.org</a>.
   
 <% end %>

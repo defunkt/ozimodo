@@ -1,7 +1,7 @@
-<% @page_name = 'listing users' -%>
+<% @page_name = _('listing users') -%>
 
 <table>
-  <tr><th colspan="2">Users</th></tr>
+  <tr><th colspan="2"><%=_ 'Users' -%></th></tr>
     <% for user in @users -%>
       <tr>
         <td><div id="name-<%= user.id %>"><%= user.name %></div>
@@ -14,10 +14,10 @@
             </div>
 
         </td>
-        <td><%= link_to_function 'rename', "Element.toggle('rename-#{user.id}');Element.toggle('name-#{user.id}')" %> | 
-            <%= link_to 'password', { :action => :password, :id => user } %> | 
-            <%= link_to 'delete', {:action => :delete_user, :id => user}, 
-                        :confirm => 'Are you sure you want to delete this user?  All his posts will be transferred to you.' %>
+        <td><%= link_to_function _('rename'), "Element.toggle('rename-#{user.id}');Element.toggle('name-#{user.id}')" %> | 
+            <%= link_to _('password'), { :action => :password, :id => user } %> | 
+            <%= link_to _('delete'), {:action => :delete_user, :id => user}, 
+                        :confirm => _('Are you sure you want to delete this user?  All his posts will be transferred to you.') %>
         </td>
       </tr>
     <% end -%>
@@ -26,4 +26,4 @@
 
 <br/>
 <br/>
-<%= link_to 'create user', { :action => :create_user } %>
+<%= link_to _('create user'), { :action => :create_user } %>

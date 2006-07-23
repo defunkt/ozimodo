@@ -1,11 +1,11 @@
-<% @page_name = 'listing posts' -%>
+<% @page_name = _('listing posts') -%>
 
 <table>
   <tr>
-    <th>Title</th>
-    <th>Type</th>
-    <th>User</th>
-    <th>Date</th>
+    <th><%=_ 'Title' -%></th>
+    <th><%=_ 'Type' -%></th>
+    <th><%=_ 'User' -%></th>
+    <th><%=_ 'Date' -%></th>
     <th>&nbsp;</th>
   </tr>
 
@@ -16,15 +16,15 @@
     <td><%= p.user.name %></td>
     <% date = p.created_at -%>
     <td><%= date.year %>-<%= sprintf('%02d', date.month.to_s) %>-<%= sprintf('%02d', date.day.to_s) %></td>
-    <td><small><%= link_to 'show', :action => :show, :id => p %> | 
-        <%= link_to 'edit', :action => :edit, :id => p %> | 
-        <%= link_to 'delete', {:action => :delete, :id => p}, 
-                    :confirm => 'Are you sure you want to delete this post?' %></small>
+    <td><small><%= link_to _('show'), :action => :show, :id => p %> | 
+        <%= link_to _('edit'), :action => :edit, :id => p %> | 
+        <%= link_to _('delete'), {:action => :delete, :id => p}, 
+                    :confirm => _('Are you sure you want to delete this post?') %></small>
     </td>
   </tr>
 <% end -%>
 
 </table>
 
-<%= link_to "prev page", { :page => @post_pages.current.previous } if @post_pages.current.previous %>
-<%= link_to "next page", { :page => @post_pages.current.next } if @post_pages.current.next %> 
+<%= link_to _("prev page"), { :page => @post_pages.current.previous } if @post_pages.current.previous %>
+<%= link_to _("next page"), { :page => @post_pages.current.next } if @post_pages.current.next %> 
