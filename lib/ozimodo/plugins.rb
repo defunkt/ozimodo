@@ -1,7 +1,8 @@
 module Ozimodo
   module Plugins
-    @@admin_links = {}
+    @@admin_links, @@plugins = {}, []
     mattr_reader :admin_links
+    mattr_reader :plugins
 
     class << self
 
@@ -13,18 +14,13 @@ module Ozimodo
             require_dependency file if /\.rb$/ =~ file
           end
         end
+        @@plugins << plugin
       end
 
-      def admin_method(plugin, method, link_to_name = nil, &block)
+      def admin_method(plugin, method = nil, link_to_name = nil, &block)
+        method = plugin if method.nil?
         @@admin_links[method] = link_to_name ? link_to_name : method.to_s
-        plugin_path = File.join(plugin_path(plugin), 'views', 'admin', "#{method.to_s}.rhtml")
-        AdminController.send(:define_method, method) do
-          block.call
-          @page_name = method.to_s
-          file = plugin_path
-          raise "Can't find #{file} to render." unless File.exists?(file)
-          render :file => file, :layout => nil
-        end
+        AdminController.send(:define_method, method, &block)
       end
 
       def migrate(plugin, direction)
@@ -33,10 +29,12 @@ module Ozimodo
         Object.const_get("#{plugin.camelize.to_s}Migration").migrate(direction)
       end
 
-    protected
-
       def plugin_path(plugin)
         File.join(THEME_DIR, 'plugins', plugin.to_s)
+      end
+
+      def plugin_paths
+        @@plugins.map { |p| plugin_path(p) }
       end
 
     end
