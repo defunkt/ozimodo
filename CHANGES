@@ -3,6 +3,7 @@
   * Fixed the atom feed link in themes/your_theme/layout.rhtml
   * Fixed the display of the ballon code for Firefox and IE
   * Fixed bug with encoding of multi-tag links [Jannis Leidel]
+  * Fixed some RedCloth issues when gem isn't installed
 
 1.2.1
   * Fixed bug in API causing special post type posts to fail
