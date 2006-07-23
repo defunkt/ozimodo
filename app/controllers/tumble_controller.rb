@@ -40,8 +40,8 @@ class TumbleController < ApplicationController
       @posts = Post.find_by_tags(tags)
     else
       post_ids = Tag.find_by_name(tags, :include => [:posts], :order => 'posts.created_at DESC').posts.map(&:id)
-      @post_pages, @posts = paginate :posts, :include => [:tags, :user], :conditions => post_ids, :per_page => TUMBLE['limit'],
-                                             :order => 'created_at DESC' 
+      @post_pages, @posts = paginate :posts, :include => [:tags, :user], :conditions => "posts.id IN (#{post_ids * ','})", 
+                                             :per_page => TUMBLE['limit'], :order => 'created_at DESC' 
     end
 
     if @posts.size.nonzero?
