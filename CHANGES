@@ -4,6 +4,9 @@
   * Fixed the display of the ballon code for Firefox and IE
   * Fixed bug with encoding of multi-tag links [Jannis Leidel]
   * Fixed some RedCloth issues when gem isn't installed
+  * ThemeHelper's linked_tags_with_commas() now takes a second parameter, for the seperator
+  * Added volatile and undocumented theme plugin API
+  * Added script/ozimodo (currently only for theme plugins)
 
 1.2.1
   * Fixed bug in API causing special post type posts to fail

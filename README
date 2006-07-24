@@ -27,6 +27,7 @@ following wordsmiths:
 
 - Chris Wanstrath (defunkt)
 - Dayne Broderson (bish0p)
+- Jannis Leidel (jannis)
 
 
 == Install
@@ -336,6 +337,7 @@ In only a few steps, your theme can be as portable as the ozmm theme.
 Remember to change config/tumble.yml to specify which component your tumblelog
 should be using.  Other than that little caveat, it's all rather elementary, my 
 dear.
+
 
 == Thanks
 
