@@ -45,6 +45,7 @@ link: |
 
   link options:
     --url http://ozmm.org 
+    --text "text for the url"
     --tags "more key words"
     --title "the cool title"
 
