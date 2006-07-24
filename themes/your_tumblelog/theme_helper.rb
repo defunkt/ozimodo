@@ -7,10 +7,10 @@ module ThemeHelper
   #
   
   # get an array of tag names and generate a comma separated, linked string of tags
-  def linked_tags_with_commas(tags)
+  def linked_tags_with_commas(tags, sep = ", ")
     tags.dup.map { |tag|
       tag_link(tag.name)
-    }.join(', ')
+    }.join(sep)
   end
 
   def popular_tags
