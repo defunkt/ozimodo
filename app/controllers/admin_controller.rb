@@ -9,10 +9,7 @@ class AdminController < ApplicationController
                                    # is actually logged in or not
 
   before_filter :admin_user_only, :only => [ :users, :rename_user, :delete_user, :create_user ]
- 
-                                   
   layout "admin/layout"   # admin layout
-
   helper :tumble, ThemeHelper
   
   # app/models/cache_sweeper.rb's after_save method is invoked if a Post
@@ -72,10 +69,10 @@ class AdminController < ApplicationController
       
       # save the post - if it fails, send the user back from whence she came
       if post.save
-        flash[:notice] = 'Post was successfully saved.'
+        flash[:notice] = _('Tumble successfully saved.')
         redirect_to :action => 'show', :id => post.id
       else
-        flash[:notice] = "There was an error saving your post."
+        flash[:notice] = _("There was an error saving your tumble.")
         render :action => self.action_name
       end
     else
@@ -103,7 +100,7 @@ class AdminController < ApplicationController
   def delete
     post = Post.find(params[:id])
     post.destroy
-    flash[:notice] = 'Post deleted.'
+    flash[:notice] = _('Post deleted.')
     redirect_to :action => :list
   end
   
@@ -111,9 +108,14 @@ class AdminController < ApplicationController
   # most of our cache.  
   def kill_cache
     CacheSweeper.sweep
-    flash[:notice] = "Cache killed."
+    flash[:notice] = _("Cache killed.")
     redirect_to :back
   end
+
+  
+  #
+  # inline ajax editing
+  #
 
   def method_missing(m, *args)
     # check if it's an ajax method
@@ -173,7 +175,7 @@ class AdminController < ApplicationController
   def delete_tag
     tag = Tag.find(params[:id])
     tag.destroy
-    flash[:notice] = 'Tag deleted.'
+    flash[:notice] = _('Tag deleted.')
     redirect_to :action => :list_tags
   end
 
@@ -239,7 +241,7 @@ class AdminController < ApplicationController
         redirect_to :action => 'list'
       else
         # hax.
-        flash[:notice] = 'Username or password incorrect.'
+        flash[:notice] = _('Username or password incorrect.')
       end
 
     elsif logged_in?
@@ -252,7 +254,7 @@ class AdminController < ApplicationController
 
   def logout
     set_logged_out
-    flash[:notice]    = "Logged out."
+    flash[:notice] = _("Logged out.")
 
     # if they got here from a page other than the admin section, send them back
     ref = request.env['HTTP_REFERER']
@@ -282,9 +284,9 @@ class AdminController < ApplicationController
     flash[:notice] = begin
                        user.destroy
                        Post.chown_posts(user_id,User::ADMIN_USER_ID)
-                       "User deleted."
+                       _("User deleted.")
                      rescue CantDestroyAdminUser
-                       "Can't delete admin user :("
+                       _("Can't delete admin user :(")
                      end
 
     redirect_to :action => :users
@@ -296,9 +298,9 @@ class AdminController < ApplicationController
       @user = User.new(params[:user])
       flash[:notice] = case true
                        when !User.password_long_enough?(params[:password][:new])
-                         "You gotta make your password longer than five letters... come on."
+                         _("You gotta make your password longer than five letters... come on.")
                        when !User.passwords_match?(params[:password][:new], params[:password][:confirm])
-                         "Passwords don't match."
+                         _("Passwords don't match.")
                        end
 
       return flash[:notice] if flash[:notice]
@@ -306,10 +308,10 @@ class AdminController < ApplicationController
       @user.password = params[:password][:new]
 
       if @user.save
-        flash[:notice] = "User #{@user.name} created."
+        flash[:notice] = _("User") + " #{@user.name} " + _("created.")
         redirect_to :action => 'users'
       else
-        flash[:error] = "Error creating user."
+        flash[:error] = _("Error creating user.")
       end
     end
   end
@@ -319,7 +321,7 @@ class AdminController < ApplicationController
     if params[:id] && is_admin_user?
       @user_id = params[:id].to_i
     elsif params[:id] && !is_admin_user?
-      flash[:notice] = "Permission denied.  Must be admin user."
+      flash[:notice] = _("Permission denied.  Must be admin user.")
       redirect_to :action => 'users'
     else
       @user_id = current_user[:id]
@@ -332,13 +334,13 @@ class AdminController < ApplicationController
       # see if there's anything wrong with the submitted passwords
       flash[:error] = case true
                       when !User.password_long_enough?(params[:password][:new])
-                        "You gotta make your password longer than five letters... come on."
+                        _("You gotta make your password longer than five letters... come on.")
                       when !User.passwords_match?(params[:password][:new], params[:password][:confirm])
-                        "Passwords don't match."
+                        _("Passwords don't match.")
                       end
 
       if params[:password][:old] && User.hash_password(params[:password][:old]) != user.hashed_password
-        flash[:error] = "Old password is wrong, sorry." 
+        flash[:error] = _("Old password is wrong, sorry.")
       end
       
       # end this transaction if we got an error
@@ -348,7 +350,7 @@ class AdminController < ApplicationController
       user.password = params[:password][:new]
       user.save
       
-      flash[:notice] = "Password changed."
+      flash[:notice] = _("Password changed.")
     end
   end
   
