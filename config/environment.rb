@@ -4,7 +4,7 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
-RAILS_GEM_VERSION = '1.1.4'
+RAILS_GEM_VERSION = '1.1.6'
 OZIMODO_VERSION = '1.2.2'
 ENV['RAILS_ASSET_ID'] = Time.now.to_i.to_s
 
