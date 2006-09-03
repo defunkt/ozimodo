@@ -19,7 +19,7 @@ module Ozimodo
 
       def admin_method(plugin, method = nil, link_to_name = nil, &block)
         method = plugin if method.nil?
-        @@admin_links[method] = link_to_name ? link_to_name : method.to_s
+        @@admin_links[method] = (link_to_name ? link_to_name : method.to_s) unless link_to_name == false
         AdminController.send(:define_method, method, &block)
       end
 
