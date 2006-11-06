@@ -88,7 +88,7 @@ module TumbleHelper
   
   # if we're looking at a tag, give the option to add (or remove) another tag
   def tag_link(t)
-    link_to(t, {:controller => 'tumble', :action => 'tag', :tag => t}, { :class => 'tag-link' })
+    link_to(t, {:controller => 'tumble', :action => 'tag', :tag => t}, { :rel => 'tag', :class => 'tag-link' })
   end
   
   # add a + or - in front of tags if we're looking at a tag's listing
