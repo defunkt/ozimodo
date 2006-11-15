@@ -18,5 +18,6 @@ class FeedController < ApplicationController
 
   def burner
     feed
+    render :action => :atom
   end
 end
