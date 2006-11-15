@@ -1,6 +1,6 @@
 class FeedController < ApplicationController
   helper :feed, :tumble, ThemeHelper
-  caches_page :atom, :rss
+  caches_page :atom, :rss, :burner
   session :off
   
   # the feed method.
@@ -14,5 +14,9 @@ class FeedController < ApplicationController
   %w[atom rss].each do |f| 
     define_method(f.to_sym) { feed }
     caches_page f.to_sym
+  end
+
+  def burner
+    feed
   end
 end
