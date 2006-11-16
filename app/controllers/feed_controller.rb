@@ -5,7 +5,7 @@ class FeedController < ApplicationController
   
   # the feed method.
   def feed
-    @posts = Post.find(:all, :order => 'created_at DESC', :limit => 20) 
+    @posts = Post.find(:all, :order => 'id DESC', :limit => 10) 
   end
   
   # cache the full output of the rss and atom methods.
