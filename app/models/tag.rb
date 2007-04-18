@@ -7,8 +7,12 @@ class Tag < ActiveRecord::Base
   end
 
   def self.find_most_popular(limit = 5)
-    find_by_sql("SELECT t.*, count(1) count FROM posts_tags pt 
-                 JOIN tags t ON t.id = pt.tag_id GROUP BY tag_id 
-                 ORDER BY count DESC LIMIT #{limit}")
+    count_col = connection.quote_column_name('count')
+    find( :all,
+          :select => "tags.id AS id, tags.name AS name, COUNT(*) AS " + count_col,
+          :joins  => "JOIN posts_tags ON posts_tags.tag_id = id",
+          :group  => "tag_id, id, name",
+          :order  => count_col + " desc",
+          :limit  => limit )
   end
 end
