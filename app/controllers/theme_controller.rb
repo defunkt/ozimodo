@@ -2,15 +2,16 @@ class ThemeController < ApplicationController
   caches_page :stylesheets, :javascripts, :images
   
   def stylesheets
-    render_theme_item :stylesheets, params[:filename], 'text/css'
+    render_theme_item :stylesheets, params[:filename] + '.css', 'text/css'
   end
 
   def javascripts
-    render_theme_item :javascripts, params[:filename], 'text/javascript'
+    render_theme_item :javascripts, params[:filename] + '.js', 'text/javascript'
   end
 
   def images
-    render_theme_item :images, params[:filename]
+    # Be sure to re-attach the image extension.
+    render_theme_item :images, params[:filename] + params[:extension][0] if params[:extension]
   end
 
   def error

@@ -1,4 +1,5 @@
 require_dependency File.join(RAILS_ROOT, 'lib', 'ozimodo', 'cookie_auth')
+require_dependency File.join(THEME_DIR, 'theme_helper')
 
 class AdminController < ApplicationController
   include Ozimodo::CookieAuth      # login stuff
@@ -17,6 +18,8 @@ class AdminController < ApplicationController
   # caches.
   cache_sweeper :cache_sweeper, :only => [ :new, :edit, :delete, :rename_tag, :delete_tag,
                                            :delete_user, :rename_user ]
+  
+  helper ThemeHelper 
   
   #
   # post management
