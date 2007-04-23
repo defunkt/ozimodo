@@ -1,3 +1,5 @@
+require_dependency File.join(THEME_DIR, 'theme_helper')
+
 class FeedController < ApplicationController
   helper :feed, :tumble, ThemeHelper
   caches_page :atom, :rss, :burner
