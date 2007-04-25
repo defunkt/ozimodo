@@ -13,6 +13,9 @@
     // get the content row
     content_row = $('post_content_row');
     
+    // get the markup row
+    markup_row = $('post_markup_row');
+    
     // hide all the special fields and the content tr
     for (i=0; i < tbodies.length; i++) {
       $(tbodies[i]).style.display = 'none';
@@ -25,6 +28,13 @@
     } else {
       content_row.style.display = '';
     }
+    
+    // only show the markup buttons if working on a post
+    if (current == "post") {
+      markup_row.style.display = '';
+    } else {
+      markup_row.style.display = 'none';
+    }  
 
   }
 </script>
@@ -66,10 +76,26 @@
     <% end %>
   <% end -%>  
   
+  <tr id="post_markup_row" style="display:none;">
+    
+      <th>Markup</th>
+      <td>
+          <div id="quicktags">
+            <script type="text/javascript">if ( typeof tinyMCE == "undefined" || tinyMCE.configs.length < 1 ) edToolbar();</script>
+          </div>
+    </td>
+  </tr>
+  
   <tr id="post_content_row">
     <th><%=_ 'Content' -%>:</th>
     <td><%= text_area 'post', 'content', :cols => 38, :rows => 10 %></td>
   </tr>
+
+  <script type="text/javascript">
+  <!--
+  edCanvas = document.getElementById('post_content');
+  //-->
+  </script>
 
   
   <tr>

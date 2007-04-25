@@ -29,6 +29,11 @@ Rails::Initializer.run do |config|
   
   # See Rails::Configuration for more options
   config.action_controller.page_cache_directory = File.join(RAILS_ROOT, 'public', 'cache')
+  
+  # Tell Rails to look in the /vendor/gems/ directory for all gem requires
+  config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
+    File.directory?(lib = "#{dir}/lib") ? lib : dir
+  end
 end
 
 # load yaml config file, mostly for rss and api

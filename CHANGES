@@ -1,4 +1,5 @@
   * Fixed bug in most popular tag find which broke postgres compatibility.
+  * Added ozimodo plugin support and faux DSL.
 
 1.2.2
   * Fixed bug in tag listing, which broke in the 1.2.1 change.

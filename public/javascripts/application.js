@@ -15,3 +15,4 @@ function addEvent(obj, type, fn) {
 }
 
 addEvent(window, 'load', tumblelogInit);
+
