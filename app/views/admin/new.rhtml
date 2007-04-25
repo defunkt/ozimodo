@@ -106,6 +106,7 @@
   <tr><th colspan="2" align="center"><%= submit_tag _('Save Your Tumble') %></th></tr>
 </table>
 
-  <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? current_user[:id] : @post.user_id) %>  
+  <%= hidden_field 'post', 'user_id', :value => (@post.new_record? ? current_user[:id] : @post.user_id) %> 
+  <%= hidden_field 'post', 'id' if !@post.new_record? %>
       
 <%= end_form_tag %>

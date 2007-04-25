@@ -53,7 +53,7 @@ class AdminController < ApplicationController
       # post request means something big is going to happen.
       # set post variable to the post in question if we're editing, otherwise
       # open a new object
-      post = params[:id] ? Post.find(params[:id]) : Post.new
+      post = params[:post][:id] ? Post.find(params[:post][:id]) : Post.new
       
       # reset all of post's attributes, replacing them with those submitted
       # from the form
