@@ -65,7 +65,7 @@ VERSION_CHECK = { :domain => 'http://ozimodo.rubyforge.org', :port => 80,
 $LOAD_PATH << THEME_DIR
 
 # load dependencies
-require 'vendor/RedCloth/lib/redcloth'
+require 'redcloth'
 
 # wipe cache dir
 CacheSweeper.sweep
