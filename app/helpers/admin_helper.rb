@@ -4,7 +4,7 @@ module AdminHelper
 
     method = case hash['type']
              when 'textarea'
-               options[:cols] = hash['cols'] || 38
+               options[:cols] = hash['cols'] || 46
                options[:rows] = hash['rows'] || 10
                'text_area_tag'
              when 'select'

@@ -5,4 +5,7 @@ src:
 alt: text
 blurb: textarea
 -%>
-<img src="<%= content.src %>" class="type-img" alt="<%= content.alt %>" />
+<div class="type-img">
+  <img src="<%= content.src %>" alt="<%= content.alt %>" /><br />
+  <%= content.blurb %>
+</div>

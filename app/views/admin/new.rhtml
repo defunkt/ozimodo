@@ -1,6 +1,6 @@
 <% @page_name = _('tumble') -%>
 
-<script type="text/javascript">
+<script language="javascript" type="text/javascript">
   // swap content textboxes on change of the dropdown
   function changeType() {
     // all the special tbodys
@@ -13,14 +13,10 @@
     // get the content row
     content_row = $('post_content_row');
     
-    // get the markup row
-    markup_row = $('post_markup_row');
-    
     // hide all the special fields and the content tr
     for (i=0; i < tbodies.length; i++) {
       $(tbodies[i]).style.display = 'none';
     }    
-    content_row.style.display = 'none';
 
     // show the content tr or the special fields, if they exist
     if (tbody = $(current)) {
@@ -29,14 +25,20 @@
       content_row.style.display = '';
     }
     
-    // only show the markup buttons if working on a post
-    if (current == "post") {
-      markup_row.style.display = '';
-    } else {
-      markup_row.style.display = 'none';
-    }  
-
+    // if working on a post, enable the wysiwyg editor
+    // if working on an image, enable the wysiwyg editor and disable the content field
+    if (current == "post") 
+      enableEditor('post_content');
+    else if (current == "image") {
+      enableEditor('yaml[image][blurb]');
+      content_row.style.display = 'none';
+    }
+    else {
+      disableEditor('post_content');
+      disableEditor('yaml[image][blurb]');
+    }
   }
+
 </script>
 
 <%= form_tag %>
@@ -69,35 +71,25 @@
         <% hash.each do |field, options| %>
           <tr id="<%= "#{type}-#{field}" -%>">
             <th><%= field.camelize %>:</th>
-            <td><%= write_field(type, field, options, @post) -%></td>
+            <td>
+                <%- if field == "blurb" %>
+                  <a class="wysiwyg_toggle_link" href="javascript:toggleEditor('yaml[image][blurb]');">Disable WYSIWYG</a><br />
+                <%- end %>
+                <%= write_field(type, field, options, @post) -%></td>
           </tr>  
         <% end %>
       </tbody>
     <% end %>
   <% end -%>  
   
-  <tr id="post_markup_row" style="display:none;">
-    
-      <th>Markup</th>
-      <td>
-          <div id="quicktags">
-            <script type="text/javascript">if ( typeof tinyMCE == "undefined" || tinyMCE.configs.length < 1 ) edToolbar();</script>
-          </div>
-    </td>
-  </tr>
-  
   <tr id="post_content_row">
     <th><%=_ 'Content' -%>:</th>
-    <td><%= text_area 'post', 'content', :cols => 38, :rows => 10 %></td>
+    <td>
+        <a class="wysiwyg_toggle_link" href="javascript:toggleEditor('post_content');">Disable WYSIWYG</a><br />
+        <%= text_area 'post', 'content', :cols => 46, :rows => 10 %>
+    </td>
   </tr>
 
-  <script type="text/javascript">
-  <!--
-  edCanvas = document.getElementById('post_content');
-  //-->
-  </script>
-
-  
   <tr>
     <th><%=_ 'Created at' -%>:</th>
     <td><%= datetime_select 'post', 'created_at' %></td>

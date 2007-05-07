@@ -77,3 +77,74 @@ function addEvent(obj, type, fn) {
 }
 
 addEvent(window, 'load', tumblelogInit);
+
+// from http://www.dustindiaz.com/getelementsbyclass/
+function getElementsByClass(searchClass,node,tag) {
+	var classElements = new Array();
+	if ( node == null )
+		node = document;
+	if ( tag == null )
+		tag = '*';
+	var els = node.getElementsByTagName(tag);
+	var elsLen = els.length;
+	var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+	for (i = 0, j = 0; i < elsLen; i++) {
+		if ( pattern.test(els[i].className) ) {
+			classElements[j] = els[i];
+			j++;
+		}
+	}
+	return classElements;
+}
+
+// totally enable the TinyMCE WYSIWYG editor
+function enableEditor(id) {
+  wysiwyg_togglers = getElementsByClass('wysiwyg_toggle_link');
+  
+	if (tinyMCE.getInstanceById(id) == null) {
+		tinyMCE.execCommand('mceAddControl', false, id);
+		if (wysiwyg_togglers.length > 0) {
+		  for (i = 0; i < wysiwyg_togglers.length; i++) {
+		    wysiwyg_togglers[i].style.display = 'block';
+		    wysiwyg_togglers[i].innerHTML = 'Disable WYSIWYG';
+		  }
+		}
+	}
+}
+
+// totally disable the TinyMCE WYSIWYG editor
+function disableEditor(id) {
+  wysiwyg_togglers = getElementsByClass('wysiwyg_toggle_link');
+  
+	if (tinyMCE.getInstanceById(id) != null) {
+		tinyMCE.execCommand('mceRemoveControl', false, id);	
+		if (wysiwyg_togglers.length > 0) {
+		  for (i = 0; i < wysiwyg_togglers.length; i++) {
+		    wysiwyg_togglers[i].style.display = 'none';
+		  }
+		}
+  }
+}
+
+// based on http://wiki.moxiecode.com/examples/tinymce/installation_example_07.php
+function toggleEditor(id) {
+	var elm = document.getElementById(id);
+  wysiwyg_togglers = getElementsByClass('wysiwyg_toggle_link');
+
+	if (tinyMCE.getInstanceById(id) == null) {
+		tinyMCE.execCommand('mceAddControl', false, id);
+		if (wysiwyg_togglers.length > 0) {
+		  for (i = 0; i < wysiwyg_togglers.length; i++) { 
+		    wysiwyg_togglers[i].innerHTML = 'Disable WYSIWYG';
+		  }
+		}
+  } 
+	else {
+		tinyMCE.execCommand('mceRemoveControl', false, id);
+		if (wysiwyg_togglers.length > 0) {
+		  for (i = 0; i < wysiwyg_togglers.length; i++) {
+		    wysiwyg_togglers[i].innerHTML = 'Enable WYSIWYG';
+		  }
+		}
+  }
+}

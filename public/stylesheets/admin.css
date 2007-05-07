@@ -133,5 +133,14 @@ input[type="button"]:hover,input[type="submit"]:hover {
 	font-style: italic;
 }
 
+.wysiwyg_toggle_link {
+        font-size: 80%;
+        color: gray;
+        float: right;
+        display: none;
+        text-decoration: none;
+}
 
-
+.wysiwyg_toggle_link:hover {
+        text-decoration: none;
+}
