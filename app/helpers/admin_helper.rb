@@ -1,23 +1,23 @@
 module AdminHelper
-  def write_field(type, field, hash, post)
+  def write_field(type, field, hash, post, form)
     options = Hash.new
 
     method = case hash['type']
              when 'textarea'
                options[:cols] = hash['cols'] || 46
                options[:rows] = hash['rows'] || 10
-               'text_area_tag'
+               'text_area'
              when 'select'
                hash['options'] = hash['options'].is_a?(Hash) ? hash['options'].invert : hash['options']
                selected = post.post_type == type ? post.content.send(field) : nil
                content = options_for_select(hash['options'], selected)
-               'select_tag'
+               'select'
              when 'checkbox'
                content = hash['options']
-               'checkbox_tag'
+               'checkbox'
              else
                options[:size] = hash['size'] || 40
-               'text_field_tag'
+               'text_field'
              end
 
     content ||= if post.new_record? 
@@ -25,9 +25,12 @@ module AdminHelper
                 elsif post.post_type == type
                   post.content.send(field)
                 else
-                  ''
+                  nil
                 end
-
-    send(method, "yaml[#{type}][#{field}]", content, options)
+    
+    #arguments_hash = content || content != '' ? options : content.merge(options)
+    #method + field + arguments_hash.to_s
+    #send(method, field, content, options)
+    form.send(method, field, options)
   end
 end
