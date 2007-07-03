@@ -1,5 +1,10 @@
-  * Fixed bug in most popular tag find which broke postgres compatibility.
-  * Added ozimodo plugin support and faux DSL.
+1.2.3  
+  * Fixed bug that was breaking feeds link
+  * Slightly changed admin interface
+  * Added TinyMCE for post formatting
+  * Fixed bug in most popular tag find which broke postgres compatibility
+  * Upgraded to Rails 1.2.3 (hey, same version!)
+  * Added ozimodo plugin support and faux DSL
 
 1.2.2
   * Fixed bug in tag listing, which broke in the 1.2.1 change.

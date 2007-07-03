@@ -75,7 +75,7 @@
                 <%- if field == "blurb" %>
                   <a class="wysiwyg_toggle_link" href="javascript:toggleEditor('yaml[image][blurb]');">Disable WYSIWYG</a><br />
                 <%- end %>
-                <%= write_field(type, field, options, @post, f) -%></td>
+                <%= write_field(type, field, options, @post) -%></td>
           </tr>  
         <% end %>
       </tbody>

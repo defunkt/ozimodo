@@ -7,6 +7,7 @@ service:
     - YouTube
     - Google Video
     - GameSpot
+    - Blip.tv
 -%>
 <% if content.service == 'Google Video' %>
   <embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId=<%= content.video_id[0...1] == '-' ? '' : '-' -%><%= content.video_id -%>"> </embed>
@@ -14,6 +15,8 @@ service:
   <object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/<%= content.video_id -%>"></param><embed src="http://www.youtube.com/v/<%= content.video_id -%>" type="application/x-shockwave-flash" width="425" height="350"></embed></object>
 <% elsif content.service == 'GameSpot' %>
   <embed src="http://www.gamespot.com/v/<%= content.video_id -%>" type="application/x-shockwave-flash" width="432" height="400"></embed>
+<% elsif content.service == 'Blip.tv' %>
+  <script type="text/javascript" src="http://blip.tv/scripts/pokkariPlayer.js?ver=2007062101"></script><script type="text/javascript" src="http://blip.tv/syndication/write_player?skin=js&posts_id=293048&source=3&autoplay=true&file_type=flv&player_width=&player_height="></script><div id="blip_movie_content_293048"><a rel="enclosure" href="<%= content.video_id -%>" onclick="play_blip_movie_293048(); return false;"><img title="Click to play" alt="Video thumbnail. Click to play"  src="<%= content.video_id -%>.jpg" border="0" title="Click To Play" /></a><br /><a rel="enclosure" href="<%= content.video_id -%>" onclick="play_blip_movie_293048(); return false;">Click To Play</a></div>
 <% end %>
 <% unless content.blurb.blank? %>
   <%=r content.blurb %>
